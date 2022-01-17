@@ -15,11 +15,7 @@ view: vw_cohort_analysis_summary_1 {
         AVG(Grp1.MED1_MED_Average_Paid_Amt_G1) as MED_Average_Paid_Amt_G1,
         LISTAGG(DISTINCT Grp1.MED1_Diagnosis_Desc_List_G1, '| ') as Diagnosis_Description_List_G1,
         LISTAGG(DISTINCT Grp1.MED1_Diagnosis_Category_List_G1, '| ') as Diagnosis_Category_List_G1,
-        SUM(Grp1.PHARMA1_PHARMA_Total_Billed_Amt_G1 ) as PHARMA_Total_Billed_Amt_G1,
-        SUM(Grp1.PHARMA1_PHARMA_Total_Paid_Amt_G1 ) as PHARMA_Total_Paid_Amt_G1,
-        AVG(Grp1.PHARMA1_PHARMA_Average_Paid_Amt_G1 ) as PHARMA_Average_Paid_Amt_G1,
-        LISTAGG(DISTINCT Grp1.PHARMA1_TEA_Cat_List_G1, '| ') as TEA_Cat_List_G1,
-        LISTAGG(DISTINCT Grp1.PHARMA1_Drug_List_G1, '| ') as Drug_List_G1,
+
 
         Grp2.MED2_PATIENT_ID_M_G2 as Unique_Id_M_G2,          /*All Dimension of Grp2 tab */
         Grp2.MED2_PATIENT_GENDER_G2 as PATIENT_GENDER_G2,
@@ -29,12 +25,8 @@ view: vw_cohort_analysis_summary_1 {
         SUM(Grp2.MED2_MED_Total_Paid_Amt_G2) as MED_Total_Paid_Amt_G2,
         AVG(Grp2.MED2_MED_Average_Paid_Amt_G2) as MED_Average_Paid_Amt_G2,
         LISTAGG(DISTINCT Grp2.MED2_Diagnosis_Desc_List_G2, '| ') as Diagnosis_Description_List_G2,
-        LISTAGG(DISTINCT Grp2.MED2_Diagnosis_Category_List_G2, '| ') as Diagnosis_Category_List_G2,
-        SUM(Grp2.PHARMA2_PHARMA_Total_Billed_Amt_G2) as PHARMA_Total_Billed_Amt_G2,
-        SUM(Grp2.PHARMA2_PHARMA_Total_Paid_Amt_G2) as PHARMA_Total_Paid_Amt_G2,
-        AVG(Grp2.PHARMA2_PHARMA_Average_Paid_Amt_G2 ) as PHARMA_Average_Paid_Amt_G2,
-        LISTAGG(DISTINCT Grp2.PHARMA2_Drug_List_G2, '| ') as Drug_List_G2,
-        LISTAGG(DISTINCT Grp2.PHARMA2_TEA_Cat_List_G2, '| ') as TEA_Cat_List_G2
+        LISTAGG(DISTINCT Grp2.MED2_Diagnosis_Category_List_G2, '| ') as Diagnosis_Category_List_G2
+
 
       FROM  (Select "UNIQUE_ID" as PATIENT_ID,
               substring("PAID_DATE", 1, 4) as PAID_YEAR,
@@ -54,15 +46,8 @@ view: vw_cohort_analysis_summary_1 {
               AVG(MED1.MED_Average_Paid_Amt_G1) as MED1_MED_Average_Paid_Amt_G1,
               LISTAGG(DISTINCT MED1.CHRONIC_CATEGORY_G1, '| ') as MED1_CHRONIC_CATEGORY_G1,
               LISTAGG(DISTINCT MED1.Diagnosis_Desc_List_G1, '| ') as MED1_Diagnosis_Desc_List_G1,
-              LISTAGG(DISTINCT MED1.Diagnosis_Category_List_G1, '| ') as MED1_Diagnosis_Category_List_G1,
+              LISTAGG(DISTINCT MED1.Diagnosis_Category_List_G1, '| ') as MED1_Diagnosis_Category_List_G1
 
-              PHARMA1.PATIENT_ID_P_G1 as PHARMA1_PATIENT_ID_P_G1,
-              PHARMA1.SERVICE_DATE_G1 as PHARMA1_SERVICE_DATE_G1,
-              SUM(PHARMA1.PHARMA_Total_Billed_Amt_G1) as PHARMA1_PHARMA_Total_Billed_Amt_G1,
-              SUM(PHARMA1.PHARMA_Total_Paid_Amt_G1) as PHARMA1_PHARMA_Total_Paid_Amt_G1,
-              AVG(PHARMA1.PHARMA_Average_Paid_Amt_G1) as PHARMA1_PHARMA_Average_Paid_Amt_G1,
-              LISTAGG(DISTINCT PHARMA1.Drug_List_G1, '| ') as PHARMA1_Drug_List_G1,
-              LISTAGG(DISTINCT PHARMA1.TEA_Cat_List_G1, '| ') as PHARMA1_TEA_Cat_List_G1
             from
             (Select                             /*All Dimension & Measure of Grp1_Medical*/
               "UNIQUE_ID" as PATIENT_ID_M_G1,
@@ -107,40 +92,10 @@ view: vw_cohort_analysis_summary_1 {
               {% condition MSK_MRS_CODE_CLASSIFICATION_G1 %} M1."MSK_MRS_CODE_CLASSIFICATION" {% endcondition %} AND
               {% condition PARTICIPANT_FLAG_G1 %} M1."PARTICIPANT_FLAG" {% endcondition %}
 
-
             GROUP BY PATIENT_ID_M_G1, PAID_YEAR_G1, PATIENT_GENDER_G1, RELATIONSHIP_TO_EMPLOYEE_G1) as MED1
 
-        JOIN
-            (Select                             /*All Dimension & Measure of Grp1_Pharmacy*/
-              "UNIQUE_ID" as PATIENT_ID_P_G1,
-              substring("DATE_FILLED", 1, 4) as SERVICE_DATE_G1,
-              SUM("TOTAL_BILLED_AMT") as PHARMA_Total_Billed_Amt_G1,
-              SUM("TOTAL_EMPLOYER_PAID_AMT") as PHARMA_Total_Paid_Amt_G1,
-              AVG("TOTAL_EMPLOYER_PAID_AMT") as PHARMA_Average_Paid_Amt_G1,
-              LISTAGG(DISTINCT "NON_PROPRIETARY_NAME", '| ') within group (order by "NON_PROPRIETARY_NAME" ASC) as Drug_List_G1,
-              LISTAGG(DISTINCT "TEA_CATEGORY", '| ') within group (order by "TEA_CATEGORY" ASC) as TEA_Cat_List_G1
-            From "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY" as P1
-            WHERE                             /*All Filters on Grp1_Pharmacy*/
-              {% condition DRUG_G1 %} P1."NON_PROPRIETARY_NAME" {% endcondition %} AND
-              {% condition TEA_CATEGORY_G1 %} P1."TEA_CATEGORY" {% endcondition %} AND
-              {% condition DRUG_CODE_G1 %} P1."DRUG_CODE" {% endcondition %} AND
-              {% condition ACE_INHIBITOR_G1 %} P1."ACE_INHIBITOR" {% endcondition %} AND
-              {% condition STATIN_G1 %} P1."STATIN" {% endcondition %} AND
-              {% condition ARB_G1 %} P1."ARB" {% endcondition %} AND
-              {% condition DRI_G1 %} P1."DRI" {% endcondition %} AND
-              {% condition SPECIALTY_DRUGS_G1 %} P1."SPECIALTY_DRUGS" {% endcondition %} AND
-              {% condition MAINTENANCE_G1 %} P1."MAINTENANCE" {% endcondition %} AND
-              {% condition DIGESTIVE_DISEASE_G1 %} P1."DIGESTIVE_DISEASE" {% endcondition %} AND
-              {% condition BRAND_OR_GENERIC_G1 %} P1."BRAND_OR_GENERIC" {% endcondition %}
 
-            GROUP BY PATIENT_ID_P_G1, SERVICE_DATE_G1) as PHARMA1
-
-          ON                             /*Join condition on Grp1_Medical & Grp1_Pharmacy*/
-          MED1.PATIENT_ID_M_G1 = PHARMA1.PATIENT_ID_P_G1 AND
-          MED1.PAID_YEAR_G1 = PHARMA1.SERVICE_DATE_G1
-
-          GROUP BY MED1_PATIENT_ID_M_G1, MED1_PAID_YEAR_G1, MED1_PATIENT_GENDER_G1, MED1_RELATIONSHIP_TO_EMPLOYEE_G1,
-                  PHARMA1_PATIENT_ID_P_G1, PHARMA1_SERVICE_DATE_G1) AS Grp1
+          GROUP BY MED1_PATIENT_ID_M_G1, MED1_PAID_YEAR_G1, MED1_PATIENT_GENDER_G1, MED1_RELATIONSHIP_TO_EMPLOYEE_G1) AS Grp1
 
         ON  MEDICAL.PATIENT_ID = Grp1.MED1_PATIENT_ID_M_G1 AND  /*Join condition on MEDICAL & Grp1*/
             MEDICAL.PAID_YEAR = Grp1.MED1_PAID_YEAR_G1
@@ -156,15 +111,8 @@ view: vw_cohort_analysis_summary_1 {
               AVG(MED2.MED_Average_Paid_Amt_G2) as MED2_MED_Average_Paid_Amt_G2,
               LISTAGG(DISTINCT MED2.CHRONIC_CATEGORY_G2, '| ') as MED2_CHRONIC_CATEGORY_G2,
               LISTAGG(DISTINCT MED2.Diagnosis_Desc_List_G2, '| ') as MED2_Diagnosis_Desc_List_G2,
-              LISTAGG(DISTINCT MED2.Diagnosis_Category_List_G2, '| ') as MED2_Diagnosis_Category_List_G2,
+              LISTAGG(DISTINCT MED2.Diagnosis_Category_List_G2, '| ') as MED2_Diagnosis_Category_List_G2
 
-              PHARMA2.PATIENT_ID_P_G2 as PHARMA2_PATIENT_ID_P_G2,
-              PHARMA2.SERVICE_DATE_G2 as PHARMA2_SERVICE_DATE_G2,
-              SUM(PHARMA2.PHARMA_Total_Billed_Amt_G2) as PHARMA2_PHARMA_Total_Billed_Amt_G2,
-              SUM(PHARMA2.PHARMA_Total_Paid_Amt_G2) as PHARMA2_PHARMA_Total_Paid_Amt_G2,
-              AVG(PHARMA2.PHARMA_Average_Paid_Amt_G2) as PHARMA2_PHARMA_Average_Paid_Amt_G2,
-              LISTAGG(DISTINCT PHARMA2.Drug_List_G2, '| ') as PHARMA2_Drug_List_G2,
-              LISTAGG(DISTINCT PHARMA2.TEA_Cat_List_G2, '| ') as PHARMA2_TEA_Cat_List_G2
 
             from
             (Select                                       /*All Dimension & Measure of Grp2_Medical */
@@ -212,37 +160,7 @@ view: vw_cohort_analysis_summary_1 {
 
             GROUP BY PATIENT_ID_M_G2, PAID_YEAR_G2, PATIENT_GENDER_G2, RELATIONSHIP_TO_EMPLOYEE_G2) AS MED2
 
-        JOIN
-            (Select                                      /*All Dimension & Measure of Grp2_Pharmacy */
-              "UNIQUE_ID" as PATIENT_ID_P_G2,
-              substring("DATE_FILLED", 1, 4) as SERVICE_DATE_G2,
-              SUM("TOTAL_BILLED_AMT") as PHARMA_Total_Billed_Amt_G2,
-              SUM("TOTAL_EMPLOYER_PAID_AMT") as PHARMA_Total_Paid_Amt_G2,
-              AVG("TOTAL_EMPLOYER_PAID_AMT") as PHARMA_Average_Paid_Amt_G2,
-              LISTAGG(DISTINCT "NON_PROPRIETARY_NAME", '| ') within group (order by "NON_PROPRIETARY_NAME" ASC) as Drug_List_G2,
-              LISTAGG(DISTINCT "TEA_CATEGORY", '| ') within group (order by "TEA_CATEGORY" ASC) as TEA_Cat_List_G2
-            From "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY" as P2
-            WHERE                                       /*All Filters on Grp2_Pharmacy*/
-              {% condition DRUG_G2 %} P2."NON_PROPRIETARY_NAME" {% endcondition %} AND
-              {% condition TEA_CATEGORY_G2 %} P2."TEA_CATEGORY" {% endcondition %} AND
-              {% condition DRUG_CODE_G2 %} P2."DRUG_CODE" {% endcondition %} AND
-              {% condition ACE_INHIBITOR_G2 %} P2."ACE_INHIBITOR" {% endcondition %} AND
-              {% condition STATIN_G2 %} P2."STATIN" {% endcondition %} AND
-              {% condition ARB_G2 %} P2."ARB" {% endcondition %} AND
-              {% condition DRI_G2 %} P2."DRI" {% endcondition %} AND
-              {% condition SPECIALTY_DRUGS_G2 %} P2."SPECIALTY_DRUGS" {% endcondition %} AND
-              {% condition MAINTENANCE_G2 %} P2."MAINTENANCE" {% endcondition %} AND
-              {% condition DIGESTIVE_DISEASE_G2 %} P2."DIGESTIVE_DISEASE" {% endcondition %} AND
-              {% condition BRAND_OR_GENERIC_G2 %} P2."BRAND_OR_GENERIC" {% endcondition %}
-
-            GROUP BY PATIENT_ID_P_G2, SERVICE_DATE_G2) AS PHARMA2
-
-          ON                                       /*JOIN condition on Grp2_Medical & Grp2_Pharmacy */
-          MED2.PATIENT_ID_M_G2 = PHARMA2.PATIENT_ID_P_G2 AND
-          MED2.PAID_YEAR_G2 = PHARMA2.SERVICE_DATE_G2
-
-          GROUP BY MED2_PATIENT_ID_M_G2, MED2_PAID_YEAR_G2, MED2_PATIENT_GENDER_G2, MED2_RELATIONSHIP_TO_EMPLOYEE_G2,
-                  PHARMA2_PATIENT_ID_P_G2, PHARMA2_SERVICE_DATE_G2) AS Grp2
+          GROUP BY MED2_PATIENT_ID_M_G2, MED2_PAID_YEAR_G2, MED2_PATIENT_GENDER_G2, MED2_RELATIONSHIP_TO_EMPLOYEE_G2) AS Grp2
 
         ON  MEDICAL.PATIENT_ID = Grp2.MED2_PATIENT_ID_M_G2 AND   /*JOIN condition on Medical & Grp2 */
             MEDICAL.PAID_YEAR = Grp2.MED2_PAID_YEAR_G2
@@ -454,19 +372,6 @@ view: vw_cohort_analysis_summary_1 {
     suggest_dimension: vw_medical.RISK_GROUP
   }
 
-  filter: MSK_MRS_CODE_CLASSIFICATION_G1 {
-    type: string
-    label: "G1 - MSK MRS Codes Classification"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
-  }
-
-  filter: PARTICIPANT_FLAG_G1 {
-    type: string
-    label: "G1 - PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_Flag
-  }
 
   dimension: PATIENT_ID_G1 {
     type: string
@@ -522,124 +427,6 @@ view: vw_cohort_analysis_summary_1 {
     sql: CASE WHEN ${Total_Patient_G1} <> 0 THEN ${MED_TOTAL_PAID_AMT_G1}/${Total_Patient_G1}
         ELSE 0
         END;;
-    value_format: "$#,##0"
-  }
-
-
-
-  #All the Pharmacy table Filter, Dimension & Measures.
-  filter: DRUG_G1 {
-    type: string
-    label: "G1 - Drug"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.non_proprietary_name
-  }
-
-  filter: DRUG_CODE_G1 {
-    type: string
-    label: "G1 - Drug Code"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.drug_code
-  }
-
-  filter: TEA_CATEGORY_G1 {
-    type: string
-    label: "G1 - TEA Category"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.tea_category
-  }
-
-  filter: ACE_INHIBITOR_G1 {
-    type: string
-    label: "G1 - ACE INHIBITOR DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.ace_inhibitor
-  }
-
-  filter: STATIN_G1 {
-    type: string
-    label: "G1 - STATIN DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.statin
-  }
-
-  filter: ARB_G1 {
-    type: string
-    label: "G1 - ARB DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.arb
-  }
-
-  filter: DRI_G1 {
-    type: string
-    label: "G1 - DRI DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.dri
-  }
-
-  filter: SPECIALTY_DRUGS_G1 {
-    type: string
-    label: "G1 - SPECIALTY DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.specialty_drugs
-  }
-
-  filter: MAINTENANCE_G1 {
-    type: string
-    label: "G1 - MAINTENANCE DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.maintenance
-  }
-
-  filter: DIGESTIVE_DISEASE_G1 {
-    type: string
-    label: "G1 - DIGESTIVE DISEASE DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.digestive_disease
-  }
-
-  filter: BRAND_OR_GENERIC_G1 {
-    type: string
-    label: "G1 - BRAND/GENERIC"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.brand_or_generic
-  }
-
-
-  dimension: TEA_CAT_LIST_G1 {
-    type: string
-    hidden: yes
-    label: "G1 - TEA Category"
-    sql: ${TABLE}.TEA_Cat_List_G1 ;;
-  }
-
-  dimension: DRUG_LIST_G1 {
-    type: string
-    hidden: yes
-    label: "G1 - Drug"
-    sql: ${TABLE}.Drug_List_G1 ;;
-  }
-
-  measure: PHARMA_TOTAL_BILLED_AMT_G1 {
-    type: sum
-    hidden: yes
-    sql: ${TABLE}.PHARMA_Total_Billed_Amt_G1 ;;
-    value_format: "$#,##0"
-  }
-
-  measure: PHARMA_TOTAL_PAID_AMT_G1 {
-    type: sum
-    label: "G1 - Total Paid Amt_PHARMA"
-    sql: ${TABLE}.PHARMA_Total_Paid_Amt_G1 ;;
-    value_format: "$#,##0"
-  }
-
-  measure: PHARMA_AVERAGE_PAID_AMT_G1 {
-    type: number
-    label: "G1 - Mean Paid Amt_PHARMA"
-    sql: CASE WHEN ${Total_Patient_G1} <> 0 THEN ${PHARMA_TOTAL_PAID_AMT_G1}/${Total_Patient_G1}
-            ELSE 0
-            END ;;
     value_format: "$#,##0"
   }
 
@@ -821,20 +608,6 @@ view: vw_cohort_analysis_summary_1 {
     suggest_dimension: vw_medical.RISK_GROUP
   }
 
-  filter: MSK_MRS_CODE_CLASSIFICATION_G2 {
-    type: string
-    label: "G2 - MSK MRS Codes Classification"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
-  }
-
-  filter: PARTICIPANT_FLAG_G2 {
-    type: string
-    label: "G2 - PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_Flag
-  }
-
   dimension: PATIENT_ID_G2 {
     type: string
     hidden: yes
@@ -891,120 +664,31 @@ view: vw_cohort_analysis_summary_1 {
     sql: ${TABLE}.PAID_YEAR_G2 ;;
   }
 
-
-  #G2-Pharmacy Dimention, Filters & Measures
-  filter: DRUG_G2 {
+  filter: MSK_MRS_CODE_CLASSIFICATION_G1 {
     type: string
-    label: "G2 - Drug"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.non_proprietary_name
+    label: "G1 - MSK MRS Codes Classification"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
   }
 
-  filter: DRUG_CODE_G2 {
+  filter: PARTICIPANT_FLAG_G1 {
     type: string
-    label: "G2 - Drug Code"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.drug_code
+    label: "G1 - PARTICIPANT Flag"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_Flag
   }
 
-  filter:TEA_CATEGORY_G2 {
+  filter: MSK_MRS_CODE_CLASSIFICATION_G2 {
     type: string
-    label: "G2 - TEA Category"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.tea_category
+    label: "G2 - MSK MRS Codes Classification"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
   }
 
-  filter: ACE_INHIBITOR_G2 {
+  filter: PARTICIPANT_FLAG_G2 {
     type: string
-    label: "G2 - ACE INHIBITOR DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.ace_inhibitor
+    label: "G2 - PARTICIPANT Flag"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_Flag
   }
-
-  filter: STATIN_G2 {
-    type: string
-    label: "G2 - STATIN DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.statin
-  }
-
-  filter: ARB_G2 {
-    type: string
-    label: "G2 - ARB DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.arb
-  }
-
-  filter: DRI_G2 {
-    type: string
-    label: "G2 - DRI DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.dri
-  }
-
-  filter: SPECIALTY_DRUGS_G2 {
-    type: string
-    label: "G2 - SPECIALTY DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.specialty_drugs
-  }
-
-  filter: MAINTENANCE_G2 {
-    type: string
-    label: "G2 - MAINTENANCE DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.maintenance
-  }
-
-  filter: DIGESTIVE_DISEASE_G2 {
-    type: string
-    label: "G2 - DIGESTIVE DISEASE DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.digestive_disease
-  }
-
-  filter: BRAND_OR_GENERIC_G2 {
-    type: string
-    label: "G2 - BRAND/GENERIC"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.brand_or_generic
-  }
-
-  dimension: Drug_List_G2 {
-    type: string
-    hidden: yes
-    label: "G2 - Drug"
-    sql: ${TABLE}.Drug_List ;;
-  }
-
-  dimension: TEA_Cat_List_G2 {
-    type: string
-    hidden: yes
-    label: "G2 - TEA Category"
-    sql: ${TABLE}.TEA_Cat_List_G2 ;;
-  }
-
-  measure: PHARMA_Total_Billed_Amt_G2 {
-    type: sum
-    hidden: yes
-    sql: ${TABLE}.PHARMA_Total_Billed_Amt_G2 ;;
-  }
-
-  measure: PHARMA_Total_Paid_Amt_G2 {
-    type: sum
-    label: "G2 - Total Paid Amt_PHARMA"
-    sql: ${TABLE}.PHARMA_Total_Paid_Amt_G2 ;;
-    value_format: "$#,##0"
-  }
-
-  measure: PHARMA_AVERAGE_PAID_AMT_G2 {
-    type: number
-    label: "G2 - Mean Paid Amt_PHARMA"
-    sql: CASE WHEN ${Total_Patient_G2} <> 0 THEN ${PHARMA_Total_Paid_Amt_G2}/${Total_Patient_G2}
-          ELSE 0
-          END ;;
-    value_format: "$#,##0"
-  }
-
-
 }
