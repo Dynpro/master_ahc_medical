@@ -10,8 +10,7 @@ view: vw_medication_possession_ratio {
             {% condition BETA_BLOCKER_Drugs %} "BETA_BLOCKER" {% endcondition %} AND
             {% condition BLACK_LABEL_Drugs %} "BLACK_LABEL_DRUG" {% endcondition %} AND
             {% condition SPECIALTY_Drugs %} "SPECIALTY_DRUGS" {% endcondition %} AND
-            {% condition MAINTENANCE_Drugs %} "MAINTENANCE" {% endcondition %} AND
-            {% condition PARTICIPANT_FLAG %} ."PARTICIPANT_FLAG" {% endcondition %})
+            {% condition MAINTENANCE_Drugs %} "MAINTENANCE" {% endcondition %})
 
           AND
             "UNIQUE_ID" IN (Select DISTINCT "UNIQUE_ID" from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
@@ -79,13 +78,6 @@ view: vw_medication_possession_ratio {
     label: "MAINTENANCE Drugs"
     suggest_explore: vw_pharmacy
     suggest_dimension: vw_pharmacy.maintenance
-  }
-
-  filter: PARTICIPANT_FLAG {
-    type: string
-    label: "PARTICIPANT Flag"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.PARTICIPANT_Flag
   }
 
   filter: DISEASE_CATEGORY {

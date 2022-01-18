@@ -111,8 +111,7 @@ view: vw_med_and_pharma_summary_1 {
             {% condition SPECIALTY_DRUGS %} "SPECIALTY_DRUGS" {% endcondition %} AND
             {% condition MAINTENANCE_DRUGS %} "MAINTENANCE" {% endcondition %} AND
             {% condition DIGESTIVE_DISEASE_DRUGS %} "DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %} AND
-            {% condition PARTICIPANT_FLAG_P %} ."PARTICIPANT_FLAG" {% endcondition %}
+            {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %}
 
             GROUP BY PATIENT_ID_P, substring("DATE_FILLED", 1, 4), ACE_INHIBITOR_List, ARB_DRUGS_List, DRI_DRUGS_List, STATIN_DRUGS_List) as PHARMA
 
@@ -467,12 +466,6 @@ view: vw_med_and_pharma_summary_1 {
     suggest_dimension: vw_pharmacy.brand_or_generic
   }
 
-  filter: PARTICIPANT_FLAG_P {
-    type: string
-    label: "PARTICIPANT Flag"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.PARTICIPANT_Flag
-  }
 
   dimension: Unique_Id_P {
     type: string
