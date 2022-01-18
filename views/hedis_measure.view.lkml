@@ -469,4 +469,9 @@ view: hedis_measure {
     description: "Total Patient/Individual count"
     sql: ${unique_id} ;;
   }
+
+  dimension: PARTICIPANT_Flag {
+    type: string
+    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+  }
 }
