@@ -25,9 +25,8 @@ view: ad_hoc_query_tool_pharmacy {
             {% condition SPECIALTY_DRUGS %} "SPECIALTY_DRUGS" {% endcondition %} AND
             {% condition MAINTENANCE_DRUGS %} "MAINTENANCE" {% endcondition %} AND
             {% condition DIGESTIVE_DISEASE_DRUGS %} "DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %} AND
-            {% condition PARTICIPANT_FLAG %} ."PARTICIPANT_FLAG" {% endcondition %} AND
-
+            {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %}
+          AND
             UNIQUE_ID IN (Select DISTINCT UNIQUE_ID from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
             WHERE
               {% condition DISEASE_CATEGORY %} "ICD_DISEASE_CATEGORY" {% endcondition %} AND
@@ -282,13 +281,6 @@ view: ad_hoc_query_tool_pharmacy {
     label: "BRAND OR GENERIC"
     suggest_explore: vw_pharmacy
     suggest_dimension: vw_pharmacy.brand_or_generic
-  }
-
-  filter: PARTICIPANT_FLAG {
-    type: string
-    label: "PARTICIPANT Flag"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.PARTICIPANT_Flag
   }
 
   filter: BLACK_LABEL_DRUG {

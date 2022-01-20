@@ -247,6 +247,7 @@ view: vw_med_and_pharma_summary_1 {
     suggest_explore: vw_medical
     suggest_dimension: vw_medical.icd_digestive_disease
   }
+
   filter: PARTICIPANT_FLAG_M {
     type: string
     label: "PARTICIPANT Flag"
@@ -465,7 +466,6 @@ view: vw_med_and_pharma_summary_1 {
     suggest_explore: vw_pharmacy
     suggest_dimension: vw_pharmacy.brand_or_generic
   }
-
 
   dimension: Unique_Id_P {
     type: string

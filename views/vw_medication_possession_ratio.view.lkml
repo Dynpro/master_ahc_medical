@@ -11,7 +11,6 @@ view: vw_medication_possession_ratio {
             {% condition BLACK_LABEL_Drugs %} "BLACK_LABEL_DRUG" {% endcondition %} AND
             {% condition SPECIALTY_Drugs %} "SPECIALTY_DRUGS" {% endcondition %} AND
             {% condition MAINTENANCE_Drugs %} "MAINTENANCE" {% endcondition %})
-
           AND
             "UNIQUE_ID" IN (Select DISTINCT "UNIQUE_ID" from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
               WHERE

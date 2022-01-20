@@ -2,35 +2,6 @@ view: ebr_measures {
   sql_table_name: "SCH_AHC_UPSON_REGIONAL"."EBR_MEASURES"
     ;;
 
-  dimension: individual_gets_diabetic_test_strips {
-    type: string
-    label: "Diabetes Test Strips"
-    description: "INDIVIDUAL GETS DIABETIC TEST STRIPS"
-    sql: ${TABLE}."INDIVIDUAL_GETS_DIABETIC_TEST_STRIPS" ;;
-  }
-
-  measure: individual_gets_diabetic_test_strips_patients {
-    type: count_distinct
-    filters: [individual_gets_diabetic_test_strips: "1"]
-    label: "Diabetes Test Strips - N"
-    description: "INDIVIDUAL GETS DIABETIC TEST STRIPS"
-    sql: ${unique_id} ;;
-  }
-
-  dimension: individual_gets_diabetic_test_strips_every_quarter {
-    type: string
-    label: "Diabetes Test Strips Quaterly"
-    description: "INDIVIDUAL GETS DIABETIC TEST STRIPS EVERY QUARTER"
-    sql: ${TABLE}."INDIVIDUAL_GETS_DIABETIC_TEST_STRIPS_EVERY_QUARTER" ;;
-  }
-
-  measure: individual_gets_diabetic_test_strips_every_quarter_patients {
-    type: count_distinct
-    filters: [individual_gets_diabetic_test_strips_every_quarter: "1"]
-    label: "Diabetes Test Strips Quaterly - N"
-    description: "INDIVIDUAL GETS DIABETIC TEST STRIPS EVERY QUARTER"
-    sql: ${unique_id} ;;
-  }
 
   dimension: individual_had_emergency_room_and_inpatient_visit {
     type: string
@@ -138,51 +109,6 @@ view: ebr_measures {
     sql: ${unique_id} ;;
   }
 
-  dimension: individual_taking_drug_with_cost_greater_than_400 {
-    type: string
-    label: "Drug Cost (>400)"
-    description: "INDIVIDUAL TAKING DRUG WITH COST GREATER THAN 400"
-    sql: ${TABLE}."INDIVIDUAL_TAKING_DRUG_WITH_COST_GREATER_THAN_400" ;;
-  }
-
-  measure: individual_taking_drug_with_cost_greater_than_400_patients {
-    type: count_distinct
-    filters: [individual_taking_drug_with_cost_greater_than_400: "1"]
-    label: "Drug Cost (>400) - N"
-    description: "INDIVIDUAL TAKING DRUG WITH COST GREATER THAN 400"
-    sql: ${unique_id} ;;
-  }
-
-  dimension: individual_taking_black_label_drug {
-    type: string
-    label: "Black Label Drug"
-    description: "INDIVIDUAL TAKING BLACK LABEL DRUG"
-    sql: ${TABLE}."INDIVIDUAL_TAKING_BLACK_LABEL_DRUG" ;;
-  }
-
-  measure: individual_taking_black_label_drug_patients {
-    type: count_distinct
-    filters: [individual_taking_black_label_drug: "1"]
-    label: "Black Label Drug - N"
-    description: "INDIVIDUAL TAKING BLACK LABEL DRUG"
-    sql: ${unique_id} ;;
-  }
-
-  dimension: individual_taking_specialty_drug {
-    type: string
-    label: "Speciality Label Drug"
-    description: "INDIVIDUAL TAKING SPECIALTY DRUGS DRUG"
-    sql: ${TABLE}."INDIVIDUAL_TAKING_SPECIALTY_DRUGS_DRUG" ;;
-  }
-
-  measure: individual_taking_specialty_drug_patients {
-    type: count_distinct
-    filters: [individual_taking_specialty_drug: "1"]
-    label: "Speciality Label Drug - N"
-    description: "INDIVIDUAL TAKING SPECIALTY DRUGS DRUG"
-    sql: ${unique_id} ;;
-  }
-
   dimension: individual_had_primary_care_physician_visit {
     type: string
     label: "Primary Care visit"
@@ -243,36 +169,6 @@ view: ebr_measures {
     sql: ${unique_id} ;;
   }
 
-  dimension: individual_had_diagnosis_of_cardiovascular_and_taking_statin_drug {
-    type: string
-    label: "Cardiovascular & STATIN Drug"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF CARDIOVASCULAR AND TAKING STATIN DRUG"
-    sql: ${TABLE}."INDIVIDUAL_HAD_DIAGNOSIS_OF_CARDIOVASCULAR_AND_TAKING_STATIN_DRUG" ;;
-  }
-
-  measure: individual_had_diagnosis_of_cardiovascular_and_taking_statin_drug_patients {
-    type: count_distinct
-    filters: [individual_had_diagnosis_of_cardiovascular_and_taking_statin_drug: "1"]
-    label: "Cardiovascular & STATIN Drug - N"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF CARDIOVASCULAR AND TAKING STATIN DRUG"
-    sql: ${unique_id} ;;
-  }
-
-  dimension: individual_had_acute_myocardial_infarction_and_taking_beta_blocker {
-    type: string
-    label: "Myocardial Infraction & Beta-blocker drug"
-    description: "INDIVIDUAL HAD ACUTE MYOCARDIAL INFARCTION AND TAKING BETA BLOCKER"
-    sql: ${TABLE}."INDIVIDUAL_HAD_ACUTE_MYOCARDIAL_INFARCTION_AND_TAKING_BETA_BLOCKER" ;;
-  }
-
-  measure: individual_had_acute_myocardial_infarction_and_taking_beta_blocker_patients {
-    type: count_distinct
-    filters: [individual_had_acute_myocardial_infarction_and_taking_beta_blocker: "1"]
-    label: "Myocardial Infraction & Beta-blocker drug - N"
-    description: "INDIVIDUAL HAD ACUTE MYOCARDIAL INFARCTION AND TAKING BETA BLOCKER"
-    sql: ${unique_id} ;;
-  }
-
   dimension: individual_has_diabetes_diagnosis_and_screened_for_retinopathy {
     type: string
     label: "Diabetes & RETINOPATHY Screening"
@@ -287,52 +183,6 @@ view: ebr_measures {
     description: "INDIVIDUAL HAS DIABETES DIAGNOSIS AND SCREENED FOR RETINOPATHY"
     sql: ${unique_id} ;;
   }
-
-  dimension: individual_had_diagnosis_of_diabetes_and_taking_ace_inhibitor_or_arb_drugs {
-    type: string
-    label: "Diabetes & ACE_INHIBITOR/ ARB Drug"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF DIABETES AND TAKING ACE_INHIBITOR/ ARB DRUGS"
-    sql: ${TABLE}."INDIVIDUAL_HAD_DIAGNOSIS_OF_DIABETES_AND_TAKING_ACE_INHIBITOR_OR_ARB_DRUGS" ;;
-  }
-
-  measure: individual_had_diagnosis_of_diabetes_and_taking_ace_inhibitor_or_arb_drugs_patients {
-    type: count_distinct
-    filters: [individual_had_diagnosis_of_diabetes_and_taking_ace_inhibitor_or_arb_drugs: "1"]
-    label: "Diabetes & ACE_INHIBITOR/ ARB Drug - N"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF DIABETES AND TAKING ACE_INHIBITOR/ ARB DRUGS"
-    sql: ${unique_id} ;;
-  }
-
-  dimension: individual_had_diagnosis_of_diabetes_and_taking_statin_drugs {
-    type: string
-    label: "Diabetes & STATIN Drug"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF DIABETES AND TAKING STATIN DRUGS"
-    sql: ${TABLE}."INDIVIDUAL_HAD_DIAGNOSIS_OF_DIABETES_AND_TAKING_STATIN_DRUGS" ;;
-  }
-
-  measure: individual_had_diagnosis_of_diabetes_and_taking_statin_drugs_patients {
-    type: count_distinct
-    filters: [individual_had_diagnosis_of_diabetes_and_taking_statin_drugs: "1"]
-    label: "Diabetes & STATIN Drug - N"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF DIABETES AND TAKING STATIN DRUGS"
-    sql: ${unique_id} ;;
-  }
-
-  dimension: individual_had_diagnosis_of_diabetes_and_taking_antihypertensive_drugs {
-    type: string
-    label: "Diabetes & ANTI-HYPERTENSIVE Drug"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF DIABETES AND TAKING ANTIHYPERTENSIVE DRUGS"
-    sql: ${TABLE}."INDIVIDUAL_HAD_DIAGNOSIS_OF_DIABETES_AND_TAKING_ANTIHYPERTENSIVE_DRUGS" ;;
-  }
-
-  measure: individual_had_diagnosis_of_diabetes_and_taking_antihypertensive_drugs_patients {
-    type: count_distinct
-    filters: [individual_had_diagnosis_of_diabetes_and_taking_antihypertensive_drugs: "1"]
-    label: "Diabetes & ANTI-HYPERTENSIVE Drug - N"
-    description: "INDIVIDUAL HAD DIAGNOSIS OF DIABETES AND TAKING ANTIHYPERTENSIVE DRUGS"
-    sql: ${unique_id} ;;
-  }
-
 
   dimension: unique_id {
     type: string

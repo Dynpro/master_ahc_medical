@@ -43,28 +43,8 @@ view: ad_hoc_query_tool_medical {
             {% condition PREVENTATIVE_OR_NOT %} "ICD_PREVENTATIVE" {% endcondition %} AND
             {% condition CHRONIC_OR_NOT %} "2012_CHRONIC" {% endcondition %} AND
             {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
-            {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition PARTICIPANT_FLAG %} ."PARTICIPANT_FLAG" {% endcondition %} AND
-
-            UNIQUE_ID IN (Select DISTINCT UNIQUE_ID from "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY"
-              WHERE
-                {% condition DRUG %} "NON_PROPRIETARY_NAME" {% endcondition %} AND
-                {% condition DRUG_CODE %} "DRUG_CODE" {% endcondition %} AND
-                {% condition TEA_CATEGORY %} "TEA_CATEGORY" {% endcondition %} AND
-                {% condition ACE_INHIBITOR_DRUGS %} "ACE_INHIBITOR" {% endcondition %} AND
-                {% condition STATIN_DRUGS %} "STATIN" {% endcondition %} AND
-                {% condition BETA_BLOCKER_DRUGS %} "BETA_BLOCKER" {% endcondition %} AND
-                {% condition ARB_DRUGS %} "ARB" {% endcondition %} AND
-                {% condition DRI_DRUGS %} "DRI" {% endcondition %} AND
-                {% condition BLACK_LABEL_DRUG %} "BLACK_LABEL_DRUG" {% endcondition %} AND
-                {% condition SPECIALTY_DRUGS %} "SPECIALTY_DRUGS" {% endcondition %} AND
-                {% condition MAINTENANCE_DRUGS %} "MAINTENANCE" {% endcondition %} AND
-                {% condition DIGESTIVE_DISEASE_DRUGS %} "DIGESTIVE_DISEASE" {% endcondition %} AND
-                {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %} AND
-                {% condition ACE_INHIBITOR_OR_ARB_DRUGS %} (CASE WHEN "ACE_INHIBITOR" = 'TRUE' OR "ARB" = 'TRUE' THEN 'TRUE'
-                  ELSE 'FALSE'
-                  END) {% endcondition %}
-            ) ;;
+            {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %}
+       ;;
   }
 
   filter: DISEASE_CATEGORY {
@@ -211,12 +191,6 @@ view: ad_hoc_query_tool_medical {
     suggest_dimension: vw_medical.icd_digestive_disease
   }
 
-  filter: PARTICIPANT_FLAG {
-    type: string
-    label: "PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_Flag
-  }
 
   #Medical Dimension & Measure.
   dimension: PATIENT_ID {
@@ -372,104 +346,9 @@ view: ad_hoc_query_tool_medical {
     sql: ${PATIENT_ID} ;;
   }
 
-
-  #Pharmacy Filters.
-  filter: DRUG {
+  dimension: PARTICIPANT_FLAG{
     type: string
-    label: "DRUGS"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.non_proprietary_name
+    label: "PARTICIPANT Flag"
+    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
   }
-
-  filter: DRUG_CODE {
-    type: string
-    label: "DRUG CODE"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.drug_code
-  }
-
-  filter: TEA_CATEGORY {
-    type: string
-    label: "TEA CATEGORY"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.tea_category
-  }
-
-  filter: ACE_INHIBITOR_DRUGS {
-    type: string
-    label: "ACE INHIBITOR DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.ace_inhibitor
-  }
-
-  filter: STATIN_DRUGS {
-    type: string
-    label: "STATIN DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.statin
-  }
-
-  filter: BETA_BLOCKER_DRUGS {
-    type: string
-    label: "BETA BLOCKER DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.beta_blocker
-  }
-
-  filter: ARB_DRUGS {
-    type: string
-    label: "ARB DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.arb
-  }
-
-  filter: DRI_DRUGS {
-    type: string
-    label: "DRI DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.dri
-  }
-
-  filter: SPECIALTY_DRUGS {
-    type: string
-    label: "SPECIALTY DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.specialty_drugs
-  }
-
-  filter: MAINTENANCE_DRUGS {
-    type: string
-    label: "MAINTENANCE DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.maintenance
-  }
-
-  filter: DIGESTIVE_DISEASE_DRUGS {
-    type: string
-    label: "DIGESTIVE DISEASE DRUG ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.digestive_disease
-  }
-
-  filter: BRAND_OR_GENERIC {
-    type: string
-    label: "BRAND OR GENERIC"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.brand_or_generic
-  }
-
-  filter: BLACK_LABEL_DRUG {
-    type: string
-    label: "BLACK LABEL DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.black_label_drug
-  }
-
-  filter: ACE_INHIBITOR_OR_ARB_DRUGS {
-    type: string
-    label: "ACE INHIBITOR OR ARB DRUG"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.ace_inhibitor
-  }
-
 }

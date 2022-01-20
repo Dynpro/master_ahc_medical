@@ -86,62 +86,6 @@ view: hedis_measure {
     sql: ${unique_id} ;;
   }
 
-##ANTIDEPRESSANT MEDICATION MANAGEMENT
-  dimension: amm_effective_antidepressant_acute_phase_treatment {
-    type: string
-    label: "AMM Compliant - Acute phase treatment"
-    sql: ${TABLE}."AMM_EFFECTIVE_ANTIDEPRESSANT_ACUTE_PHASE_TREATMENT" ;;
-  }
-
-  dimension: amm_effective_antidepressant_continuation_phase_treatment {
-    type: string
-    label: "AMM Compliant - Continuation phase treatment"
-    sql: ${TABLE}."AMM_EFFECTIVE_ANTIDEPRESSANT_CONTINUATION_PHASE_TREATMENT" ;;
-  }
-
-  dimension: amm_eligible {
-    type: string
-    label: "AMM Eligible"
-    sql: ${TABLE}."AMM_ELIGIBLE" ;;
-  }
-
-  dimension: amm_compliant {
-    type: string
-    label: "AMM Compliant"
-    sql: CASE WHEN ${amm_effective_antidepressant_acute_phase_treatment} = '1' OR ${amm_effective_antidepressant_continuation_phase_treatment} = '1'
-          THEN '1'
-      ELSE '0'
-      END ;;
-  }
-
-  measure: patients_amm_effective_antidepressant_acute_phase_treatment {
-    type: count_distinct
-    label: "AMM Compliant - Acute phase treatment"
-    filters: [amm_effective_antidepressant_acute_phase_treatment: "1"]
-    sql: ${unique_id} ;;
-  }
-
-  measure: patients_amm_effective_antidepressant_continuation_phase_treatment {
-    type: count_distinct
-    label: "AMM Compliant - Continuation phase treatment"
-    filters: [amm_effective_antidepressant_continuation_phase_treatment: "1"]
-    sql: ${unique_id} ;;
-  }
-
-  measure: patients_amm_compliant {
-    type: count_distinct
-    filters: [amm_compliant: "1"]
-    label: "AMM Compliant - N"
-    sql: ${unique_id} ;;
-  }
-
-  measure: patients_amm_eligible {
-    type: count_distinct
-    filters: [amm_eligible: "1"]
-    label: "AMM Eligible - N"
-    sql: ${unique_id} ;;
-  }
-
 
 ##BREAST CANCER SCREENING
   dimension: bcs_compliant {
@@ -366,33 +310,6 @@ view: hedis_measure {
     type: count_distinct
     filters: [col_eligible: "1"]
     label: "COL Eligible - N"
-    sql: ${unique_id} ;;
-  }
-
-##OSTEOPOROSIS MANAGEMENT IN WOMEN WHO HAD A FRACTURE
-  dimension: omw_compliant {
-    type: string
-    label: "OMW Compliant"
-    sql: ${TABLE}."OMW_COMPLIANT" ;;
-  }
-
-  dimension: omw_eligible {
-    type: string
-    label: "OMW Eligible"
-    sql: ${TABLE}."OMW_ELIGIBLE" ;;
-  }
-
-  measure: omw_compliant_patients {
-    type: count_distinct
-    filters: [omw_compliant: "1"]
-    label: "OMW Compliant - N"
-    sql: ${unique_id} ;;
-  }
-
-  measure: omw_eligible_patients {
-    type: count_distinct
-    filters: [omw_eligible: "1"]
-    label: "OMW Eligible - N"
     sql: ${unique_id} ;;
   }
 

@@ -462,4 +462,5 @@ view: vw_pharmacy {
     sql: MAX(${date_filled_raw}) ;;
     html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
   }
+
 }
