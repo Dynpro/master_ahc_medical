@@ -191,4 +191,9 @@ view: vw_medication_possession_ratio {
     sql: ${unique_id} ;;
   }
 
+  dimension: PARTICIPANT_FLAG {
+    type: string
+    label: "PARTICIPANT Flag"
+    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+  }
 }
