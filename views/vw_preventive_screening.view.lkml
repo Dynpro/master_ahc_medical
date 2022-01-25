@@ -89,4 +89,30 @@ view: vw_preventive_screening {
     type: string
     sql: ${TABLE}."PARTICIPANT_FLAG" ;;
   }
+
+  dimension: PATIENT_GENDER {
+    type: string
+    label: "PATIENT GENDER"
+    sql: ${TABLE}."PATIENT_GENDER" ;;
+  }
+
+  dimension: patient_age {
+    type: number
+    label: "PATIENT AGE"
+    sql: ${TABLE}."PATIENT_AGE" ;;
+  }
+
+  dimension: ageGroup {
+    type: tier
+    label: "AGE GROUP"
+    tiers: [20, 30, 40, 50, 60]
+    description: "AGE Group>> 0-19, 20-29, 30-39, 40-49, 50-59 & >=60 yrs"
+    style: integer
+    sql:  ${patient_age};;
+  }
+  dimension: relationship_to_employee {
+    type: string
+    label: "RELATIONSHIP TO EMPLOYEE"
+    sql: ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" ;;
+  }
 }

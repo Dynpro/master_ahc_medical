@@ -58,7 +58,7 @@ explore: vw_medication_possession_ratio {
 
 explore: vw_preventive_screening {
   label: "Preventive Screening"
-  sql_always_having: ${year} IN ('2018', '2019', '2020', '2021') ;;
+  sql_always_where: ${year} IN ('2018', '2019', '2020', '2021') ;;
 }
 
 explore: hedis_measure {
