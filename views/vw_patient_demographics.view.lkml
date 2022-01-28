@@ -92,4 +92,9 @@ view: vw_patient_demographics {
     style: integer
     sql:  ${patient_current_age};;
   }
+  dimension: relationship_to_employee {
+    type: string
+    label: "RELATIONSHIP TO EMPLOYEE"
+    sql: ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" ;;
+  }
 }
