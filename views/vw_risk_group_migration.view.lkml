@@ -202,4 +202,18 @@ view: vw_risk_group_migration {
     label: "PARTICIPANT Flag"
     sql: ${TABLE}."PARTICIPANT_FLAG" ;;
   }
+
+  dimension: patient_age {
+    type: number
+    label: "PATIENT AGE"
+    sql: ${TABLE}."PATIENT_AGE" ;;
+  }
+  dimension: ageGroup {
+    type: tier
+    label: "AGE GROUP-2"
+    tiers: [20, 30, 40, 50, 60]
+    description: "AGE Group>> 0-19, 20-29, 30-39, 40-49, 50-59 & >=60 yrs"
+    style: integer
+    sql:  ${patient_age};;
+  }
 }
