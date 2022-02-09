@@ -12,6 +12,12 @@ persist_with: master_dashboards_default_datagroup
 
 
 explore: vw_medical {
+  join: vw_patient_demographics {
+    view_label: "Patient Demographics"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_medical.unique_id} = ${vw_patient_demographics.unique_id} ;;
+  }
   label: "Medical records"
   sql_always_where: ${Paid_year} IN ('2018', '2019', '2020', '2021','2022') ;;
 }
