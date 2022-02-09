@@ -933,5 +933,9 @@ view: vw_medical {
     sql_distinct_key: ${year_and_patient_id} ;;
     sql: ${total_employer_paid_amt}  ;;
   }
-
-}
+  dimension: Patient_DOB{
+    type: string
+    label: "Patient DOB"
+    sql: ${TABLE}."PATIENT_DOB";;
+    }
+  }
