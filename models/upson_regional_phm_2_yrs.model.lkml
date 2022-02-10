@@ -17,7 +17,7 @@ explore: vw_pharmacy {
 
 explore: vw_med_and_pharma_summary_1 {
   label: "Ad Hoc Query Tool"
-  sql_always_where: ${PAID_YEAR} IN ('2020', '2021') ;;
+  sql_always_where: ${PAID_DATE_year} IN ('2020', '2021') ;;
 }
 
 explore: ad_hoc_query_tool_medical {

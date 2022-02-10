@@ -1,61 +1,35 @@
 view: vw_med_and_pharma_summary_1 {
-  label: "Ad hoc Tool"
+  label: "Ad Hoc Query Tool"
   derived_table: {
-    sql: select MED.PATIENT_ID_M as Unique_Id_M,
-        MED.PATIENT_GENDER as PATIENT_GENDER,
-        MED.RELATIONSHIP_TO_EMPLOYEE as RELATIONSHIP_TO_EMPLOYEE,
-        MED.PAID_YEAR as PAID_YEAR,
-        MED.AGE_GROUP_List as AGE_GROUP_List,
-        SUM(MED.Total_Billed_Amt_M ) as Total_Billed_Amt_M,
-        SUM(MED.Total_Paid_Amt_M ) as Total_Paid_Amt_M,
-        AVG(MED.Average_Paid_Amt_M) as Average_Paid_Amt_M,
-        MED.Diagnosis_Desc_List as Diagnosis_Description_List,
-        MED.Diagnosis_Category_List as Diagnosis_Category_List,
-        MED.Chronic_Category_List as Chronic_Category_List,
-        MED.PROCEDURE_DESCRIPTION_List as PROCEDURE_DESCRIPTION_List,
-        MED.PROCEDURE_CODE_List as PROCEDURE_CODE_List,
-        MED.PLACE_OF_SERVICE_DESCRIPTION as PLACE_OF_SERVICE_DESCRIPTION,
-        MED.SPECIALITY_CODE_DESCRIPTION as SPECIALITY_CODE_DESCRIPTION,
-        MED.DIAGNOSIS_CODE_List as DIAGNOSIS_CODE_List,
-        MED.Diabetes_Flag as Diabetes_Flag,
-
-        PHARMA.PATIENT_ID_P as Unique_Id_P,
-        SUM(PHARMA.Total_Billed_Amt_P ) as Total_Billed_Amt_P,
-        SUM(PHARMA.Total_Paid_Amt_P ) as Total_Paid_Amt_P,
-        AVG(PHARMA.Average_Paid_Amt_P ) as Average_Paid_Amt_P,
-        PHARMA.TEA_Cat_List as TEA_Cat_List,
-        PHARMA.Drug_List as Drug_List,
-        PHARMA.ACE_INHIBITOR_List as ACE_INHIBITOR_List,
-        PHARMA.ARB_DRUGS_List as ARB_DRUGS_List,
-        PHARMA.DRI_DRUGS_List as DRI_DRUGS_List,
-        PHARMA.STATIN_DRUGS_List as STATIN_DRUGS_List
-
-        FROM (Select                        /* Medical Summary*/
-              "UNIQUE_ID" as PATIENT_ID_M,
-              "PATIENT_GENDER" as PATIENT_GENDER,
-              "RELATIONSHIP_TO_EMPLOYEE" as RELATIONSHIP_TO_EMPLOYEE,
-              substring("PAID_DATE", 1, 4) as PAID_YEAR,
-              LISTAGG(DISTINCT "AGE_GROUP_1", '| ') within group (order by "AGE_GROUP_1" ASC) as AGE_GROUP_List,
-              SUM ("TOTAL_BILLED_AMT") as Total_Billed_Amt_M,
-              SUM("TOTAL_EMPLOYER_PAID_AMT") as Total_Paid_Amt_M,
-              AVG("TOTAL_EMPLOYER_PAID_AMT") as Average_Paid_Amt_M,
-              LISTAGG(DISTINCT "ICD_DESCRIPTION", '| ') within group (order by "ICD_DESCRIPTION" ASC) as Diagnosis_Desc_List,
-              LISTAGG(DISTINCT "ICD_DISEASE_CATEGORY", '| ') within group (order by "ICD_DISEASE_CATEGORY" ASC) as Diagnosis_Category_List,
-              LISTAGG(DISTINCT "RECONCILED_DIAGNOSIS_CODE_ICD10", '| ') within group (order by "RECONCILED_DIAGNOSIS_CODE_ICD10" ASC) as DIAGNOSIS_CODE_List,
-              LISTAGG(DISTINCT "ICD_CHRONIC_CAT", '| ') within group (order by "ICD_CHRONIC_CAT" ASC) as Chronic_Category_List,
-
-              LISTAGG(DISTINCT "PROCEDURE_DESCRIPTION", '| ') within group (order by "PROCEDURE_DESCRIPTION" ASC) as PROCEDURE_DESCRIPTION_List,
-              LISTAGG(DISTINCT "PRIMARY_PROCEDURE_CODE", '| ') within group (order by "PRIMARY_PROCEDURE_CODE" ASC) as PROCEDURE_CODE_List,
-              LISTAGG(DISTINCT "PLACE_OF_SERVICE_DESCRIPTION", '| ') within group (order by "PLACE_OF_SERVICE_DESCRIPTION" ASC) as PLACE_OF_SERVICE_DESCRIPTION,
-              LISTAGG(DISTINCT "SERVICE_PROVIDER_SPECIALITY_CODE_DESC", '| ') within group (order by "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" ASC) as SPECIALITY_CODE_DESCRIPTION,
-              (CASE WHEN "ICD_CHRONIC_CAT" = 'DIABETES' THEN 'TRUE'
-                ELSE 'FALSE'
-                END) as Diabetes_Flag
-
-            From "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL" as M
-            WHERE                                   /* Dynamic Filter condition*/
+    sql: select
+          "UNIQUE_ID" as PATIENT_ID_M,
+          "PATIENT_GENDER" as PATIENT_GENDER,
+          "RELATIONSHIP_TO_EMPLOYEE" as RELATIONSHIP_TO_EMPLOYEE,
+          "PAID_DATE" as PAID_DATE,
+          "PATIENT_AGE" as PATIENT_AGE,
+          "AGE_GROUP_1" as AGE_GROUP_1,
+          "TOTAL_BILLED_AMT" as Total_Billed_Amt_M,
+          "TOTAL_EMPLOYER_PAID_AMT" as Total_Paid_Amt_M,
+          "ICD_DESCRIPTION" as ICD_DISEASE_DESCRIPTION,
+          "ICD_DISEASE_CATEGORY" as ICD_DISEASE_CATEGORY,
+          "DISEASE_SUB_CATEGORY" as DISEASE_SUB_CATEGORY,
+          "RECONCILED_DIAGNOSIS_CODE_ICD10" as RECONCILED_DIAGNOSIS_CODE_ICD10,
+          "ICD_CHRONIC_CAT" as ICD_CHRONIC_CAT,
+          "PROCEDURE_DESCRIPTION" as PROCEDURE_DESCRIPTION,
+          "PROCEDURE_CATEGORY" as PROCEDURE_CATEGORY,
+          "PROCEDURE_SUBCATEGORY" as PROCEDURE_SUB_CATEGORY,
+          "PRIMARY_PROCEDURE_CODE" as PRIMARY_PROCEDURE_CODE,
+          "PLACE_OF_SERVICE_DESCRIPTION" as PLACE_OF_SERVICE_DESCRIPTION,
+          "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" as SERVICE_PROVIDER_SPECIALITY_CODE_DESC,
+          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG
+         from
+        "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+        WHERE                                 /* Dynamic Filter condition*/
             {% condition DISEASE_CATEGORY %} "ICD_DISEASE_CATEGORY" {% endcondition %} AND
-            {% condition DESCRIPTION %} "ICD_DESCRIPTION" {% endcondition %} AND
+            {% condition PROCEDURE_MAJOR_CATEGORY %} "PROCEDURE_CATEGORY" {% endcondition %} AND
+            {% condition PROCEDURE_SUBCATEGORY %} "PROCEDURE_SUBCATEGORY" {% endcondition %} AND
+            {% condition DISEASE_SUBCATEGORY %} "DISEASE_SUB_CATEGORY" {% endcondition %} AND
+            {% condition DISEASE_DESCRIPTION %} "ICD_DESCRIPTION" {% endcondition %} AND
             {% condition DIAGNOSIS_CODE %} "RECONCILED_DIAGNOSIS_CODE_ICD10" {% endcondition %} AND
             {% condition CHRONIC_CATEGORY %} "ICD_CHRONIC_CAT" {% endcondition %} AND
             {% condition GENDER %} "PATIENT_GENDER" {% endcondition %} AND
@@ -70,74 +44,45 @@ view: vw_med_and_pharma_summary_1 {
             {% condition PREVENTATIVE_OR_NOT %} "ICD_PREVENTATIVE" {% endcondition %} AND
             {% condition CHRONIC_OR_NOT %} "2012_CHRONIC" {% endcondition %} AND
             {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
-            {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition PARTICIPANT_FLAG_M %} "PARTICIPANT_FLAG" {% endcondition %}
-
-            GROUP BY PATIENT_ID_M, PATIENT_GENDER, RELATIONSHIP_TO_EMPLOYEE, substring("PAID_DATE", 1, 4), Diabetes_Flag) as MED
-
-      LEFT JOIN
-
-            (Select                         /* Pharma Summary*/
-              "UNIQUE_ID" as PATIENT_ID_P,
-              substring("DATE_FILLED", 1, 4) as SERVICE_DATE,
-              SUM("TOTAL_BILLED_AMT") as Total_Billed_Amt_P,
-              SUM("TOTAL_EMPLOYER_PAID_AMT") as Total_Paid_Amt_P,
-              AVG("TOTAL_EMPLOYER_PAID_AMT") as Average_Paid_Amt_P,
-              LISTAGG(DISTINCT "NON_PROPRIETARY_NAME", '| ') within group (order by "NON_PROPRIETARY_NAME" ASC) as Drug_List,
-              LISTAGG(DISTINCT "TEA_CATEGORY", '| ') within group (order by "TEA_CATEGORY" ASC) as TEA_Cat_List,
-              (CASE WHEN "ACE_INHIBITOR" = 'TRUE' THEN 'TRUE'
-                ELSE 'FALSE'
-                END) as ACE_INHIBITOR_List,
-              (CASE WHEN "ARB" = 'TRUE' THEN 'TRUE'
-                ELSE 'FALSE'
-                END) as ARB_DRUGS_List,
-              (CASE WHEN "DRI" = 'TRUE' THEN 'TRUE'
-                ELSE 'FALSE'
-                END) as DRI_DRUGS_List,
-              (CASE WHEN "STATIN" = 'TRUE' THEN 'TRUE'
-                ELSE 'FALSE'
-                END) as STATIN_DRUGS_List
-
-            From "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY" as P
-            WHERE                                   /* Dynamic Filter condition*/
-            {% condition DRUG %} "NON_PROPRIETARY_NAME" {% endcondition %} AND
-            {% condition DRUG_CODE %} "DRUG_CODE" {% endcondition %} AND
-            {% condition TEA_CATEGORY %} "TEA_CATEGORY" {% endcondition %} AND
-            {% condition ACE_INHIBITOR_DRUGS %} "ACE_INHIBITOR" {% endcondition %} AND
-            {% condition STATIN_DRUGS %} "STATIN" {% endcondition %} AND
-            {% condition BETA_BLOCKER_DRUGS %} "BETA_BLOCKER" {% endcondition %} AND
-            {% condition ARB_DRUGS %} "ARB" {% endcondition %} AND
-            {% condition DRI_DRUGS %} "DRI" {% endcondition %} AND
-            {% condition SPECIALTY_DRUGS %} "SPECIALTY_DRUGS" {% endcondition %} AND
-            {% condition MAINTENANCE_DRUGS %} "MAINTENANCE" {% endcondition %} AND
-            {% condition DIGESTIVE_DISEASE_DRUGS %} "DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %}
-
-            GROUP BY PATIENT_ID_P, substring("DATE_FILLED", 1, 4), ACE_INHIBITOR_List, ARB_DRUGS_List, DRI_DRUGS_List, STATIN_DRUGS_List) as PHARMA
-
-        ON                                  /*Join condition on MED & PHARMA tab */
-        MED.PATIENT_ID_M = PHARMA.PATIENT_ID_P AND
-        MED.PAID_YEAR = PHARMA.SERVICE_DATE
-
-        GROUP BY Unique_Id_M, PAID_YEAR, PATIENT_GENDER, RELATIONSHIP_TO_EMPLOYEE, Diagnosis_Description_List,
-        Diagnosis_Category_List, Chronic_Category_List, AGE_GROUP_List, PROCEDURE_DESCRIPTION_List, PROCEDURE_CODE_List,
-        PLACE_OF_SERVICE_DESCRIPTION, SPECIALITY_CODE_DESCRIPTION, DIAGNOSIS_CODE_List, Diabetes_Flag,
-        Unique_Id_P, TEA_Cat_List, Drug_List, ACE_INHIBITOR_List, ARB_DRUGS_List, DRI_DRUGS_List, STATIN_DRUGS_List
-        ;;
+            {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %}
+       ;;
   }
-
 
   filter: DISEASE_CATEGORY {
     #default_value: "Diseases of the Musculoskeletal System and Connective Tissue"
     type: string
     label: "DIAGNOSTIC CATEGORY"
     suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_disease_category
+    suggest_dimension: vw_medical.DISEASE_CATEGORY
   }
 
-  filter: DESCRIPTION {
+  filter: DISEASE_SUBCATEGORY {
+    #default_value: "Diseases of the Musculoskeletal System and Connective Tissue"
     type: string
-    label: "DIAGNOSTIC DESCRIPTION"
+    label: "DIAGNOSTIC SUBCATEGORY"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.DIAGNOSIS_SUB_CATEGORY
+  }
+
+  filter: PROCEDURE_MAJOR_CATEGORY {
+    #default_value: "Diseases of the Musculoskeletal System and Connective Tissue"
+    type: string
+    label: "PROCEDURE CATEGORY"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PROCEDURE_CATEGORY
+  }
+
+  filter: PROCEDURE_SUBCATEGORY {
+    #default_value: "Diseases of the Musculoskeletal System and Connective Tissue"
+    type: string
+    label: "PROCEDURE SUBCATEGORY"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PROCEDURE_SUB_CATEGORY
+  }
+
+  filter: DISEASE_DESCRIPTION {
+    type: string
+    label: "DISEASE DESCRIPTION"
     suggest_explore: vw_medical
     suggest_dimension: vw_medical.icd_description
   }
@@ -187,7 +132,6 @@ view: vw_med_and_pharma_summary_1 {
   filter: MAJOR_DISEASE_DIABETES {
     type: string
     label: "DIABETES ?"
-    hidden: yes
     suggest_explore: vw_medical
     suggest_dimension: vw_medical.ICD_MAJOR_DISEASE
   }
@@ -248,129 +192,152 @@ view: vw_med_and_pharma_summary_1 {
     suggest_dimension: vw_medical.icd_digestive_disease
   }
 
-  filter: PARTICIPANT_FLAG_M {
-    type: string
-    label: "PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_Flag
-  }
 
+  #Medical Dimension & Measure.
   dimension: PATIENT_ID {
     type: string
     primary_key: yes
     label: "PATIENT ID"
     hidden: yes
-    sql: ${TABLE}.Unique_Id_M ;;
+    sql: ${TABLE}.PATIENT_ID_M ;;
   }
 
-  dimension: PAID_YEAR {
-    type: string
-    label: "PAID YEAR"
-    sql: ${TABLE}.PAID_YEAR ;;
+  dimension_group: PAID_DATE {
+    type: time
+    label: "PAID"
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    drill_fields: [PAID_DATE_year, PAID_DATE_quarter, PAID_DATE_month, PAID_DATE_week, PAID_DATE_raw]
+    sql: ${TABLE}."PAID_DATE" ;;
   }
 
   dimension: PATIENT_GENDER {
     type: string
     label: "PATIENT GENDER"
-    can_filter: no
+    drill_fields: [RELATIONSHIP_TO_EMPLOYEE, CHRONIC_CATEGORY, DISEASE_CATEGORY, DISEASE_SUB_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_CATEGORY, PROCEDURE_SUB_CATEGORY, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE, PLACE_OF_SERVICE_DESCRIPTION]
     sql: ${TABLE}.PATIENT_GENDER ;;
   }
 
   dimension: RELATIONSHIP_TO_EMPLOYEE {
     type: string
-    can_filter: no
     label: "RELATIONSHIP TO EMPLOYEE"
+    drill_fields: [PATIENT_GENDER, CHRONIC_CATEGORY, DISEASE_CATEGORY, DISEASE_SUB_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_CATEGORY, PROCEDURE_SUB_CATEGORY, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE]
     sql: ${TABLE}.RELATIONSHIP_TO_EMPLOYEE ;;
   }
 
-  dimension: DIAGNOSIS_DESCRIPTION_LIST {
+  dimension: ICD_DISEASE_CATEGORY {
     type: string
-    can_filter: no
-    label: "DIAGNOSTIC DESCRIPTION LIST"
-    sql: ${TABLE}.Diagnosis_Description_List ;;
+    label: "DIAGNOSTIC CATEGORY"
+    drill_fields: [DISEASE_SUB_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_CATEGORY, PROCEDURE_SUB_CATEGORY, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE, CHRONIC_CATEGORY]
+    sql: ${TABLE}.ICD_DISEASE_CATEGORY ;;
   }
 
-  dimension: DIAGNOSIS_CATEGORY_LIST {
+  dimension: DISEASE_SUB_CATEGORY {
     type: string
-    can_filter: no
-    label: "DIAGNOSTIC CATEGORY LIST"
-    sql: ${TABLE}.Diagnosis_Category_List ;;
+    label: "DIAGNOSTIC SUCATEGORY"
+    drill_fields: [DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_CATEGORY, PROCEDURE_SUB_CATEGORY, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE, CHRONIC_CATEGORY]
+    sql: ${TABLE}.DISEASE_SUB_CATEGORY ;;
   }
 
-  dimension: CHRONIC_CATEGORY_LIST {
+  dimension: ICD_DISEASE_DESCRIPTION {
     type: string
-    can_filter: no
-    label: "CHRONIC CATEGORY LIST"
-    sql: ${TABLE}.Chronic_Category_List ;;
+    label: "DISEASE DESCRIPTION"
+    sql: ${TABLE}.ICD_DISEASE_DESCRIPTION ;;
   }
 
-  dimension: PROCEDURE_DESCRIPTION_List {
+  dimension: ICD_CHRONIC_CAT {
     type: string
-    can_filter: no
-    label: "PROCEDURE DESCRIPTION List"
-    sql: ${TABLE}.PROCEDURE_DESCRIPTION_List ;;
+    label: "CHRONIC CATEGORY"
+    drill_fields: [PATIENT_GENDER, CHRONIC_CATEGORY, DISEASE_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE, PLACE_OF_SERVICE_DESCRIPTION]
+    sql: ${TABLE}.ICD_CHRONIC_CAT ;;
   }
 
-  dimension: DIAGNOSIS_CODE_List {
+  dimension: PROCEDURE_DESCRIPTION {
     type: string
-    can_filter: no
-    label: "DIAGNOSIS/ICD CODE List"
-    sql: ${TABLE}.DIAGNOSIS_CODE_List ;;
+    label: "PROCEDURE DESCRIPTION"
+    sql: ${TABLE}.PROCEDURE_DESCRIPTION ;;
   }
 
-  dimension: PROCEDURE_CODE_List {
+  dimension: PROCEDURE_CATEGORY {
     type: string
-    can_filter: no
-    label: "PROCEDURE CODE List"
-    sql: ${TABLE}.PROCEDURE_CODE_List ;;
+    label: "PROCEDURE CATEGORY"
+    drill_fields: [PROCEDURE_SUB_CATEGORY, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE]
+    sql: ${TABLE}.PROCEDURE_CATEGORY ;;
+  }
+
+  dimension: PROCEDURE_SUB_CATEGORY {
+    type: string
+    label: "PROCEDURE SUBCATEGORY"
+    drill_fields: [PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE]
+    sql: ${TABLE}.PROCEDURE_SUB_CATEGORY ;;
+  }
+
+  dimension: RECONCILED_DIAGNOSIS_CODE_ICD10 {
+    type: string
+    label: "DIAGNOSIS/ICD CODE"
+    sql: ${TABLE}.RECONCILED_DIAGNOSIS_CODE_ICD10 ;;
+  }
+
+  dimension: PRIMARY_PROCEDURE_CODE {
+    type: string
+    label: "PROCEDURE CODE"
+    sql: ${TABLE}.PRIMARY_PROCEDURE_CODE ;;
   }
 
   dimension: PLACE_OF_SERVICE_DESCRIPTION {
     type: string
-    can_filter: no
     label: "PLACE OF SERVICE DESCRIPTION"
+    drill_fields: [DISEASE_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE]
     sql: ${TABLE}.PLACE_OF_SERVICE_DESCRIPTION ;;
   }
 
-  dimension: SPECIALITY_CODE_DESCRIPTION {
+  dimension: SERVICE_PROVIDER_SPECIALITY_CODE_DESC {
     type: string
-    can_filter: no
-    label: "SPECIALITY CODE DESCRIPTION"
-    sql: ${TABLE}.SPECIALITY_CODE_DESCRIPTION ;;
+    label: "SERVICE PROVIDER SPECIALITY CODE DESCRIPTION"
+    sql: ${TABLE}.SERVICE_PROVIDER_SPECIALITY_CODE_DESC ;;
   }
 
-  dimension: AGE_GROUP_List {
+  dimension: PATIENT_AGE {
+    type: string
+    label: "PATIENT AGE"
+    sql: ${TABLE}.PATIENT_AGE ;;
+  }
+
+  dimension: AGE_GROUP_1 {
     type: string
     label: "AGE GROUP"
-    sql: ${TABLE}.AGE_GROUP_List ;;
+    drill_fields: [PATIENT_GENDER, CHRONIC_CATEGORY, DISEASE_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PRIMARY_PROCEDURE_CODE, PROCEDURE_DESCRIPTION, PLACE_OF_SERVICE_DESCRIPTION]
+    sql: ${TABLE}.AGE_GROUP_1 ;;
   }
 
-  dimension: Diabetes_Flag {
-    type: string
-    label: "DIABETES Flag"
-    sql: ${TABLE}.Diabetes_Flag ;;
-  }
-
-  measure: TOTAL_BILLED_AMT_M {
+  measure: Total_Billed_Amt_M {
     type: sum
-    label: "MED_TOTAL BILLED AMT"
+    label: "MED-TOTAL BILLED $"
     sql: ${TABLE}.Total_Billed_Amt_M ;;
     value_format: "$#,##0"
   }
 
   measure: TOTAL_PAID_AMT_M {
     type: sum
-    label: "MED_TOTAL PAID AMT"
+    label: "MED-TOTAL $"
     sql: ${TABLE}.Total_Paid_Amt_M ;;
     value_format: "$#,##0"
   }
 
   measure: AVERAGE_PAID_AMT_M {
     type: number
-    label: "MED_MEAN PAID AMT"
+    label: "MED-MEAN $"
     sql: CASE WHEN ${TOTAL_PATIENTS} <> 0 THEN ${TOTAL_PAID_AMT_M}/${TOTAL_PATIENTS}
           ELSE 0
-          END ;;
+          END;;
     value_format: "$#,##0"
   }
 
@@ -380,198 +347,9 @@ view: vw_med_and_pharma_summary_1 {
     sql: ${PATIENT_ID} ;;
   }
 
-
-
-  #All the Pharmacy table Filter, Dimension & Measures.
-  filter: DRUG {
+  dimension: PARTICIPANT_FLAG{
     type: string
-    label: "DRUGS"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.non_proprietary_name
+    label: "PARTICIPANT Flag"
+    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
   }
-
-  filter: DRUG_CODE {
-    type: string
-    label: "DRUG CODE"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.drug_code
-  }
-
-  filter: TEA_CATEGORY {
-    type: string
-    label: "TEA CATEGORY"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.tea_category
-  }
-
-  filter: ACE_INHIBITOR_DRUGS {
-    type: string
-    label: "ACE INHIBITOR DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.ace_inhibitor
-  }
-
-  filter: STATIN_DRUGS {
-    type: string
-    label: "STATIN DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.statin
-  }
-
-  filter: BETA_BLOCKER_DRUGS {
-    type: string
-    label: "BETA BLOCKER DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.beta_blocker
-  }
-
-  filter: ARB_DRUGS {
-    type: string
-    label: "ARB DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.arb
-  }
-
-  filter: DRI_DRUGS {
-    type: string
-    label: "DRI DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.dri
-  }
-
-  filter: SPECIALTY_DRUGS {
-    type: string
-    label: "SPECIALTY DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.specialty_drugs
-  }
-
-  filter: MAINTENANCE_DRUGS {
-    type: string
-    label: "MAINTENANCE DRUGS ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.maintenance
-  }
-
-  filter: DIGESTIVE_DISEASE_DRUGS {
-    type: string
-    label: "DIGESTIVE DISEASE DRUG ?"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.digestive_disease
-  }
-
-  filter: BRAND_OR_GENERIC {
-    type: string
-    label: "BRAND OR GENERIC"
-    suggest_explore: vw_pharmacy
-    suggest_dimension: vw_pharmacy.brand_or_generic
-  }
-
-  dimension: Unique_Id_P {
-    type: string
-    hidden: yes
-    label: "Unique Id_P"
-    sql: ${TABLE}.Unique_Id_P ;;
-  }
-
-  dimension: TEA_CAT_LIST {
-    type: string
-    can_filter: no
-    label: "TEA CATEGORY LIST"
-    sql: ${TABLE}.TEA_Cat_List ;;
-  }
-
-  dimension: DRUG_LIST {
-    type: string
-    can_filter: no
-    label: "DRUG LIST"
-    sql: ${TABLE}.Drug_List ;;
-  }
-
-  dimension: ACE_INHIBITOR_List {
-    type: string
-    hidden: yes
-    label: "ACE INHIBITOR LIST"
-    sql: ${TABLE}.ACE_INHIBITOR_List ;;
-  }
-
-  dimension: ARB_DRUGS_List {
-    type: string
-    hidden: yes
-    label: "ARB DRUGS LIST"
-    sql: ${TABLE}.ARB_DRUGS_List ;;
-  }
-
-  dimension: DRI_DRUGS_List {
-    type: string
-    hidden: yes
-    label: "DRI DRUGS LIST"
-    sql: ${TABLE}.DRI_DRUGS_List ;;
-  }
-
-  dimension: STATIN_DRUGS_List {
-    type: string
-    hidden: yes
-    label: "STATIN DRUGS LIST"
-    sql: ${TABLE}.STATIN_DRUGS_List ;;
-  }
-
-  measure: Total_Patients_P {
-    type: count_distinct
-    hidden: yes
-    sql: ${Unique_Id_P} ;;
-  }
-
-  measure: TOTAL_BILLED_AMT_P {
-    type: sum
-    label: "PHARMA_TOTAL BILLED $"
-    sql: ${TABLE}.Total_Billed_Amt_P ;;
-    value_format: "$#,##0"
-  }
-
-  measure: TOTAL_PAID_AMT_P {
-    type: sum
-    label: "PHARMA-TOTAL $"
-    sql: ${TABLE}.Total_Paid_Amt_P ;;
-    value_format: "$#,##0"
-  }
-
-  measure: AVERAGE_PAID_AMT_P {
-    type: number
-    label: "PHARMA-MEAN $"
-    sql: CASE WHEN ${Total_Patients_P} > 0 THEN ${TOTAL_PAID_AMT_P}/${Total_Patients_P}
-        ELSE 0
-        END ;;
-    value_format: "$#,##0"
-  }
-
-  #PHM Measures:
-  measure: Diabetes_and_No_Ace_Inhibitor_Drugs_List {
-    type: count_distinct
-    label: "Diabetes, No Ace Inhibiter"
-    filters: [Diabetes_Flag: "TRUE", ACE_INHIBITOR_List: "FALSE"]
-    sql: ${PATIENT_ID} ;;
-  }
-
-  measure: Diabetes_and_No_ARB_Drugs_List {
-    type: count_distinct
-    label: "Diabetes, No ARB"
-    filters: [Diabetes_Flag: "TRUE", ARB_DRUGS_List: "FALSE"]
-    sql: ${PATIENT_ID} ;;
-  }
-
-  measure: Diabetes_and_No_DRI_Drugs_List {
-    type: count_distinct
-    label: "Diabetes, No DRI"
-    filters: [Diabetes_Flag: "TRUE", DRI_DRUGS_List: "FALSE"]
-    sql: ${PATIENT_ID} ;;
-  }
-
-  measure: Diabetes_and_No_Statin_Drugs_List {
-    type: count_distinct
-    label: "Diabetes, No Statin Drug"
-    filters: [Diabetes_Flag: "TRUE", STATIN_DRUGS_List: "FALSE"]
-    sql: ${PATIENT_ID} ;;
-  }
-
 }

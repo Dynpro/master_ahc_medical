@@ -477,7 +477,7 @@ view: vw_medical {
 
   dimension: Total_Paid_Amount {
     type: number
-    hidden: yes
+    hidden: no
     sql:  ${total_employer_paid_amt} ;;
   }
 
