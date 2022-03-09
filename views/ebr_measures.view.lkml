@@ -191,7 +191,7 @@ view: ebr_measures {
   }
 
   dimension: year {
-    type: string
+    type: number
     label: "Year"
     sql: ${TABLE}."YEAR" ;;
   }

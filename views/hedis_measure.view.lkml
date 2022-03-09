@@ -375,7 +375,7 @@ view: hedis_measure {
   }
 
   dimension: year {
-    type: string
+    type: number
     label: "Year"
     sql: ${TABLE}."YEAR" ;;
   }
