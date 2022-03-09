@@ -938,4 +938,21 @@ view: vw_medical {
     label: "Patient DOB"
     sql: ${TABLE}."PATIENT_DOB";;
     }
+
+  dimension: patient_gender1 {
+    type: string
+    sql: case when ${TABLE}."PATIENT_GENDER"= 'M' then 'Male'
+              when ${TABLE}."PATIENT_GENDER"= 'F' then 'Female'
+              else '0'
+          end;;
+  }
+
+  dimension: relationship_to_employee1 {
+    type: string
+    label: "RELATIONSHIP TO EMPLOYEE1"
+    sql: case when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'EMPLOYEE' then 'Employee'
+              when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'SPOUSE' then 'Spouse'
+              else 'Dependent'
+        end;;
+  }
   }
