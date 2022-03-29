@@ -698,13 +698,13 @@ view: vw_cohort_analysis_summary_1 {
     type: string
     label: "G1 - PARTICIPANT PROGRAM NAME M"
     suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_PROGRAM_NAME
+    suggest_dimension: vw_medical.Participant_Program_Name
   }
 
   filter:PARTICIPANT_PROGRAM_NAME_G2 {
     type: string
     label: "G2 - PARTICIPANT PROGRAM NAME M"
     suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_PROGRAM_NAME
+    suggest_dimension: vw_medical.Participant_Program_Name
   }
 }
