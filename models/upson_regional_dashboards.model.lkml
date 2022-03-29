@@ -69,6 +69,12 @@ explore: vw_medication_possession_ratio {
 }
 
 explore: vw_preventive_screening {
+  join: vw_patient_demographics {
+    view_label: "Patient Demographics"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_preventive_screening.unique_id} = ${vw_patient_demographics.unique_id} ;;
+  }
   label: "Preventive Screening"
   sql_always_where: ${year} IN ('2018', '2019', '2020', '2021','2022') ;;
 }
