@@ -21,7 +21,8 @@ view: vw_med_and_pharma_summary_1 {
           "PRIMARY_PROCEDURE_CODE" as PRIMARY_PROCEDURE_CODE,
           "PLACE_OF_SERVICE_DESCRIPTION" as PLACE_OF_SERVICE_DESCRIPTION,
           "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" as SERVICE_PROVIDER_SPECIALITY_CODE_DESC,
-          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG
+          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG,
+          "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME
          from
         "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
         WHERE                                 /* Dynamic Filter condition*/
@@ -351,5 +352,11 @@ view: vw_med_and_pharma_summary_1 {
     type: string
     label: "PARTICIPANT Flag"
     sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+  }
+
+  dimension: PARTICIPANT_PROGRAM_NAME{
+    type: string
+    label: "PARTICIPANT PROGRAM NAME"
+    sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
 }
