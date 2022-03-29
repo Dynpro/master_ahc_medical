@@ -958,7 +958,7 @@ view: vw_medical {
 
   dimension: PARTICIPANT_PROGRAM_NAME{
     type: string
-    label: "PARTICIPANT_PROGRAM_NAME"
+    label: "PARTICIPANT PROGRAM NAME"
     sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
   }
