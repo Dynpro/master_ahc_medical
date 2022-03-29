@@ -961,4 +961,4 @@ view: vw_medical {
     label: "PARTICIPANT PROGRAM NAME"
     sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
-  }
+}
