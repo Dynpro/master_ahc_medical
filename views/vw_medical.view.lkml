@@ -955,4 +955,10 @@ view: vw_medical {
               else 'Dependent'
         end;;
   }
+
+  dimension: PARTICIPANT_PROGRAM_NAME{
+    type: string
+    label: "PARTICIPANT_PROGRAM_NAME"
+    sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
+  }
   }

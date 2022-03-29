@@ -10,7 +10,8 @@ view: ad_hoc_query_tool_pharmacy {
           "TOTAL_EMPLOYER_PAID_AMT" as Total_Paid_Amt_P,
           "NON_PROPRIETARY_NAME" as Drug_List,
           "TEA_CATEGORY" as TEA_Cat_List,
-          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG
+          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG,
+          "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME
         from
         "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY"
         WHERE                                 /* Dynamic Filter condition*/
@@ -376,5 +377,11 @@ view: ad_hoc_query_tool_pharmacy {
     type: string
     label: "PARTICIPANT Flag"
     sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+  }
+
+  dimension: PARTICIPANT_PROGRAM_NAME{
+    type: string
+    label: "PARTICIPANT PROGRAM NAME"
+    sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
 }

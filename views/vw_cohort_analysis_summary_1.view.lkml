@@ -90,7 +90,8 @@ view: vw_cohort_analysis_summary_1 {
               {% condition ICD_DIGESTIVE_DISEASE_G1 %} M1."ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
               {% condition RISK_GROUP_G1 %} M1."RISK_GROUP" {% endcondition %} AND
               {% condition MSK_MRS_CODE_CLASSIFICATION_G1 %} M1."MSK_MRS_CODE_CLASSIFICATION" {% endcondition %} AND
-              {% condition PARTICIPANT_FLAG_G1 %} M1."PARTICIPANT_FLAG" {% endcondition %}
+              {% condition PARTICIPANT_FLAG_G1 %} M1."PARTICIPANT_FLAG" {% endcondition %} AND
+              {% condition PARTICIPANT_PROGRAM_NAME_G1 %} M1."PARTICIPANT_PROGRAM_NAME" {% endcondition %}
 
             GROUP BY PATIENT_ID_M_G1, PAID_YEAR_G1, PATIENT_GENDER_G1, RELATIONSHIP_TO_EMPLOYEE_G1) as MED1
 
@@ -156,7 +157,8 @@ view: vw_cohort_analysis_summary_1 {
               {% condition ICD_DIGESTIVE_DISEASE_G2 %} M2."ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
               {% condition RISK_GROUP_G2 %} M2."RISK_GROUP" {% endcondition %} AND
               {% condition MSK_MRS_CODE_CLASSIFICATION_G2 %} M2."MSK_MRS_CODE_CLASSIFICATION" {% endcondition %} AND
-              {% condition PARTICIPANT_FLAG_G2 %} M2."PARTICIPANT_FLAG" {% endcondition %}
+              {% condition PARTICIPANT_FLAG_G2 %} M2."PARTICIPANT_FLAG" {% endcondition %} AND
+              {% condition PARTICIPANT_PROGRAM_NAME_G2 %} M2."PARTICIPANT_PROGRAM_NAME" {% endcondition %}
 
             GROUP BY PATIENT_ID_M_G2, PAID_YEAR_G2, PATIENT_GENDER_G2, RELATIONSHIP_TO_EMPLOYEE_G2) AS MED2
 
@@ -690,5 +692,19 @@ view: vw_cohort_analysis_summary_1 {
     label: "G2 - PARTICIPANT Flag"
     suggest_explore: vw_medical
     suggest_dimension: vw_medical.PARTICIPANT_Flag
+  }
+
+  filter:PARTICIPANT_PROGRAM_NAME_G1 {
+    type: string
+    label: "G1 - PARTICIPANT PROGRAM NAME M"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_PROGRAM_NAME
+  }
+
+  filter:PARTICIPANT_PROGRAM_NAME_G2 {
+    type: string
+    label: "G2 - PARTICIPANT PROGRAM NAME M"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_PROGRAM_NAME
   }
 }
