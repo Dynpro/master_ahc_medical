@@ -53,6 +53,7 @@ view: vw_risk_group_migration {
   dimension: File_year {
     type: number
     sql: ${TABLE}."FILE_YEAR" ;;
+    value_format: "0"
   }
 
   dimension: Risk_group {

@@ -378,6 +378,7 @@ view: hedis_measure {
     type: number
     label: "Year"
     sql: ${TABLE}."YEAR" ;;
+    value_format: "0"
   }
 
   measure: total_patients {
