@@ -79,9 +79,31 @@ view: vw_patient_demographics {
     hidden: yes
     drill_fields: [dependent_f_name, dependent_l_name, dependent_m_name]
   }
+
   dimension: PARTICIPANT_FLAG{
     type: string
     label: "PARTICIPANT Flag"
     sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+  }
+
+  dimension: ageGroup {
+    type: tier
+    label: "AGE GROUP"
+    tiers: [20, 30, 40, 50, 60]
+    description: "AGE Group>> 0-19, 20-29, 30-39, 40-49, 50-59 & >=60 yrs"
+    style: integer
+    sql:  ${patient_current_age};;
+  }
+
+  dimension: relationship_to_employee {
+    type: string
+    label: "RELATIONSHIP TO EMPLOYEE"
+    sql: ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" ;;
+  }
+
+  dimension: PARTICIPANT_PROGRAM_NAME{
+    type: string
+    label: "PARTICIPANT PROGRAM NAME"
+    sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
 }

@@ -432,7 +432,7 @@ view: vw_medical {
   dimension: unique_id {
     type: string
     primary_key: yes
-    hidden: yes
+    hidden: no
     sql: ${TABLE}."UNIQUE_ID" ;;
   }
 
@@ -482,7 +482,7 @@ view: vw_medical {
 
   dimension: Total_Paid_Amount {
     type: number
-    hidden: yes
+    hidden: no
     sql:  ${total_employer_paid_amt} ;;
   }
 
@@ -933,6 +933,34 @@ view: vw_medical {
     type: sum
     sql_distinct_key: ${year_and_patient_id} ;;
     sql: ${total_employer_paid_amt}  ;;
+  }
+  dimension: Patient_DOB{
+    type: string
+    label: "Patient DOB"
+    sql: ${TABLE}."PATIENT_DOB";;
+    }
+
+  dimension: patient_gender1 {
+    type: string
+    sql: case when ${TABLE}."PATIENT_GENDER"= 'M' then 'Male'
+              when ${TABLE}."PATIENT_GENDER"= 'F' then 'Female'
+              else '0'
+          end;;
+  }
+
+  dimension: relationship_to_employee1 {
+    type: string
+    label: "RELATIONSHIP TO EMPLOYEE1"
+    sql: case when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'EMPLOYEE' then 'Employee'
+              when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'SPOUSE' then 'Spouse'
+              else 'Dependent'
+        end;;
+  }
+
+  dimension: Program_Name{
+    type: string
+    label: "PARTICIPANT PROGRAM NAME"
+    sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
 
   dimension: PARTICIPANT_NONPARTICIPANT_Flag {

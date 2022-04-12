@@ -184,6 +184,7 @@ view: vw_medication_possession_ratio {
     type: string
     label: "YEAR"
     sql: ${TABLE}."YEAR" ;;
+    value_format: "0"
   }
 
   measure: Total_Patients {
@@ -191,4 +192,9 @@ view: vw_medication_possession_ratio {
     sql: ${unique_id} ;;
   }
 
+  dimension: PARTICIPANT_FLAG {
+    type: string
+    label: "PARTICIPANT Flag"
+    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+  }
 }
