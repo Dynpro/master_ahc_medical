@@ -9,8 +9,8 @@ view: ad_hoc_query_tool_pharmacy {
           "TOTAL_BILLED_AMT" as Total_Billed_Amt_P,
           "TOTAL_EMPLOYER_PAID_AMT" as Total_Paid_Amt_P,
           "NON_PROPRIETARY_NAME" as Drug_List,
-          "TEA_CATEGORY" as TEA_Cat_List,
-          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG
+          "TEA_CATEGORY" as TEA_Cat_List
+
 
         from
         "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY"
@@ -371,12 +371,6 @@ view: ad_hoc_query_tool_pharmacy {
           ELSE 0
           END;;
     value_format: "$#,##0"
-  }
-
-  dimension: PARTICIPANT_FLAG{
-    type: string
-    label: "PARTICIPANT Flag"
-    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
   }
 
 }

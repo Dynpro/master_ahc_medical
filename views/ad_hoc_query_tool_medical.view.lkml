@@ -21,7 +21,6 @@ view: ad_hoc_query_tool_medical {
           "PRIMARY_PROCEDURE_CODE" as PRIMARY_PROCEDURE_CODE,
           "PLACE_OF_SERVICE_DESCRIPTION" as PLACE_OF_SERVICE_DESCRIPTION,
           "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" as SERVICE_PROVIDER_SPECIALITY_CODE_DESC,
-          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG,
           "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME
          from
         "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
@@ -347,16 +346,10 @@ view: ad_hoc_query_tool_medical {
     label: "N"
     sql: ${PATIENT_ID} ;;
   }
-
-  dimension: PARTICIPANT_FLAG{
-    type: string
-    label: "PARTICIPANT Flag"
-    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
-  }
-
   dimension: PARTICIPANT_PROGRAM_NAME{
     type: string
     label: "PARTICIPANT PROGRAM NAME"
     sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
   }
+
 }
