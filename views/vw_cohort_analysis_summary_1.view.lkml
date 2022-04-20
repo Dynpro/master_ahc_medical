@@ -33,7 +33,7 @@ view: vw_cohort_analysis_summary_1 {
               "PATIENT_GENDER" as PATIENT_GENDER,
               "RELATIONSHIP_TO_EMPLOYEE" as RELATIONSHIP_TO_EMPLOYEE
               from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
-              GROUP BY PATIENT_ID, PAID_YEAR, PATIENT_GENDER, RELATIONSHIP_TO_EMPLOYEE) MEDICAL
+              GROUP BY "UNIQUE_ID", substring("PAID_DATE", 1, 4), PATIENT_GENDER, RELATIONSHIP_TO_EMPLOYEE) MEDICAL
 
       LEFT JOIN
             (Select                                       /*All Dimension & Measure of Grp1*/
@@ -91,7 +91,11 @@ view: vw_cohort_analysis_summary_1 {
               {% condition RISK_GROUP_G1 %} M1."RISK_GROUP" {% endcondition %} AND
               {% condition MSK_MRS_CODE_CLASSIFICATION_G1 %} M1."MSK_MRS_CODE_CLASSIFICATION" {% endcondition %} AND
               {% condition PARTICIPANT_FLAG_G1 %} M1."PARTICIPANT_FLAG" {% endcondition %} AND
-              {% condition PARTICIPANT_PROGRAM_NAME_G1 %} M1."PARTICIPANT_PROGRAM_NAME" {% endcondition %}
+              {% condition PARTICIPANT_PROGRAM_NAME_G1 %} M1."PARTICIPANT_PROGRAM_NAME" {% endcondition %} AND
+
+            "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from  "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+              WHERE {% condition PARTICIPANT_YEAR_G1 %} LEFT("PAID_DATE", 4) {% endcondition %} AND
+              {% condition PARTICIPANT_Flag_G1 %} "PARTICIPANT_FLAG" {% endcondition %})
 
             GROUP BY PATIENT_ID_M_G1, PAID_YEAR_G1, PATIENT_GENDER_G1, RELATIONSHIP_TO_EMPLOYEE_G1) as MED1
 
@@ -158,7 +162,11 @@ view: vw_cohort_analysis_summary_1 {
               {% condition RISK_GROUP_G2 %} M2."RISK_GROUP" {% endcondition %} AND
               {% condition MSK_MRS_CODE_CLASSIFICATION_G2 %} M2."MSK_MRS_CODE_CLASSIFICATION" {% endcondition %} AND
               {% condition PARTICIPANT_FLAG_G2 %} M2."PARTICIPANT_FLAG" {% endcondition %} AND
-              {% condition PARTICIPANT_PROGRAM_NAME_G2 %} M2."PARTICIPANT_PROGRAM_NAME" {% endcondition %}
+              {% condition PARTICIPANT_PROGRAM_NAME_G2 %} M2."PARTICIPANT_PROGRAM_NAME" {% endcondition %} AND
+
+            "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from  "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+              WHERE {% condition PARTICIPANT_YEAR_G2 %} LEFT("PAID_DATE", 4) {% endcondition %} AND
+              {% condition PARTICIPANT_Flag_G2 %} "PARTICIPANT_FLAG" {% endcondition %})
 
             GROUP BY PATIENT_ID_M_G2, PAID_YEAR_G2, PATIENT_GENDER_G2, RELATIONSHIP_TO_EMPLOYEE_G2) AS MED2
 
@@ -675,9 +683,44 @@ view: vw_cohort_analysis_summary_1 {
 
   filter: PARTICIPANT_FLAG_G1 {
     type: string
+    hidden: yes
+    label: "G1 - PARTICIPANT Flag M"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
+  }
+
+  filter: PARTICIPANT_YEAR_G1 {
+    type: string
+    label: "G1 - PARTICIPANT YEAR"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.participant_paid_year
+  }
+  filter: PARTICIPANT_Flag_G1 {
+    type: string
     label: "G1 - PARTICIPANT Flag"
     suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
+  }
+
+  filter: PARTICIPANT_FLAG_G2 {
+    type: string
+    hidden: yes
+    label: "G2 - PARTICIPANT Flag M"
+    suggest_explore: vw_medical
     suggest_dimension: vw_medical.PARTICIPANT_Flag
+  }
+  filter: PARTICIPANT_YEAR_G2 {
+    type: string
+    label: "G2 - PARTICIPANT YEAR"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.participant_paid_year
+  }
+
+  filter: PARTICIPANT_Flag_G2 {
+    type: string
+    label: "G2 - PARTICIPANT Flag"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
   }
 
   filter: MSK_MRS_CODE_CLASSIFICATION_G2 {
@@ -687,12 +730,7 @@ view: vw_cohort_analysis_summary_1 {
     suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
   }
 
-  filter: PARTICIPANT_FLAG_G2 {
-    type: string
-    label: "G2 - PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_Flag
-  }
+
 
   filter:PARTICIPANT_PROGRAM_NAME_G1 {
     type: string

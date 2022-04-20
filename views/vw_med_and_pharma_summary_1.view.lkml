@@ -21,7 +21,6 @@ view: vw_med_and_pharma_summary_1 {
           "PRIMARY_PROCEDURE_CODE" as PRIMARY_PROCEDURE_CODE,
           "PLACE_OF_SERVICE_DESCRIPTION" as PLACE_OF_SERVICE_DESCRIPTION,
           "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" as SERVICE_PROVIDER_SPECIALITY_CODE_DESC,
-          "PARTICIPANT_FLAG" as PARTICIPANT_FLAG,
           "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME
          from
         "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
@@ -45,7 +44,11 @@ view: vw_med_and_pharma_summary_1 {
             {% condition PREVENTATIVE_OR_NOT %} "ICD_PREVENTATIVE" {% endcondition %} AND
             {% condition CHRONIC_OR_NOT %} "2012_CHRONIC" {% endcondition %} AND
             {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
-            {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %}
+            {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
+
+            "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from  "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+              WHERE {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
+              {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
        ;;
   }
 
@@ -348,15 +351,22 @@ view: vw_med_and_pharma_summary_1 {
     sql: ${PATIENT_ID} ;;
   }
 
-  dimension: PARTICIPANT_FLAG{
-    type: string
-    label: "PARTICIPANT Flag"
-    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
-  }
-
   dimension: PARTICIPANT_PROGRAM_NAME{
     type: string
     label: "PARTICIPANT PROGRAM NAME"
     sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
+  }
+  filter: PARTICIPANT_YEAR {
+    type: string
+    group_label: "PARTICIPANT FILTER"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.participant_paid_year
+  }
+
+  filter: PARTICIPANT_Flag {
+    type: string
+    group_label: "PARTICIPANT FILTER"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
   }
 }
