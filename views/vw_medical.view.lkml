@@ -887,6 +887,12 @@ view: vw_medical {
       END ;;
   }
 
+  dimension: CHRONIC_CAT_TYPE {
+    type: string
+    label: "CHRONIC_CAT_TYPE"
+    sql: ${TABLE}."CHRONIC_CAT_TYPE" ;;
+  }
+
   measure: Diabetes_and_No_Foot_exam {
     type: count_distinct
     label: "Diabetes, No Foot Exam"
