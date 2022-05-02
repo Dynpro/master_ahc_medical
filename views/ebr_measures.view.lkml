@@ -261,37 +261,4 @@ view: ebr_measures {
     suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
   }
 
-  dimension: Groups {
-    type: string
-    sql: ${TABLE}."INDIVIDUAL_IS_IN_DISEASE_GROUP";;
-  }
-
-  dimension: Disease_Groups {
-    label: "Disease Groups"
-    type: string
-    sql: case when ${Groups} = 'GROUP-1' THEN 'Disease Group-1'
-              when ${Groups} = 'GROUP-2' THEN 'Disease Group-2'
-              when ${Groups} = 'GROUP-3' THEN 'Disease Group-3'
-              when ${Groups} = 'GROUP-4' THEN 'Disease Group-4'
-              when ${Groups} = 'GROUP-5' THEN 'Disease Group-5'
-              when ${Groups} = 'GROUP-6' THEN 'Disease Group-6'
-              when ${Groups} = 'GROUP-7' THEN 'Disease Group-7'
-      ELSE '0'
-      END;;
-  }
-
-  dimension: Groups_Definition {
-    label: "Groups Definition"
-    type: string
-    sql: case when ${Disease_Groups} = 'Disease Group-1' THEN 'No Chronic Disease and Less Than $1500 Medical Expenditures per 12 Months'
-              when ${Disease_Groups} = 'Disease Group-2' THEN 'No Chronic Disease and $1500 or More Medical Expenditures per 12 Months'
-              when ${Disease_Groups} = 'Disease Group-3' THEN 'One Chronic Disease'
-              when ${Disease_Groups} = 'Disease Group-4' THEN 'Two Chronic Disease'
-              when ${Disease_Groups} = 'Disease Group-5' THEN 'Three Chronic Disease'
-              when ${Disease_Groups} = 'Disease Group-6' THEN 'Four Chronic Disease'
-              when ${Disease_Groups} = 'Disease Group-7' THEN 'Five or More Chronic Disease'
-          ELSE '0'
-          END;;
-  }
-
 }
