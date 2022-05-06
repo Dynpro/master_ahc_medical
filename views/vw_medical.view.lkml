@@ -175,7 +175,7 @@ view: vw_medical {
     type: string
     label: "CHRONIC CATEGORY"
     drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
-    sql: ${TABLE}."ICD_CHRONIC_CAT" ;;
+    sql: ${TABLE}."CCW_CHRONIC_CAT" ;;
   }
 
   dimension: icd_chronic_cat_new {
@@ -579,8 +579,9 @@ view: vw_medical {
     type: string
     label: "CHRONIC vs ACUTE"
     drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
-    sql: CASE WHEN ${2012_chronic} = '1' THEN 'CHRONIC'
-        WHEN ${icd_acute} = 'TRUE' THEN 'ACUTE'
+    sql: CASE WHEN ${2012_chronic} = 'B' THEN 'CHRONIC'
+              WHEN ${2012_chronic} = 'C' THEN 'CHRONIC'
+              WHEN ${icd_acute} = 'A' THEN 'ACUTE'
         ELSE 'NON-CHRONIC_&_NON-Acute'
         END;;
   }
