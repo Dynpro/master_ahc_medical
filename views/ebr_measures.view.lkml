@@ -261,4 +261,18 @@ view: ebr_measures {
     suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
   }
 
+  dimension: HOSPITALIZED_OR_NOT {
+    type: string
+    label: "HOSPITALIZED OR NOT"
+    sql:  ${TABLE}."HOSPITALIZED_OR_NOT" ;;
+  }
+
+  dimension: Inpatient_Hospitalization {
+    type: string
+    label: "Inpatient Hospitalization"
+    sql:  case when ${HOSPITALIZED_OR_NOT} = 'YES' then '1'
+          else '0'
+          end;;
+  }
+
 }
