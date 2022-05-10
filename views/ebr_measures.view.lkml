@@ -1,7 +1,7 @@
 view: ebr_measures {
   derived_table: {
-    sql: select * from "SCH_AHC_UPSON_REGIONAL"."EBR_MEASURES"
-      WHERE "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+    sql: select * from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_EBR_MEASURES"
+      WHERE "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
         WHERE {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
         {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
     ;;

@@ -1,9 +1,9 @@
 view: vw_risk_group_med_pharma_summary {
   label: "Risk Group Summary - MED & PHARMA Unique population"
   derived_table: {
-    sql: select * from "SCH_AHC_UPSON_REGIONAL"."VW_RISK_GROUP_MIGRATION"
+    sql: select * from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_PREVENTIVE_SCREENING"
           WHERE
-            UNIQUE_ID IN (select DISTINCT UNIQUE_ID from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+            UNIQUE_ID IN (select DISTINCT UNIQUE_ID from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
             WHERE
                 {% condition DISEASE_CATEGORY %} "ICD_DISEASE_CATEGORY" {% endcondition %} AND
                 {% condition DISEASE_DESCRIPTION %} "ICD_DESCRIPTION" {% endcondition %} AND

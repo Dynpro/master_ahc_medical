@@ -23,7 +23,7 @@ view: ad_hoc_query_tool_medical {
           "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" as SERVICE_PROVIDER_SPECIALITY_CODE_DESC,
           "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME
          from
-        "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+        "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
         WHERE                                 /* Dynamic Filter condition*/
             {% condition DISEASE_CATEGORY %} "ICD_DISEASE_CATEGORY" {% endcondition %} AND
             {% condition PROCEDURE_MAJOR_CATEGORY %} "PROCEDURE_CATEGORY" {% endcondition %} AND
@@ -46,7 +46,7 @@ view: ad_hoc_query_tool_medical {
             {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
             {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
 
-            "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from  "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+            "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from  "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
               WHERE {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
               {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
        ;;
