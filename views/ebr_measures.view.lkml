@@ -56,16 +56,16 @@ view: ebr_measures {
 
   dimension: individual_had_emergency_room_and_inpatient_visit {
     type: string
-    label: "ER & Inpatient Visit"
-    description: "INDIVIDUAL HAD EMERGENCY ROOM & SUBSEQUENT INPATIENT VISIT"
+    label: "ER Visit but No Subsequent Inpatient Visit"
+    description: "INDIVIDUAL HAD EMERGENCY ROOM VISIT but NO SUBSEQUENT INPATIENT VISIT"
     sql: ${TABLE}."INDIVIDUAL_HAD_EMERGENCY_ROOM_AND_INPATIENT_VISIT" ;;
   }
 
   measure: individual_had_emergency_room_and_inpatient_visit_patients {
     type: count_distinct
     filters: [individual_had_emergency_room_and_inpatient_visit: "1"]
-    label: "ER & Inpatient Visit - N"
-    description: "INDIVIDUAL HAD EMERGENCY ROOM & SUBSEQUENT INPATIENT VISIT"
+    label: "ER Visit but No Subsequent Inpatient Visit - N"
+    description: "INDIVIDUAL HAD EMERGENCY ROOM VISIT but NO SUBSEQUENT INPATIENT VISIT"
     sql: ${unique_id} ;;
   }
 
