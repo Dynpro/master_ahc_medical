@@ -11,7 +11,7 @@ view: vw_medical {
   dimension: 2012_chronic {
     type: string
     label: "CHRONIC ?"
-    sql: ${TABLE}."2012_CHRONIC" ;;
+    sql: ${TABLE}."CHRONICITY_IDENTIFIER" ;;
   }
 
   dimension: address_city {
@@ -152,7 +152,7 @@ view: vw_medical {
   dimension: icd_acute {
     type: string
     label: "ACUTE ?"
-    sql: ${TABLE}."ICD_ACUTE" ;;
+    sql: ${TABLE}."CHRONICITY_IDENTIFIER" ;;
   }
 
   dimension: avoidable_er {
