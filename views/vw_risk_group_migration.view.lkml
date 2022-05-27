@@ -255,5 +255,16 @@ view: vw_risk_group_migration {
           ELSE '0'
           END;;
   }
+  measure: chronic_paid_amt {
+    type: sum
+    label: "Chronic Total $"
+    sql: ${TABLE}."CHRONIC_PAID_AMT" ;;
+    value_format: "$#,##0"
+  }
 
+  dimension: Chronic_Category {
+    type: string
+    label: "Chronic Category"
+    sql: ${TABLE}."CHRONIC_CAT";;
+  }
 }
