@@ -223,6 +223,23 @@ view: vw_med_and_pharma_summary_1 {
     sql: ${TABLE}."PAID_DATE" ;;
   }
 
+  dimension_group: DIAGNOSIS_DATE {
+    type: time
+    label: "Service"
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    drill_fields: [DIAGNOSIS_DATE_year, DIAGNOSIS_DATE_quarter, DIAGNOSIS_DATE_month, DIAGNOSIS_DATE_week, DIAGNOSIS_DATE_raw]
+    sql: ${TABLE}."DIAGNOSIS_DATE" ;;
+  }
+
   dimension: PATIENT_GENDER {
     type: string
     label: "PATIENT GENDER"
