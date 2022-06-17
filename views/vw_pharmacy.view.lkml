@@ -1,6 +1,6 @@
 view: vw_pharmacy {
   label: "Pharmacy records"
-  sql_table_name: "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY"
+  sql_table_name: "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_PHARMACY"
     ;;
 
   dimension: ace_inhibitor {
@@ -461,6 +461,52 @@ view: vw_pharmacy {
     label: "PHARMACY Claim - END"
     sql: MAX(${date_filled_raw}) ;;
     html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
+  }
+
+  dimension_group: paid_date {
+    type: time
+    label: "FILLED"
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}."PAID_DATE" ;;
+  }
+
+  parameter: reporting_date_filter {
+    type: string
+    label: "Reporting date"
+    allowed_value: {
+      value: "Service"
+      label: "Service date"}
+    allowed_value: {
+      value: "Paid"
+      label: "Paid date"}
+  }
+  dimension_group: reporting {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    label: "Reporting"
+    drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
+    sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
+      WHEN {% parameter reporting_date_filter %} = 'Service' THEN ${TABLE}."DATE_FILLED"
+      ELSE ${TABLE}."DATE_FILLED"
+      END ;;
   }
 
 }

@@ -945,10 +945,11 @@ view: vw_medical {
     type: string
     label: "Patient DOB"
     sql: ${TABLE}."PATIENT_DOB";;
-    }
+  }
 
   dimension: patient_gender1 {
     type: string
+    hidden: yes
     sql: case when ${TABLE}."PATIENT_GENDER"= 'M' then 'Male'
               when ${TABLE}."PATIENT_GENDER"= 'F' then 'Female'
               else '0'
@@ -957,6 +958,7 @@ view: vw_medical {
 
   dimension: relationship_to_employee1 {
     type: string
+    hidden: yes
     label: "RELATIONSHIP TO EMPLOYEE1"
     sql: case when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'EMPLOYEE' then 'Employee'
               when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'SPOUSE' then 'Spouse'
@@ -995,4 +997,36 @@ view: vw_medical {
     suggest_explore: vw_medical
     suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
   }
+
+  parameter: reporting_date_filter {
+    type: string
+    label: "Reporting date"
+    allowed_value: {
+      value: "Service"
+      label: "Service date"}
+    allowed_value: {
+      value: "Paid"
+      label: "Paid date"}
+  }
+
+  dimension_group: reporting {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    label: "Reporting"
+    drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
+    sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
+      WHEN {% parameter reporting_date_filter %} = 'Service' THEN ${TABLE}."DIAGNOSIS_DATE"
+      ELSE ${TABLE}."PAID_DATE"
+      END ;;
+  }
+
 }

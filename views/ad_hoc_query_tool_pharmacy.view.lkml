@@ -3,7 +3,8 @@ view: ad_hoc_query_tool_pharmacy {
   derived_table: {
     sql: select
           "UNIQUE_ID" as PATIENT_ID_P,
-          "DATE_FILLED" as SERVICE_DATE,
+          "DATE_FILLED" as DATE_FILLED, /*Changes column name from SERVICE_DATE to DATE_FILLED alias, same will be changed in dimension_group*/
+          "PAID_DATE" as PAID_DATE,
           "BRAND_OR_GENERIC" as BRAND_OR_GENERIC,
           "RELATIONSHIP_TO_EMPLOYEE" as RELATIONSHIP_TO_EMPLOYEE,
           "TOTAL_BILLED_AMT" as Total_Billed_Amt_P,
@@ -12,46 +13,46 @@ view: ad_hoc_query_tool_pharmacy {
           "TEA_CATEGORY" as TEA_Cat_List
 
 
-        from
-        "SCH_AHC_UPSON_REGIONAL"."VW_PHARMACY"
-        WHERE                                 /* Dynamic Filter condition*/
-            {% condition DRUG %} "NON_PROPRIETARY_NAME" {% endcondition %} AND
-            {% condition DRUG_CODE %} "DRUG_CODE" {% endcondition %} AND
-            {% condition TEA_CATEGORY %} "TEA_CATEGORY" {% endcondition %} AND
-            {% condition ACE_INHIBITOR_DRUGS %} "ACE_INHIBITOR" {% endcondition %} AND
-            {% condition STATIN_DRUGS %} "STATIN" {% endcondition %} AND
-            {% condition BETA_BLOCKER_DRUGS %} "BETA_BLOCKER" {% endcondition %} AND
-            {% condition ARB_DRUGS %} "ARB" {% endcondition %} AND
-            {% condition DRI_DRUGS %} "DRI" {% endcondition %} AND
-            {% condition BLACK_LABEL_DRUG %} "BLACK_LABEL_DRUG" {% endcondition %} AND
-            {% condition SPECIALTY_DRUGS %} "SPECIALTY_DRUGS" {% endcondition %} AND
-            {% condition MAINTENANCE_DRUGS %} "MAINTENANCE" {% endcondition %} AND
-            {% condition DIGESTIVE_DISEASE_DRUGS %} "DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %}
-          AND
-            UNIQUE_ID IN (Select DISTINCT UNIQUE_ID from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
-            WHERE
-              {% condition DISEASE_CATEGORY %} "ICD_DISEASE_CATEGORY" {% endcondition %} AND
-              {% condition PROCEDURE_MAJOR_CATEGORY %} "PROCEDURE_CATEGORY" {% endcondition %} AND
-              {% condition PROCEDURE_SUBCATEGORY %} "PROCEDURE_SUB_CATEGORY" {% endcondition %} AND
-              {% condition DISEASE_SUBCATEGORY %} "DISEASE_SUB_CATEGORY" {% endcondition %} AND
-              {% condition DISEASE_DESCRIPTION %} "ICD_DESCRIPTION" {% endcondition %} AND
-              {% condition DIAGNOSIS_CODE %} "RECONCILED_DIAGNOSIS_CODE_ICD10" {% endcondition %} AND
-              {% condition CHRONIC_CATEGORY %} "CCW_CHRONIC_CAT" {% endcondition %} AND
-              {% condition GENDER %} "PATIENT_GENDER" {% endcondition %} AND
-              {% condition EMPLOYEE_RELATIONSHIP %} "RELATIONSHIP_TO_EMPLOYEE" {% endcondition %} AND
-              {% condition PLACE_OF_SERVICE_DESC %} "PLACE_OF_SERVICE_DESCRIPTION" {% endcondition %} AND
-              {% condition MAJOR_DISEASE_DIABETES %} "ICD_MAJOR_DISEASE" {% endcondition %} AND
-              {% condition PROCEDURE_CODE_TYPE %} "PROCEDURE_CODE_TYPE" {% endcondition %} AND
-              {% condition PROCEDURE_CODE_DESC %} "PROCEDURE_DESCRIPTION" {% endcondition %} AND
-              {% condition PROCEDURE_CODE %} "PRIMARY_PROCEDURE_CODE" {% endcondition %} AND
-              {% condition LS_MODIFY_OR_NOT %} "ICD_LS_MODIFY" {% endcondition %} AND
-              {% condition ACUTE_OR_NOT %} "CHRONICITY_IDENTIFIER" {% endcondition %} AND
-              {% condition PREVENTATIVE_OR_NOT %} "ICD_PREVENTATIVE" {% endcondition %} AND
-              {% condition CHRONIC_OR_NOT %} "CHRONICITY_IDENTIFIER" {% endcondition %} AND
-              {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
-              {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %}
-            ) ;;
+      from
+      "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_PHARMACY"
+      WHERE                                 /* Dynamic Filter condition*/
+      {% condition DRUG %} "NON_PROPRIETARY_NAME" {% endcondition %} AND
+      {% condition DRUG_CODE %} "DRUG_CODE" {% endcondition %} AND
+      {% condition TEA_CATEGORY %} "TEA_CATEGORY" {% endcondition %} AND
+      {% condition ACE_INHIBITOR_DRUGS %} "ACE_INHIBITOR" {% endcondition %} AND
+      {% condition STATIN_DRUGS %} "STATIN" {% endcondition %} AND
+      {% condition BETA_BLOCKER_DRUGS %} "BETA_BLOCKER" {% endcondition %} AND
+      {% condition ARB_DRUGS %} "ARB" {% endcondition %} AND
+      {% condition DRI_DRUGS %} "DRI" {% endcondition %} AND
+      {% condition BLACK_LABEL_DRUG %} "BLACK_LABEL_DRUG" {% endcondition %} AND
+      {% condition SPECIALTY_DRUGS %} "SPECIALTY_DRUGS" {% endcondition %} AND
+      {% condition MAINTENANCE_DRUGS %} "MAINTENANCE" {% endcondition %} AND
+      {% condition DIGESTIVE_DISEASE_DRUGS %} "DIGESTIVE_DISEASE" {% endcondition %} AND
+      {% condition BRAND_OR_GENERIC %} "BRAND_OR_GENERIC" {% endcondition %}
+      AND
+      UNIQUE_ID IN (Select DISTINCT UNIQUE_ID from "SCH_AHC_UPSON_REGIONAL"."VW_MEDICAL"
+      WHERE
+      {% condition DISEASE_CATEGORY %} "ICD_DISEASE_CATEGORY" {% endcondition %} AND
+      {% condition PROCEDURE_MAJOR_CATEGORY %} "PROCEDURE_CATEGORY" {% endcondition %} AND
+      {% condition PROCEDURE_SUBCATEGORY %} "PROCEDURE_SUB_CATEGORY" {% endcondition %} AND
+      {% condition DISEASE_SUBCATEGORY %} "DISEASE_SUB_CATEGORY" {% endcondition %} AND
+      {% condition DISEASE_DESCRIPTION %} "ICD_DESCRIPTION" {% endcondition %} AND
+      {% condition DIAGNOSIS_CODE %} "RECONCILED_DIAGNOSIS_CODE_ICD10" {% endcondition %} AND
+      {% condition CHRONIC_CATEGORY %} "CCW_CHRONIC_CAT" {% endcondition %} AND
+      {% condition GENDER %} "PATIENT_GENDER" {% endcondition %} AND
+      {% condition EMPLOYEE_RELATIONSHIP %} "RELATIONSHIP_TO_EMPLOYEE" {% endcondition %} AND
+      {% condition PLACE_OF_SERVICE_DESC %} "PLACE_OF_SERVICE_DESCRIPTION" {% endcondition %} AND
+      {% condition MAJOR_DISEASE_DIABETES %} "ICD_MAJOR_DISEASE" {% endcondition %} AND
+      {% condition PROCEDURE_CODE_TYPE %} "PROCEDURE_CODE_TYPE" {% endcondition %} AND
+      {% condition PROCEDURE_CODE_DESC %} "PROCEDURE_DESCRIPTION" {% endcondition %} AND
+      {% condition PROCEDURE_CODE %} "PRIMARY_PROCEDURE_CODE" {% endcondition %} AND
+      {% condition LS_MODIFY_OR_NOT %} "ICD_LS_MODIFY" {% endcondition %} AND
+      {% condition ACUTE_OR_NOT %} "CHRONICITY_IDENTIFIER" {% endcondition %} AND
+      {% condition PREVENTATIVE_OR_NOT %} "ICD_PREVENTATIVE" {% endcondition %} AND
+      {% condition CHRONIC_OR_NOT %} "CHRONICITY_IDENTIFIER" {% endcondition %} AND
+      {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
+      {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %}
+      ) ;;
   }
 
   #All the MEDICAL table Filter, Dimension & Measures.
@@ -306,7 +307,24 @@ view: ad_hoc_query_tool_pharmacy {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}."SERVICE_DATE" ;;
+    sql: ${TABLE}."DATE_FILLED" ;;#Column mapping changed from SERVICE_DATE to DATE_FILLED - we are removing SERVICE_DATE label from all reporting.
+  }
+
+  dimension_group: PAID_DATE {
+    type: time
+    label: "FILLED"
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    drill_fields: [PAID_DATE_year, PAID_DATE_quarter, PAID_DATE_month, PAID_DATE_raw]
+    sql: ${TABLE}."PAID_DATE" ;;
   }
 
   dimension: Unique_Id_P {
@@ -371,6 +389,37 @@ view: ad_hoc_query_tool_pharmacy {
           ELSE 0
           END;;
     value_format: "$#,##0"
+  }
+
+  parameter: reporting_date_filter {
+    type: string
+    label: "Reporting date"
+    allowed_value: {
+      value: "Service"
+      label: "Service date"}
+    allowed_value: {
+      value: "Paid"
+      label: "Paid date"}
+  }
+
+  dimension_group: reporting {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    label: "Reporting"
+    drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
+    sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
+      WHEN {% parameter reporting_date_filter %} = 'Service' THEN ${TABLE}."DATE_FILLED"
+      ELSE ${TABLE}."DATE_FILLED"
+      END ;;
   }
 
 }
