@@ -6,6 +6,7 @@ view: vw_med_and_pharma_summary_1 {
           "PATIENT_GENDER" as PATIENT_GENDER,
           "RELATIONSHIP_TO_EMPLOYEE" as RELATIONSHIP_TO_EMPLOYEE,
           "PAID_DATE" as PAID_DATE,
+          "DIAGNOSIS_DATE" as DIAGNOSIS_DATE,
           "PATIENT_AGE" as PATIENT_AGE,
           "AGE_GROUP_1" as AGE_GROUP_1,
           "TOTAL_BILLED_AMT" as Total_Billed_Amt_M,
