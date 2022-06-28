@@ -54,6 +54,12 @@ view: vw_patient_demographics {
     sql: ${TABLE}."PATIENT_DOB" ;;
   }
 
+  dimension: patient_dob1 {
+    label: "PATIENT DOB"
+    type: string
+    sql: ${TABLE}."PATIENT_DOB" ;;
+  }
+
   dimension: patient_gender {
     type: string
     sql: ${TABLE}."PATIENT_GENDER" ;;
@@ -109,8 +115,6 @@ view: vw_patient_demographics {
     sql: CONCAT(${TABLE}."MEMBER_ID", ' (', ${relationship_to_employee}, ')')  ;;
     html: <b> {{ member_id._rendered_value }} </b> ({{ relationship_to_employee._rendered_value }})   ;;
   }
-
-
 
   dimension: client_name{
     type: string
