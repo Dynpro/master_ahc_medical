@@ -1029,4 +1029,78 @@ view: vw_medical {
       END ;;
   }
 
+#Benchmark labelling, HEDIS list of defined measures, Rendering & $ based on previous months
+  dimension: benchmark_year_filter_suggestion {
+    type: string
+    hidden: yes
+    sql: ${reporting_year} - 1 ;;
+  }
+
+  parameter: benchmark_year_filter {
+    type: string
+    suggest_dimension: vw_medical.benchmark_year_filter_suggestion
+  }
+
+  dimension: reporting_benchmark_year {
+    type: string
+    label: "SERVICE Year"
+    sql: CASE WHEN ${diagnosis_year} = CAST({% parameter benchmark_year_filter %} as int) THEN CAST(concat(${diagnosis_year}, ' ', '(Benchmark)') as string)
+      ELSE CAST(${diagnosis_year} as string)
+      END;;
+  }
+
+
+  measure: diagnosis_category_list {
+    sql: LISTAGG(DISTINCT ${icd_disease_category}, ' || ') within group (order by ${icd_disease_category} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
+
+  measure: diagnosis_description_list {
+    sql: LISTAGG(DISTINCT ${icd_description}, ' || ') within group (order by ${icd_description} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
+
+  measure: procedure_category_list {
+    sql: LISTAGG(DISTINCT ${PROCEDURE_CATEGORY}, ' || ') within group (order by ${PROCEDURE_CATEGORY} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
+
+  measure: procedure_description_list {
+    sql: LISTAGG(DISTINCT ${procedure_description}, ' || ') within group (order by ${procedure_description} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
+
+  measure: chronic_category_list {
+    sql: LISTAGG(DISTINCT ${icd_chronic_cat}, ' || ') within group (order by ${icd_chronic_cat} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
+
+  measure: risk_group_list {
+    sql: LISTAGG(DISTINCT ${RISK_GROUP}, ' || ') within group (order by ${RISK_GROUP} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
 }

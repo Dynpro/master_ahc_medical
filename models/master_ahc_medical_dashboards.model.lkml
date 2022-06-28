@@ -26,6 +26,12 @@ explore: vw_medical {
     relationship: many_to_one
     sql_on: ${vw_medical.unique_id} = ${vw_patient_demographics.unique_id} ;;
   }
+  join: vw_risk_group_migration {
+    view_label: "Risk Group Migration"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_medical.unique_id} = ${vw_risk_group_migration.Unique_id} ;;
+  }
 }
 
 explore: vw_pharmacy {

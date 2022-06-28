@@ -36,10 +36,7 @@ view: vw_patient_demographics {
     sql: ${TABLE}."EMPLOYEE_ID" ;;
   }
 
-  dimension: member_id {
-    type: string
-    sql: ${TABLE}."MEMBER_ID" ;;
-  }
+
 
   dimension_group: patient_dob {
     type: time
@@ -105,5 +102,19 @@ view: vw_patient_demographics {
     type: string
     label: "PARTICIPANT PROGRAM NAME"
     sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
+  }
+  dimension: member_id{
+    type: string
+    label: "MEMBER ID"
+    sql: CONCAT(${TABLE}."MEMBER_ID", ' (', ${relationship_to_employee}, ')')  ;;
+    html: <b> {{ member_id._rendered_value }} </b> ({{ relationship_to_employee._rendered_value }})   ;;
+  }
+
+
+
+  dimension: client_name{
+    type: string
+    label: "Affiliation"
+    sql: 'Crisp Regional' ;;
   }
 }
