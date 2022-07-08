@@ -508,5 +508,42 @@ view: vw_pharmacy {
       ELSE ${TABLE}."DATE_FILLED"
       END ;;
   }
+#Benchmark labelling, HEDIS list of defined measures, Rendering & $ based on previous months
+  dimension: benchmark_year_filter_suggestion {
+    type: string
+    hidden: yes
+    sql: ${reporting_year} - 1 ;;
+  }
 
+  parameter: benchmark_year_filter {
+    type: string
+    suggest_dimension: vw_pharmacy.benchmark_year_filter_suggestion
+  }
+
+  dimension: reporting_benchmark_year {
+    type: string
+    label: "SERVICE Year"
+    sql: CASE WHEN ${date_filled_year} = CAST({% parameter benchmark_year_filter %} as int) THEN CAST(concat(${date_filled_year}, ' ', '(Benchmark)') as string)
+      ELSE CAST(${date_filled_year} as string)
+      END;;
+  }
+
+
+  measure: drug_name_list {
+    sql: LISTAGG(DISTINCT ${drug_name}, ' || ') within group (order by ${drug_name} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
+
+  measure: tea_category_list {
+    sql: LISTAGG(DISTINCT ${tea_category}, ' || ') within group (order by ${tea_category} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+      <ul>
+      {% for word in words %}
+      <li>{{ word }}</li>
+      {% endfor %} ;;
+  }
 }

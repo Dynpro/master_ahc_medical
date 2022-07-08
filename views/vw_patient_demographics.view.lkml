@@ -38,6 +38,7 @@ view: vw_patient_demographics {
 
 
 
+
   dimension_group: patient_dob {
     type: time
     timeframes: [
@@ -51,12 +52,6 @@ view: vw_patient_demographics {
     convert_tz: no
     datatype: date
     label: "Patient DOB"
-    sql: ${TABLE}."PATIENT_DOB" ;;
-  }
-
-  dimension: patient_dob1 {
-    label: "PATIENT DOB"
-    type: string
     sql: ${TABLE}."PATIENT_DOB" ;;
   }
 
@@ -116,9 +111,24 @@ view: vw_patient_demographics {
     html: <b> {{ member_id._rendered_value }} </b> ({{ relationship_to_employee._rendered_value }})   ;;
   }
 
+  dimension: member_id_list {
+    type: string
+    sql: LISTAGG(DISTINCT ${TABLE}."MEMBER_ID") ;;
+  }
+
+  dimension: patient_name_member_id {
+    type: string
+    sql: CONCAT(${patient_name}, ' (', ${member_id_list}, ')')   ;;
+  }
+
   dimension: client_name{
     type: string
     label: "Affiliation"
-    sql: 'UPSON' ;;
+    sql: 'Master AHC Medical' ;;
+  }
+
+  dimension: unique_id_demo {
+    type: string
+    sql: CONCAT(${dependent_f_name}, ${dependent_l_name}, ${patient_dob_raw}, ${patient_gender}) ;;
   }
 }
