@@ -4,6 +4,7 @@ view: patient_all_medical_pharmacy_summary {
       MP.UNIQUE_ID as UNIQUE_ID,
       MP.SERVICE_YEAR as YEAR,
       SUM(M.TOTAL_PAID_AMT) as TOTAL_PAID_AMT_M,
+      SUM(M.CHRONIC_TOTAL_PAID_AMT) as CHRONIC_TOTAL_PAID_AMT,
       M.DIAGNOSIS_CATEGORY_LIST as DIAGNOSIS_CATEGORY_LIST,
       M.DIAGNOSIS_DESCRIPTION_LIST as DIAGNOSIS_DESCRIPTION_LIST,
       M.CHRONIC_CATEGORY_LIST as CHRONIC_CATEGORY_LIST,
@@ -13,7 +14,8 @@ view: patient_all_medical_pharmacy_summary {
       from
 
       (SELECT SERVICE_YEAR, UNIQUE_ID FROM
-      (SELECT LEFT("DIAGNOSIS_DATE", 4) AS SERVICE_YEAR, "UNIQUE_ID" FROM "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
+      (SELECT LEFT("DIAGNOSIS_DATE", 4) AS SERVICE_YEAR, "UNIQUE_ID"
+      FROM "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
       GROUP BY SERVICE_YEAR, "UNIQUE_ID")) AS MP
 
 
@@ -22,6 +24,7 @@ view: patient_all_medical_pharmacy_summary {
       (select  M1.PATIENT_ID_M as PATIENT_ID_M,
       M1.SERVICE_YEAR as SERVICE_YEAR,
       SUM(M1.TOTAL_PAID_AMT) as TOTAL_PAID_AMT,
+      SUM(M1.CHRONIC_TOTAL_PAID_AMT) AS CHRONIC_TOTAL_PAID_AMT,
       M2.DIAGNOSIS_CATEGORY_LIST as DIAGNOSIS_CATEGORY_LIST,
       M2.DIAGNOSIS_DESCRIPTION_LIST as DIAGNOSIS_DESCRIPTION_LIST,
       M2.CHRONIC_CATEGORY_LIST as CHRONIC_CATEGORY_LIST,
@@ -31,15 +34,21 @@ view: patient_all_medical_pharmacy_summary {
       (Select
       "UNIQUE_ID" as PATIENT_ID_M,
       LEFT("DIAGNOSIS_DATE", 4) as SERVICE_YEAR,
-      SUM("TOTAL_EMPLOYER_PAID_AMT") as TOTAL_PAID_AMT
+      SUM("TOTAL_EMPLOYER_PAID_AMT") as TOTAL_PAID_AMT,
+      SUM(CASE WHEN "CCW_CHRONIC_CAT" IS NULL THEN 0
+      ELSE "TOTAL_EMPLOYER_PAID_AMT"
+      END) AS CHRONIC_TOTAL_PAID_AMT
       FROM "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
+      WHERE {% condition CHRONIC_CATEGORY %} "CCW_CHRONIC_CAT" {% endcondition %}
       GROUP BY PATIENT_ID_M, SERVICE_YEAR) as M1
+
       LEFT JOIN
+
       (Select
       "UNIQUE_ID" as PATIENT_ID_M,
       LISTAGG(DISTINCT "ICD_DISEASE_CATEGORY", ' || ') within group (order by "ICD_DISEASE_CATEGORY" ASC) as DIAGNOSIS_CATEGORY_LIST,
       LISTAGG(DISTINCT "ICD_DESCRIPTION", ' || ') within group (order by "ICD_DESCRIPTION" ASC) as DIAGNOSIS_DESCRIPTION_LIST,
-      LISTAGG(DISTINCT "ICD_CHRONIC_CAT", ' || ') within group (order by "ICD_CHRONIC_CAT" ASC) as CHRONIC_CATEGORY_LIST,
+      LISTAGG(DISTINCT "CCW_CHRONIC_CAT", ' || ') within group (order by "CCW_CHRONIC_CAT" ASC) as CHRONIC_CATEGORY_LIST,
       LISTAGG(DISTINCT "PROCEDURE_DESCRIPTION", ' || ') within group (order by "PROCEDURE_DESCRIPTION" ASC) as PROCEDURE_DESCRIPTION_LIST,
       LISTAGG(DISTINCT "PROCEDURE_CATEGORY", ' || ') within group (order by "PROCEDURE_CATEGORY" ASC) as PROCEDURE_CATEGORY_LIST
       FROM "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
@@ -102,6 +111,12 @@ view: patient_all_medical_pharmacy_summary {
     suggest_explore: vw_medical
     suggest_dimension: vw_medical.icd_chronic_cat
     sql: {% condition Chronic_Category_1 %} ${Chronic_Category_List_1} {% endcondition %} ;;
+  }
+  filter: CHRONIC_CATEGORY {
+    type: string
+    label: "Chronic Category"
+    suggest_explore: vw_medical
+    suggest_dimension: vw_medical.icd_chronic_cat
   }
 
   dimension: Diagnosis_Category_List_1 {
@@ -171,5 +186,10 @@ view: patient_all_medical_pharmacy_summary {
       ELSE ${reporting_year}
       END ;;
   }
+  measure: chronic_total_amt {
+    type: sum
+    label: "CHRONIC TOTAL $"
+    sql: ${TABLE}."CHRONIC_TOTAL_PAID_AMT" ;;
 
+  }
 }
