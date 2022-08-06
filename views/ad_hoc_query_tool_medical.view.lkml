@@ -22,7 +22,8 @@ view: ad_hoc_query_tool_medical {
           "PRIMARY_PROCEDURE_CODE" as PRIMARY_PROCEDURE_CODE,
           "PLACE_OF_SERVICE_DESCRIPTION" as PLACE_OF_SERVICE_DESCRIPTION,
           "SERVICE_PROVIDER_SPECIALITY_CODE_DESC" as SERVICE_PROVIDER_SPECIALITY_CODE_DESC,
-          "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME
+          "PARTICIPANT_PROGRAM_NAME" as PARTICIPANT_PROGRAM_NAME,
+          "ON_BOARD_DATE" AS ON_BOARD_DATE
          from
         "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
         WHERE                                 /* Dynamic Filter condition*/
@@ -48,7 +49,7 @@ view: ad_hoc_query_tool_medical {
             {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
 
       "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from  "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
-      WHERE {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
+      WHERE {% condition PARTICIPANT_YEAR %} LEFT("ON_BOARD_DATE", 4) {% endcondition %} AND
       {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
       ;;
   }
@@ -414,8 +415,23 @@ view: ad_hoc_query_tool_medical {
     drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
     sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
       WHEN {% parameter reporting_date_filter %} = 'Service' THEN ${TABLE}."DIAGNOSIS_DATE"
-      ELSE ${TABLE}."PAID_DATE"
+      ELSE ${TABLE}."DIAGNOSIS_DATE"
       END ;;
   }
-
+  dimension_group: ON_BOARD_DATE {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    label: "ON BOARD DATE"
+    drill_fields: [ON_BOARD_DATE_year, ON_BOARD_DATE_quarter, ON_BOARD_DATE_month, ON_BOARD_DATE_raw]
+    sql: ${TABLE}."ON_BOARD_DATE" ;;
+  }
 }
