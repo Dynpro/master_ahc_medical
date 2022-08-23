@@ -546,4 +546,8 @@ view: vw_pharmacy {
       <li>{{ word }}</li>
       {% endfor %} ;;
   }
+  dimension: employer_name {
+    type: string
+    sql: ${TABLE}."EMPLOYER_NAME" ;;
+  }
 }
