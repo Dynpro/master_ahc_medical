@@ -434,4 +434,18 @@ view: ad_hoc_query_tool_medical {
     drill_fields: [ON_BOARD_DATE_year, ON_BOARD_DATE_quarter, ON_BOARD_DATE_month, ON_BOARD_DATE_raw]
     sql: ${TABLE}."ON_BOARD_DATE" ;;
   }
+
+  measure: Diagnosis_date_Min {
+    type: date
+    label: "MEDICAL Claim - START"
+    sql: MIN(${DIAGNOSIS_DATE_raw}) ;;
+    html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
+  }
+
+  measure: Diagnosis_date_Max {
+    type: date
+    label: "MEDICAL Claim - END"
+    sql: MAX(${DIAGNOSIS_DATE_raw}) ;;
+    html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
+  }
 }
