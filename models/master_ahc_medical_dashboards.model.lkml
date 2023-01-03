@@ -39,6 +39,11 @@ explore: vw_medical {
     relationship: many_to_one
     sql_on: ${vw_medical.unique_id} = ${vw_participant_trigger.unique_id} ;;
   }
+  join : patient_migration_across_years_summary{
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_medical.unique_id} = ${patient_migration_across_years_summary.UNIQUE_ID}  ;;
+  }
 }
 
 explore: vw_pharmacy {
@@ -250,9 +255,6 @@ explore: vw_participant_trigger {
   }
 }
 
-
-
-
 explore: patient_all_medical_pharmacy_summary { #designed for Claim Analysis summary dashboard.
   join: vw_patient_demographics {
     view_label: "Patient Demographics"
@@ -266,7 +268,24 @@ explore: patient_all_medical_pharmacy_summary { #designed for Claim Analysis sum
     relationship: many_to_one
     sql_on: ${patient_all_medical_pharmacy_summary.PATIENT_ID} = ${patient_all_medical_summary.PATIENT_ID} ;;
   }
-
 }
 
 explore: patient_all_medical_summary {}
+
+explore:patient_yearly_total_avg_spend_comparison{
+  join: vw_patient_demographics {
+    view_label: "Patient Demographics"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${patient_yearly_total_avg_spend_comparison.patients_id} = ${vw_patient_demographics.unique_id};;
+  }
+}
+explore: patient_migration_across_years_summary {
+  label: "Patient Yearly Migration summary"
+  join: vw_patient_demographics {
+    view_label: "Patient Demographics"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${patient_migration_across_years_summary.UNIQUE_ID} = ${vw_patient_demographics.unique_id} ;;
+  }
+}
