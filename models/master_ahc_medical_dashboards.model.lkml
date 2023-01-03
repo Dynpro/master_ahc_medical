@@ -39,6 +39,15 @@ explore: vw_medical {
     relationship: many_to_one
     sql_on: ${vw_medical.unique_id} = ${vw_participant_trigger.unique_id} ;;
   }
+
+  join: vw_vital_alert {
+    view_label: "Vital Report"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_medical.unique_id} = ${vw_vital_alert.unique_id} AND
+      ${vw_medical.diagnosis_year} = ${vw_vital_alert.date_year};;
+  }
+
   join : patient_migration_across_years_summary{
     type: left_outer
     relationship: many_to_one
@@ -66,6 +75,13 @@ explore: vw_pharmacy {
     type: left_outer
     relationship: many_to_one
     sql_on: ${vw_pharmacy.unique_id} = ${vw_participant_trigger.unique_id} ;;
+  }
+  join: vw_vital_alert {
+    view_label: "Vital Report"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_pharmacy.unique_id} = ${vw_vital_alert.unique_id} AND
+      LEFT(${vw_pharmacy.reporting_year}, 4) = ${vw_vital_alert.date_year};;
   }
 }
 
@@ -280,6 +296,16 @@ explore:patient_yearly_total_avg_spend_comparison{
     sql_on: ${patient_yearly_total_avg_spend_comparison.patients_id} = ${vw_patient_demographics.unique_id};;
   }
 }
+
+explore : vw_vital_alert{
+  join: vw_patient_demographics {
+    view_label: "Patient Demographics"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${vw_vital_alert.unique_id} = ${vw_patient_demographics.unique_id} ;;
+  }
+}
+
 explore: patient_migration_across_years_summary {
   label: "Patient Yearly Migration summary"
   join: vw_patient_demographics {
