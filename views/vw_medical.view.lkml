@@ -1128,4 +1128,10 @@ view: vw_medical {
       <li>{{ word }}</li>
       {% endfor %} ;;
   }
+  measure: total_patients_risk_group_wise {
+    type: count_distinct
+    label: "Total Patients (N)"
+    sql:  ${unique_id} ;;
+    drill_fields: [vw_patient_demographics.patient_name, RISK_GROUP, patient_gender, vw_patient_demographics.patient_current_age, Total_Visit, Total_Paid_Amt]
+  }
 }
