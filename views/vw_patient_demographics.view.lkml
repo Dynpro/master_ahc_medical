@@ -127,11 +127,11 @@ view: vw_patient_demographics {
     sql: CONCAT(${patient_name}, ' (', ${member_id_list}, ')')   ;;
   }
 
-  dimension: client_name{
-    type: string
-    label: "Affiliation"
-    sql: 'Master AHC Medical' ;;
-  }
+    dimension: client_name{
+      type: string
+      label: "Affiliation"
+      sql: ${TABLE}."EMPLOYER_NAME" ;;
+    }
 
   dimension: unique_id_demo {
     type: string
