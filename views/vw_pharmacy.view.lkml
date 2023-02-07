@@ -452,14 +452,14 @@ view: vw_pharmacy {
   measure: Filled_date_Min {
     type: date
     label: "PHARMACY Claim - START"
-    sql: MIN(${date_filled_raw}) ;;
+    sql: MIN(${reporting_raw}) ;;
     html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
   }
 
   measure: Filled_date_Max {
     type: date
     label: "PHARMACY Claim - END"
-    sql: MAX(${date_filled_raw}) ;;
+    sql: MAX(${reporting_raw}) ;;
     html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
   }
 
@@ -546,8 +546,13 @@ view: vw_pharmacy {
       <li>{{ word }}</li>
       {% endfor %} ;;
   }
-  dimension: employer_name {
+
+  dimension: EMPLOYER_NAME {
     type: string
+    label: "Affiliation"
     sql: ${TABLE}."EMPLOYER_NAME" ;;
   }
+
+
+
 }

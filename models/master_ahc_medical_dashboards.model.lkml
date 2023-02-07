@@ -3,13 +3,15 @@ connection: "snowflake_prod"
 # include all the views
 include: "/views/**/*.view"
 
-datagroup: master_ahc_medical_dashboards_default_datagroup {
+datagroup: upson_regional_dashboards_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
   max_cache_age: "1 hour"
 }
 
-persist_with: master_ahc_medical_dashboards_default_datagroup
+persist_with: upson_regional_dashboards_default_datagroup
 
+explore: icd_infographics {}
+explore: cpt_infographics {}
 
 explore: vw_medical {
   label: "Medical records"
@@ -39,7 +41,6 @@ explore: vw_medical {
     relationship: many_to_one
     sql_on: ${vw_medical.unique_id} = ${vw_participant_trigger.unique_id} ;;
   }
-
   join: vw_vital_alert {
     view_label: "Vital Report"
     type: left_outer
@@ -158,6 +159,13 @@ explore: vw_risk_group_migration {
     relationship: many_to_one
     sql_on: ${vw_risk_group_migration.Unique_id} = ${vw_participant_trigger.unique_id} ;;
   }
+  join: patient_all_medical_pharmacy_summary {
+    view_label: "Patient Medical & Pharmacy Summary"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${patient_all_medical_pharmacy_summary.PATIENT_ID} = ${vw_risk_group_migration.Unique_id} AND
+      ${patient_all_medical_pharmacy_summary.reporting_year} = ${vw_risk_group_migration.File_year} ;;
+  }
 }
 
 explore: vw_risk_group_med_pharma_summary {
@@ -271,6 +279,73 @@ explore: vw_participant_trigger {
   }
 }
 
+
+explore: vw_chronic_category_test {}
+explore: vw_chronicity_details {}
+explore: vw_paid_amt {}
+explore: vw_plan_year {}
+explore: vw_chronic_list {}
+explore: hedis_measures_dis {}
+explore: vw_predictive_healthscore_index {
+  join: vw_patient_demographics {
+    view_label: "Patient Demographics"
+    type: left_outer
+    relationship: many_to_one
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} = ${vw_patient_demographics.unique_id} ;;
+  }
+
+# cpt,icd infographics changes
+  join: icd_infographics {
+    type: left_outer
+    relationship: one_to_many
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${icd_infographics.unique_id} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${icd_infographics.year_file_date_l};;
+  }
+
+  join: cpt_infographics {
+    type: left_outer
+    relationship: one_to_many
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${cpt_infographics.unique_id} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${cpt_infographics.year_file_date_l};;
+  }
+
+  join: vw_chronic_category_test {
+    type: inner
+    relationship: one_to_one
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${vw_chronic_category_test.patient_id} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${vw_chronic_category_test.year_file_date_l};;
+  }
+
+  join: vw_chronicity_details {
+    type: inner
+    relationship: one_to_one
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${vw_chronicity_details.UNIQUE_ID} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${vw_chronicity_details.BASE_YEAR};;
+  }
+# for paid Amount
+
+  join: vw_paid_amt {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${vw_paid_amt.unique_id} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${vw_paid_amt.base_year};;
+  }
+  # for plan Year
+  join: vw_plan_year {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${vw_plan_year.unique_id} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${vw_plan_year.file_year};;
+  }
+#for chronic category list
+  join: vw_chronic_list {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:  ${vw_predictive_healthscore_index.patient_id_l} =  ${vw_chronic_list.unique_id} and
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${vw_chronic_list.file_year};;
+  }
+}
+
 explore: patient_all_medical_pharmacy_summary { #designed for Claim Analysis summary dashboard.
   join: vw_patient_demographics {
     view_label: "Patient Demographics"
@@ -284,9 +359,31 @@ explore: patient_all_medical_pharmacy_summary { #designed for Claim Analysis sum
     relationship: many_to_one
     sql_on: ${patient_all_medical_pharmacy_summary.PATIENT_ID} = ${patient_all_medical_summary.PATIENT_ID} ;;
   }
+  join: vw_participant_trigger {
+    view_label: "Participant Trigger"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${patient_all_medical_pharmacy_summary.PATIENT_ID} = ${vw_participant_trigger.unique_id}  ;;
+  }
+  join: vw_predictive_healthscore_index {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:${vw_predictive_healthscore_index.patient_id_l} =${patient_all_medical_pharmacy_summary.PATIENT_ID} AND
+      ${vw_predictive_healthscore_index.year_file_date_l} = ${patient_all_medical_pharmacy_summary.reporting_year};;
+  }
+  join: vw_plan_year {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:${patient_all_medical_pharmacy_summary.PATIENT_ID} =${vw_plan_year.unique_id} and
+      ${patient_all_medical_pharmacy_summary.reporting_year} = ${vw_plan_year.file_year};;
+  }
+  join: vw_chronicity_details {
+    type: inner
+    relationship: one_to_one
+    sql_on:${patient_all_medical_pharmacy_summary.PATIENT_ID} =${vw_chronicity_details.UNIQUE_ID} and
+      ${patient_all_medical_pharmacy_summary.reporting_year} = ${vw_chronicity_details.BASE_YEAR};;
+  }
 }
-
-explore: patient_all_medical_summary {}
 
 explore:patient_yearly_total_avg_spend_comparison{
   join: vw_patient_demographics {
@@ -315,3 +412,7 @@ explore: patient_migration_across_years_summary {
     sql_on: ${patient_migration_across_years_summary.UNIQUE_ID} = ${vw_patient_demographics.unique_id} ;;
   }
 }
+
+explore: hedis_compliance_percent{}
+explore: patient_all_medical_summary {}
+explore: compliance_summary {}

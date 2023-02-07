@@ -19,7 +19,7 @@ view: vw_risk_group_migration {
           {% condition CHRONIC_OR_NOT %} "CHRONICITY_IDENTIFIER" {% endcondition %} AND
           {% condition AVOIDABLE_ER_OR_NOT %} "ICD_AVOIDABLE_ER" {% endcondition %} AND
           {% condition DIGESTIVE_DISEASE_OR_NOT %} "ICD_DIGESTIVE_DISEASE" {% endcondition %} AND
-            {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
+            {% condition PARTICIPANT_YEAR %} LEFT("ON_BOARD_DATE", 4) {% endcondition %} AND
             {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
            ;;
   }
@@ -255,6 +255,7 @@ view: vw_risk_group_migration {
           ELSE '0'
           END;;
   }
+
   measure: chronic_paid_amt {
     type: sum
     label: "Chronic Total $"
@@ -267,4 +268,19 @@ view: vw_risk_group_migration {
     label: "Chronic Category"
     sql: ${TABLE}."CHRONIC_CAT";;
   }
+## Used in Referral List Dashboard
+
+  dimension: Risk_Group_1 {
+    label: "Risk Group 1 "
+    type: string
+    sql: case when ${Risk_group} = 'GROUP-3' THEN 'GROUP-3'
+               when ${Risk_group} = 'GROUP-4' THEN 'GROUP-4'
+               when ${Risk_group} = 'GROUP-5' THEN 'GROUP-5'
+               when ${Risk_group} = 'GROUP-6' THEN 'GROUP-6'
+               when ${Risk_group} = 'GROUP-7' THEN 'GROUP-7'
+      ELSE 'NA'
+      END;;
+  }
+##
+
 }

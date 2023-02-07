@@ -3,6 +3,8 @@ view: patient_all_medical_pharmacy_summary {
     sql: select
       MP.UNIQUE_ID as UNIQUE_ID,
       MP.SERVICE_YEAR as YEAR,
+      M.RISK_GROUP as RISK_GROUP,
+      M.CCW_CHRONIC_CAT_LIST as CCW_CHRONIC_CAT_LIST,
       SUM(M.TOTAL_PAID_AMT) as TOTAL_PAID_AMT_M,
       SUM(M.CHRONIC_TOTAL_PAID_AMT) as CHRONIC_TOTAL_PAID_AMT,
       M.DIAGNOSIS_CATEGORY_LIST as DIAGNOSIS_CATEGORY_LIST,
@@ -23,6 +25,8 @@ view: patient_all_medical_pharmacy_summary {
 
       (select  M1.PATIENT_ID_M as PATIENT_ID_M,
       M1.SERVICE_YEAR as SERVICE_YEAR,
+      M1.RISK_GROUP as RISK_GROUP,
+      M1.CCW_CHRONIC_CAT_LIST as CCW_CHRONIC_CAT_LIST,
       SUM(M1.TOTAL_PAID_AMT) as TOTAL_PAID_AMT,
       SUM(M1.CHRONIC_TOTAL_PAID_AMT) AS CHRONIC_TOTAL_PAID_AMT,
       M2.DIAGNOSIS_CATEGORY_LIST as DIAGNOSIS_CATEGORY_LIST,
@@ -34,13 +38,15 @@ view: patient_all_medical_pharmacy_summary {
       (Select
       "UNIQUE_ID" as PATIENT_ID_M,
       LEFT("DIAGNOSIS_DATE", 4) as SERVICE_YEAR,
+      "RISK_GROUP" as RISK_GROUP,
+      LISTAGG(DISTINCT "CCW_CHRONIC_CAT", ' || ') within group (order by "CCW_CHRONIC_CAT" ASC) as CCW_CHRONIC_CAT_LIST,
       SUM("TOTAL_EMPLOYER_PAID_AMT") as TOTAL_PAID_AMT,
       SUM(CASE WHEN "CCW_CHRONIC_CAT" IS NULL THEN 0
       ELSE "TOTAL_EMPLOYER_PAID_AMT"
       END) AS CHRONIC_TOTAL_PAID_AMT
       FROM "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
       WHERE {% condition CHRONIC_CATEGORY %} "CCW_CHRONIC_CAT" {% endcondition %}
-      GROUP BY PATIENT_ID_M, SERVICE_YEAR) as M1
+      GROUP BY PATIENT_ID_M, SERVICE_YEAR ,RISK_GROUP) as M1
 
       LEFT JOIN
 
@@ -55,13 +61,13 @@ view: patient_all_medical_pharmacy_summary {
       GROUP BY PATIENT_ID_M) as M2
 
       ON M1.PATIENT_ID_M = M2.PATIENT_ID_M
-      GROUP BY M1.PATIENT_ID_M, M1.SERVICE_YEAR, M2.DIAGNOSIS_CATEGORY_LIST, M2.DIAGNOSIS_DESCRIPTION_LIST, M2.CHRONIC_CATEGORY_LIST, M2.PROCEDURE_DESCRIPTION_LIST,
+      GROUP BY M1.PATIENT_ID_M, M1.SERVICE_YEAR,M1.RISK_GROUP, M1.CCW_CHRONIC_CAT_LIST, M2.DIAGNOSIS_CATEGORY_LIST, M2.DIAGNOSIS_DESCRIPTION_LIST, M2.CHRONIC_CATEGORY_LIST, M2.PROCEDURE_DESCRIPTION_LIST,
       M2.PROCEDURE_CATEGORY_LIST) as M
 
       ON MP.UNIQUE_ID = M.PATIENT_ID_M AND
       MP.SERVICE_YEAR = M.SERVICE_YEAR
 
-      GROUP BY UNIQUE_ID, YEAR, DIAGNOSIS_CATEGORY_LIST, DIAGNOSIS_DESCRIPTION_LIST, CHRONIC_CATEGORY_LIST, PROCEDURE_DESCRIPTION_LIST,
+      GROUP BY UNIQUE_ID, YEAR, RISK_GROUP,CCW_CHRONIC_CAT_LIST, DIAGNOSIS_CATEGORY_LIST, DIAGNOSIS_DESCRIPTION_LIST, CHRONIC_CATEGORY_LIST, PROCEDURE_DESCRIPTION_LIST,
       PROCEDURE_CATEGORY_LIST;;
   }
   dimension: PATIENT_ID {
@@ -186,10 +192,38 @@ view: patient_all_medical_pharmacy_summary {
       ELSE ${reporting_year}
       END ;;
   }
+
+  dimension: RISK_GROUP {
+    type: string
+    sql: ${TABLE}.RISK_GROUP ;;
+  }
+
+  dimension: CCW_CHRONIC_CAT_LIST {
+    type: string
+    label: "Chronic Category"
+    sql: ${TABLE}.CCW_CHRONIC_CAT_LIST ;;
+  }
+
   measure: chronic_total_amt {
     type: sum
     label: "CHRONIC TOTAL $"
     sql: ${TABLE}."CHRONIC_TOTAL_PAID_AMT" ;;
+  }
 
+  measure: RISK_GROUP_list {
+    type: string
+    label: "RISK Group"
+    sql: LISTAGG(DISTINCT ${RISK_GROUP}, ' || ') within group (order by ${RISK_GROUP} ASC) ;;
+  }
+
+  measure: Chronic_Category_list_2 {
+    type: string
+    label: "Chronic Category list"
+    sql: LISTAGG(DISTINCT ${CCW_CHRONIC_CAT_LIST}, ' || ') within group (order by ${CCW_CHRONIC_CAT_LIST} ASC) ;;
+    html: {% assign words = value | split: ' || ' %}
+          <ul>
+          {% for word in words %}
+          <li>{{ word }}</li>
+          {% endfor %} ;;
   }
 }

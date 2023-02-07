@@ -3,7 +3,7 @@ view: vw_medical {
   derived_table: {
     sql: select * from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
       WHERE "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
-        WHERE {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
+        WHERE {% condition PARTICIPANT_YEAR %} LEFT("ON_BOARD_DATE", 4) {% endcondition %} AND
         {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
       ;;
   }
@@ -630,11 +630,12 @@ view: vw_medical {
           END ;;
   }
 
-    dimension: Primarycare_Physician_and_Speciality {
-      type: string
-      label: "PCP & SPECIALTY SERVICES"
-      description: "Primary care physician & Specialty services"
-      sql: CASE WHEN ${reconciled_diagnosis_code_icd10} IN ('Z0000', 'Z0001') OR
+  dimension: Primarycare_Physician_and_Speciality {
+
+    type: string
+    label: "PCP & SPECIALTY SERVICES"
+    description: "Primary care physician & Specialty services"
+    sql: CASE WHEN ${reconciled_diagnosis_code_icd10} IN ('Z0000', 'Z0001') OR
             ${primary_procedure_code} IN ('99214', '99381', '99382', '99383', '99384', '99385', '99386', '99387', '99391', '99392',
               '99393', '99394', '99395', '99396', '99397', '99401', '99402', '99403', '99404', '99411', '99412', '99461', '99497',
               'G0296', 'G0402', 'G0438', 'G0439', 'G0445', 'G0468', 'S0610', 'S0612', 'S0613') OR
@@ -646,7 +647,8 @@ view: vw_medical {
            THEN 'SPECIALTY SERVICES'
           ELSE 'OTHER SERVICES'
           END  ;;
-    }
+  }
+
 # Cancer Screening Eligible Population (Breast, Colon & Cervical Cancer)
   dimension: Cancer_Screening_Eligible_Population {
     type: string
@@ -987,8 +989,8 @@ view: vw_medical {
 
   dimension: participant_paid_year {
     type: string
-    hidden: yes
-    sql: ${Paid_year} ;;
+    hidden: no
+    sql: ${ON_BOARD_DATE_year} ;;
   }
 
   filter: PARTICIPANT_YEAR {
@@ -1032,9 +1034,27 @@ view: vw_medical {
     drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
     sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
       WHEN {% parameter reporting_date_filter %} = 'Service' THEN ${TABLE}."DIAGNOSIS_DATE"
-      ELSE ${TABLE}."PAID_DATE"
+      ELSE ${TABLE}."DIAGNOSIS_DATE"
       END ;;
   }
+
+  dimension_group: ON_BOARD_DATE {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    label: "ON BOARD DATE"
+    drill_fields: [ON_BOARD_DATE_year, ON_BOARD_DATE_quarter, ON_BOARD_DATE_month, ON_BOARD_DATE_raw]
+    sql: ${TABLE}."ON_BOARD_DATE" ;;
+  }
+
 #Benchmark labelling, HEDIS list of defined measures, Rendering & $ based on previous months
   dimension: benchmark_year_filter_suggestion {
     type: string
@@ -1128,10 +1148,60 @@ view: vw_medical {
       <li>{{ word }}</li>
       {% endfor %} ;;
   }
+
+  dimension: EMPLOYER_NAME {
+    type: string
+    label: "Affiliation"
+    sql: ${TABLE}."EMPLOYER_NAME" ;;
+  }
+
+#Date Range for Executive summery
+
+  filter: date_range_filter_1 {
+    type: date
+    datatype: date
+  }
+
+  filter: date_range_filter_2 {
+    type: date
+    datatype: date
+  }
+
+  filter: date_range_filter_3 {
+    type: date
+    datatype: date
+  }
+
+  dimension: date_range_filter_dimension_1 {
+    type: string
+    sql: CONCAT({% date_start date_range_filter_1 %}, ' - ', IFNULL({% date_end date_range_filter_1 %}, '')) ;;
+  }
+
+  dimension: date_range_filter_dimension_2 {
+    type: string
+    sql: CONCAT({% date_start date_range_filter_2 %}, ' - ', IFNULL({% date_end date_range_filter_2 %}, '')) ;;
+  }
+
+  dimension: date_range_filter_dimension_3 {
+    type: string
+    sql: CONCAT({% date_start date_range_filter_3 %}, ' - ', IFNULL({% date_end date_range_filter_3 %}, '')) ;;
+  }
+
+  dimension: date_range {
+    type: string
+    sql: CASE WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_1 %} AND {% date_end date_range_filter_1 %} THEN ${date_range_filter_dimension_1}
+        WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_2 %} AND {% date_end date_range_filter_2 %} THEN ${date_range_filter_dimension_2}
+        WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_3 %} AND {% date_end date_range_filter_3 %} THEN ${date_range_filter_dimension_3}
+        ELSE NULL
+        /*CONCAT('before  ', {% date_end date_range_filter_1 %}) */
+        END ;;
+  }
+
   measure: total_patients_risk_group_wise {
     type: count_distinct
     label: "Total Patients (N)"
     sql:  ${unique_id} ;;
     drill_fields: [vw_patient_demographics.patient_name, RISK_GROUP, patient_gender, vw_patient_demographics.patient_current_age, Total_Visit, Total_Paid_Amt]
   }
+
 }

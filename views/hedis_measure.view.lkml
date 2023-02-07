@@ -1,11 +1,6 @@
 view: hedis_measure {
-  derived_table: {
-    sql: select * from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_HEDIS_MEASURES"
-      WHERE "UNIQUE_ID" IN (select DISTINCT "UNIQUE_ID" from "SCH_AHC_UPSON_REGIONAL"."LKR_TAB_MEDICAL"
-        WHERE {% condition PARTICIPANT_YEAR %} LEFT("PAID_DATE", 4) {% endcondition %} AND
-        {% condition PARTICIPANT_Flag %} "PARTICIPANT_FLAG" {% endcondition %})
-    ;;
-  }
+  label: "HEDIS Measures"
+  sql_table_name:"SCH_AHC_UPSON_REGIONAL"."LKR_TAB_HEDIS_MEASURES";;
 
 ##ADULT'S ACCESS TO PREVENTIVE/AMBULATORY HEALTH SERVICES
   dimension: aap_compliant {
@@ -149,7 +144,7 @@ view: hedis_measure {
 ##CERVICAL CANCER SCREENING
   dimension: ccs_compliant {
     type: string
-    label: "CCS Comliant"
+    label: "CCS Compliant"
     sql: ${TABLE}."CCS_COMPLIANT" ;;
   }
 
@@ -162,7 +157,7 @@ view: hedis_measure {
   measure: ccs_compliant_patients {
     type: count_distinct
     filters: [ccs_compliant: "1"]
-    label: "CCS Comliant - N"
+    label: "CCS Compliant - N"
     sql: ${unique_id} ;;
   }
 
@@ -393,19 +388,7 @@ view: hedis_measure {
     sql: ${unique_id} ;;
   }
 
-  filter: PARTICIPANT_YEAR {
-    type: string
-    group_label: "PARTICIPANT FILTER"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.participant_paid_year
-  }
 
-  filter: PARTICIPANT_Flag {
-    type: string
-    group_label: "PARTICIPANT FILTER"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
-  }
 #Care Management dashboard dimension & measures: Benchmark labelling, HEDIS list of defined measures, Rendering & $ based on previous months
 
   dimension: benchmark_year_filter_suggestion {
@@ -480,7 +463,7 @@ view: hedis_measure {
       {% endfor %} ;;
   }
 
-  ##percent of measures
+##percent of measures
 
   measure: AAP_PERCENT {
     type: number
@@ -527,4 +510,5 @@ view: hedis_measure {
     value_format: "0.0\%"
     sql: ${spr_compliant_patients}/NULLIF(${spr_eligible_patients},0) *100;;
   }
+
 }

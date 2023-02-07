@@ -10,7 +10,8 @@ view: ad_hoc_query_tool_pharmacy {
           "TOTAL_BILLED_AMT" as Total_Billed_Amt_P,
           "TOTAL_EMPLOYER_PAID_AMT" as Total_Paid_Amt_P,
           "NON_PROPRIETARY_NAME" as Drug_List,
-          "TEA_CATEGORY" as TEA_Cat_List
+          "TEA_CATEGORY" as TEA_Cat_List,
+          "ON_BOARD_DATE" AS ON_BOARD_DATE
 
 
       from
@@ -422,6 +423,23 @@ view: ad_hoc_query_tool_pharmacy {
       END ;;
   }
 
+  dimension_group: ON_BOARD_DATE {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    label: "ON BOARD DATE"
+    drill_fields: [ON_BOARD_DATE_year, ON_BOARD_DATE_quarter, ON_BOARD_DATE_month, ON_BOARD_DATE_raw]
+    sql: ${TABLE}."ON_BOARD_DATE" ;;
+  }
+
   measure: Date_Filled_Min {
     type: date
     label: "PHARMACY Claim - START"
@@ -435,5 +453,4 @@ view: ad_hoc_query_tool_pharmacy {
     sql: MAX(${SERVICE_DATE_raw}) ;;
     html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
   }
-
 }
