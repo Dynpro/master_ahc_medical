@@ -182,567 +182,570 @@ view: vw_cohort_analysis_summary_1 {
   }
 
 
-  dimension: PATIENT_ID {
-    type: string
-    hidden: yes
-    sql: ${TABLE}.MEDICAL_PATIENT_ID ;;
-  }
+ dimension: PATIENT_ID {
+  label: "MEMBER ID"
+  type: string
+  hidden: yes
+  sql: ${TABLE}.MEDICAL_PATIENT_ID ;;
+}
 
-  dimension: PAID_YEAR {
-    type: string
-    label: "Service Year"
-    sql: ${TABLE}.MEDICAL_PAID_YEAR ;;
-  }
+dimension: PAID_YEAR {
+  type: string
+  label: "Service Year"
+  sql: ${TABLE}.MEDICAL_PAID_YEAR ;;
+}
 
-  dimension: PATIENT_GENDER {
-    type: string
-    label: "Gender/Sex"
-    sql: ${TABLE}.MEDICAL_PATIENT_GENDER ;;
-  }
+dimension: PATIENT_GENDER {
+  type: string
+  label: "Gender/Sex"
+  sql: ${TABLE}.MEDICAL_PATIENT_GENDER ;;
+}
 
-  dimension: RELATIONSHIP_TO_EMPLOYEE {
-    type: string
-    label: "Employee Relationship(Employee/Spouse/Dependent)"
-    sql: ${TABLE}.MEDICAL_RELATIONSHIP_TO_EMPLOYEE ;;
-  }
+dimension: RELATIONSHIP_TO_EMPLOYEE {
+  type: string
+  label: "Employee Relationship(Employee/Spouse/Dependent)"
+  sql: ${TABLE}.MEDICAL_RELATIONSHIP_TO_EMPLOYEE ;;
+}
 
 #Group-1 Dimension, Measures & Filters
-  filter: DISEASE_CATEGORY_G1 {
-    type: string
-    label: "G1 - Diagnostic Category"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_disease_category
-  }
+filter: DISEASE_CATEGORY_G1 {
+  type: string
+  label: "G1 - Diagnostic Category"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_disease_category
+}
 
-  filter: DESCRIPTION_G1 {
-    type: string
-    label: "G1 - Diagnosis Description"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_description
-  }
+filter: DESCRIPTION_G1 {
+  type: string
+  label: "G1 - Diagnosis Description"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_description
+}
 
-  filter:CHRONIC_CATEGORY_G1 {
-    type: string
-    label: "G1 - Chronic Category"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_chronic_cat
-  }
+filter:CHRONIC_CATEGORY_G1 {
+  type: string
+  label: "G1 - Chronic Category"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_chronic_cat
+}
 
-  filter:PATIENT_GENDER_G1 {
-    type: string
-    label: "G1 - PATIENT GENDER"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.patient_gender
-  }
+filter:PATIENT_GENDER_G1 {
+  type: string
+  label: "G1 - MEMBER GENDER"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.patient_gender
+}
 
-  filter: RECONCILED_DIAGNOSIS_CODE_ICD10_G1 {
-    type: string
-    label: "G1 - DIAGNOSIS CODE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.reconciled_diagnosis_code_icd10
-  }
+filter: RECONCILED_DIAGNOSIS_CODE_ICD10_G1 {
+  type: string
+  label: "G1 - DIAGNOSIS CODE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.reconciled_diagnosis_code_icd10
+}
 
-  filter: PRIMARY_PROCEDURE_CODE_G1 {
-    type: string
-    label: "G1 - PROCEDURE CODE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.primary_procedure_code
-  }
+filter: PRIMARY_PROCEDURE_CODE_G1 {
+  type: string
+  label: "G1 - PROCEDURE CODE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.primary_procedure_code
+}
 
-  filter: RELATIONSHIP_TO_EMPLOYEE_G1 {
-    type: string
-    label: "G1 - RELATIONSHIP TO EMPLOYEE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.relationship_to_employee
-  }
+filter: RELATIONSHIP_TO_EMPLOYEE_G1 {
+  type: string
+  label: "G1 - RELATIONSHIP TO EMPLOYEE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.relationship_to_employee
+}
 
-  filter: PLACE_OF_SERVICE_DESCRIPTION_G1 {
-    type: string
-    label: "G1 - PLACE OF SERVICE DESCRIPTION"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.place_of_service_description
-  }
+filter: PLACE_OF_SERVICE_DESCRIPTION_G1 {
+  type: string
+  label: "G1 - PLACE OF SERVICE DESCRIPTION"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.place_of_service_description
+}
 
-  filter: ICD_MAJOR_DISEASE_G1 {
-    type: string
-    label: "G1 - DIABETES?"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.ICD_MAJOR_DISEASE
-  }
+filter: ICD_MAJOR_DISEASE_G1 {
+  type: string
+  label: "G1 - DIABETES?"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.ICD_MAJOR_DISEASE
+}
 
-  filter: PROCEDURE_CODE_TYPE_G1 {
-    type: string
-    label: "G1 - PROCEDURE CODE TYPE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.procedure_code_type
-  }
+filter: PROCEDURE_CODE_TYPE_G1 {
+  type: string
+  label: "G1 - PROCEDURE CODE TYPE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.procedure_code_type
+}
 
-  filter: PATIENT_AGE_G1 {
-    type: number
-    label: "G1 - PATIENT AGE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.patient_age
-  }
+filter: PATIENT_AGE_G1 {
+  type: number
+  label: "G1 - MEMBER AGE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.patient_age
+}
 
-  filter: AGE_GROUP_1_G1 {
-    type: string
-    label: "G1 - AGE GROUP"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.age_group_1
-  }
+filter: AGE_GROUP_1_G1 {
+  type: string
+  label: "G1 - AGE GROUP"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.age_group_1
+}
 
-  filter: JOB_TYPE_G1 {
-    type: string
-    label: "G1 - JOB TYPE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.job_type
-  }
+filter: JOB_TYPE_G1 {
+  type: string
+  label: "G1 - JOB TYPE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.job_type
+}
 
-  filter: JOB_DESIGNATION_G1 {
-    type: string
-    label: "G1 - JOB DESIGNATION"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.job_designation
-  }
+filter: JOB_DESIGNATION_G1 {
+  type: string
+  label: "G1 - JOB DESIGNATION"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.job_designation
+}
 
-  filter: ADDRESS_ZIP_CODE_G1 {
-    type: string
-    label: "G1 - ADDRESS ZIP CODE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.address_zip_code
-  }
+filter: ADDRESS_ZIP_CODE_G1 {
+  type: string
+  label: "G1 - ADDRESS ZIP CODE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.address_zip_code
+}
 
-  filter: ADDRESS_STATE_G1 {
-    type: string
-    label: "G1 - ADDRESS STATE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.address_state
-  }
+filter: ADDRESS_STATE_G1 {
+  type: string
+  label: "G1 - ADDRESS STATE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.address_state
+}
 
-  filter: ADDRESS_CITY_G1 {
-    type: string
-    label: "G1 - ADDRESS CITY"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.address_city
-  }
+filter: ADDRESS_CITY_G1 {
+  type: string
+  label: "G1 - ADDRESS CITY"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.address_city
+}
 
-  filter: PROCEDURE_DESCRIPTION_G1 {
-    type: string
-    label: "G1 - PROCEDURE DESCRIPTION"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.procedure_description
-  }
+filter: PROCEDURE_DESCRIPTION_G1 {
+  type: string
+  label: "G1 - PROCEDURE DESCRIPTION"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.procedure_description
+}
 
-  filter: ICD_LS_MODIFY_G1 {
-    type: string
-    label: "G1 - LIFESTYLE MODIFIABLE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_ls_modify
-  }
+filter: ICD_LS_MODIFY_G1 {
+  type: string
+  label: "G1 - LIFESTYLE MODIFIABLE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_ls_modify
+}
 
-  filter: ICD_ACUTE_G1 {
-    type: string
-    label: "G1 - ICD ACUTE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_acute
-  }
+filter: ICD_ACUTE_G1 {
+  type: string
+  label: "G1 - ICD ACUTE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_acute
+}
 
-  filter: ICD_PREVENTATIVE_G1 {
-    type: string
-    label: "G1 - PREVENTATIVE DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_preventative
-  }
+filter: ICD_PREVENTATIVE_G1 {
+  type: string
+  label: "G1 - PREVENTATIVE DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_preventative
+}
 
-  filter: CHRONICITY_IDENTIFIER_G1 {
-    type: string
-    label: "G1 - CHRONIC DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.2012_chronic
-  }
+filter: CHRONICITY_IDENTIFIER_G1 {
+  type: string
+  label: "G1 - CHRONIC DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.2012_chronic
+}
 
-  filter: ICD_AVOIDABLE_ER_G1 {
-    type: string
-    label: "G1 - AVOIDABLE ER DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_avoidable_er
-  }
+filter: ICD_AVOIDABLE_ER_G1 {
+  type: string
+  label: "G1 - AVOIDABLE ER DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_avoidable_er
+}
 
-  filter: ICD_DIGESTIVE_DISEASE_G1 {
-    type: string
-    label: "G1 - DIGESTIVE DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_digestive_disease
-  }
+filter: ICD_DIGESTIVE_DISEASE_G1 {
+  type: string
+  label: "G1 - DIGESTIVE DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_digestive_disease
+}
 
-  filter: RISK_GROUP_G1 {
-    type: string
-    label: "G1 - RISK GROUP"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.RISK_GROUP
-  }
+filter: RISK_GROUP_G1 {
+  type: string
+  label: "G1 - RISK GROUP"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.RISK_GROUP
+}
 
 
-  dimension: PATIENT_ID_G1 {
-    type: string
-    primary_key: yes
-    hidden: yes
-    sql: ${TABLE}.Unique_Id_M_G1 ;;
-  }
+dimension: PATIENT_ID_G1 {
+  label: "MEMBER ID G1"
+  type: string
+  primary_key: yes
+  hidden: yes
+  sql: ${TABLE}.Unique_Id_M_G1 ;;
+}
 
-  measure: Total_Patient_G1 {
-    type: count_distinct
-    sql: ${PATIENT_ID_G1} ;;
-    label: "G1 - Total Patients"
-  }
+measure: Total_Patient_G1 {
+  type: count_distinct
+  sql: ${PATIENT_ID_G1} ;;
+  label: "G1 - Total Member"
+}
 
-  dimension: PAID_YEAR_G1 {
-    type: string
-    label: "G1 - Year"
-    hidden: yes
-    sql: ${TABLE}.PAID_YEAR_G1 ;;
-  }
+dimension: PAID_YEAR_G1 {
+  type: string
+  label: "G1 - Year"
+  hidden: yes
+  sql: ${TABLE}.PAID_YEAR_G1 ;;
+}
 
-  dimension: DIAGNOSIS_DESCRIPTION_LIST_G1 {
-    type: string
-    hidden: yes
-    label: "G1 - Diagnosis Description"
-    sql: ${TABLE}.Diagnosis_Description_List_G1 ;;
-  }
+dimension: DIAGNOSIS_DESCRIPTION_LIST_G1 {
+  type: string
+  hidden: yes
+  label: "G1 - Diagnosis Description"
+  sql: ${TABLE}.Diagnosis_Description_List_G1 ;;
+}
 
-  dimension: DIAG_CATEGORY_LIST_G1 {
-    type: string
-    hidden: yes
-    label: "G1 - Diagnosis Category"
-    sql: ${TABLE}.Diagnosis_Category_List_G1 ;;
-  }
+dimension: DIAG_CATEGORY_LIST_G1 {
+  type: string
+  hidden: yes
+  label: "G1 - Diagnosis Category"
+  sql: ${TABLE}.Diagnosis_Category_List_G1 ;;
+}
 
-  measure: MED_TOTAL_BILLED_AMT_G1 {
-    type: sum
-    hidden: yes
-    sql: ${TABLE}.MED_Total_Billed_Amt_G1 ;;
-    value_format: "$#,##0"
-  }
+measure: MED_TOTAL_BILLED_AMT_G1 {
+  type: sum
+  hidden: yes
+  sql: ${TABLE}.MED_Total_Billed_Amt_G1 ;;
+  value_format: "$#,##0"
+}
 
-  measure: MED_TOTAL_PAID_AMT_G1 {
-    type: sum
-    label: "G1 - Total Paid Amt_MEDICAL"
-    sql: ${TABLE}.MED_Total_Paid_Amt_G1 ;;
-    value_format: "$#,##0"
-  }
+measure: MED_TOTAL_PAID_AMT_G1 {
+  type: sum
+  label: "G1 - Total Paid Amt MEDICAL"
+  sql: ${TABLE}.MED_Total_Paid_Amt_G1 ;;
+  value_format: "$#,##0"
+}
 
-  measure: MED_AVERAGE_PAID_AMT_G1 {
-    type: number
-    label: "G1 - Mean Paid Amt_MEDICAL"
-    sql: CASE WHEN ${Total_Patient_G1} <> 0 THEN ${MED_TOTAL_PAID_AMT_G1}/${Total_Patient_G1}
+measure: MED_AVERAGE_PAID_AMT_G1 {
+  type: number
+  label: "G1 - Mean Paid Amt MEDICAL"
+  sql: CASE WHEN ${Total_Patient_G1} <> 0 THEN ${MED_TOTAL_PAID_AMT_G1}/${Total_Patient_G1}
         ELSE 0
         END;;
-    value_format: "$#,##0"
-  }
+  value_format: "$#,##0"
+}
 
 
 # Group 2 Dimension, Measures & Filters
-  #G2-Medical Dimension, Measures & Filters
-  filter: DISEASE_CATEGORY_G2 {
-    type: string
-    label: "G2 - Diagnostic Category"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_disease_category
-  }
+#G2-Medical Dimension, Measures & Filters
+filter: DISEASE_CATEGORY_G2 {
+  type: string
+  label: "G2 - Diagnostic Category"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_disease_category
+}
 
-  filter: DESCRIPTION_G2 {
-    type: string
-    label: "G2 - Diagnosis Description"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_description
-  }
+filter: DESCRIPTION_G2 {
+  type: string
+  label: "G2 - Diagnosis Description"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_description
+}
 
-  filter: CHRONIC_CATEGORY_G2 {
-    type: string
-    label: "G2 - Chronic Category"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_chronic_cat
-  }
+filter: CHRONIC_CATEGORY_G2 {
+  type: string
+  label: "G2 - Chronic Category"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_chronic_cat
+}
 
-  filter:PATIENT_GENDER_G2 {
-    type: string
-    label: "G2 - PATIENT GENDER"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.patient_gender
-  }
+filter:PATIENT_GENDER_G2 {
+  type: string
+  label: "G2 - MEMBER GENDER"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.patient_gender
+}
 
-  filter: RECONCILED_DIAGNOSIS_CODE_ICD10_G2 {
-    type: string
-    label: "G2 - DIAGNOSIS CODE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.reconciled_diagnosis_code_icd10
-  }
+filter: RECONCILED_DIAGNOSIS_CODE_ICD10_G2 {
+  type: string
+  label: "G2 - DIAGNOSIS CODE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.reconciled_diagnosis_code_icd10
+}
 
-  filter: PRIMARY_PROCEDURE_CODE_G2 {
-    type: string
-    label: "G2 - PROCEDURE CODE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.primary_procedure_code
-  }
+filter: PRIMARY_PROCEDURE_CODE_G2 {
+  type: string
+  label: "G2 - PROCEDURE CODE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.primary_procedure_code
+}
 
-  filter: PATIENT_AGE_G2 {
-    type: number
-    label: "G2 - PATIENT AGE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.patient_age
-  }
+filter: PATIENT_AGE_G2 {
+  type: number
+  label: "G2 - MEMBER AGE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.patient_age
+}
 
-  filter: AGE_GROUP_1_G2 {
-    type: string
-    label: "G2 - AGE GROUP"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.age_group_1
-  }
+filter: AGE_GROUP_1_G2 {
+  type: string
+  label: "G2 - AGE GROUP"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.age_group_1
+}
 
-  filter: JOB_TYPE_G2 {
-    type: string
-    label: "G2 - JOB TYPE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.job_type
-  }
+filter: JOB_TYPE_G2 {
+  type: string
+  label: "G2 - JOB TYPE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.job_type
+}
 
-  filter: JOB_DESIGNATION_G2 {
-    type: string
-    label: "G2 - JOB DESIGNATION"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.job_designation
-  }
+filter: JOB_DESIGNATION_G2 {
+  type: string
+  label: "G2 - JOB DESIGNATION"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.job_designation
+}
 
-  filter: ADDRESS_ZIP_CODE_G2 {
-    type: string
-    label: "G2 - ADDRESS ZIP CODE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.address_zip_code
-  }
+filter: ADDRESS_ZIP_CODE_G2 {
+  type: string
+  label: "G2 - ADDRESS ZIP CODE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.address_zip_code
+}
 
-  filter: ADDRESS_STATE_G2 {
-    type: string
-    label: "G2 - ADDRESS STATE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.address_state
-  }
+filter: ADDRESS_STATE_G2 {
+  type: string
+  label: "G2 - ADDRESS STATE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.address_state
+}
 
-  filter: ADDRESS_CITY_G2 {
-    type: string
-    label: "G2 - ADDRESS CITY"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.address_city
-  }
+filter: ADDRESS_CITY_G2 {
+  type: string
+  label: "G2 - ADDRESS CITY"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.address_city
+}
 
-  filter: RELATIONSHIP_TO_EMPLOYEE_G2 {
-    type: string
-    label: "G2 - RELATIONSHIP TO EMPLOYEE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.relationship_to_employee
-  }
+filter: RELATIONSHIP_TO_EMPLOYEE_G2 {
+  type: string
+  label: "G2 - RELATIONSHIP TO EMPLOYEE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.relationship_to_employee
+}
 
-  filter: PLACE_OF_SERVICE_DESCRIPTION_G2 {
-    type: string
-    label: "G2 - PLACE OF SERVICE DESCRIPTION"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.place_of_service_description
-  }
+filter: PLACE_OF_SERVICE_DESCRIPTION_G2 {
+  type: string
+  label: "G2 - PLACE OF SERVICE DESCRIPTION"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.place_of_service_description
+}
 
-  filter: ICD_MAJOR_DISEASE_G2 {
-    type: string
-    label: "G2 - DIABETES?"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.ICD_MAJOR_DISEASE
-  }
+filter: ICD_MAJOR_DISEASE_G2 {
+  type: string
+  label: "G2 - DIABETES?"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.ICD_MAJOR_DISEASE
+}
 
-  filter: PROCEDURE_CODE_TYPE_G2 {
-    type: string
-    label: "G2 - PROCEDURE CODE TYPE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.procedure_code_type
-  }
+filter: PROCEDURE_CODE_TYPE_G2 {
+  type: string
+  label: "G2 - PROCEDURE CODE TYPE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.procedure_code_type
+}
 
-  filter: PROCEDURE_DESCRIPTION_G2 {
-    type: string
-    label: "G2 - PROCEDURE DESCRIPTION"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.procedure_description
-  }
+filter: PROCEDURE_DESCRIPTION_G2 {
+  type: string
+  label: "G2 - PROCEDURE DESCRIPTION"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.procedure_description
+}
 
-  filter: ICD_LS_MODIFY_G2 {
-    type: string
-    label: "G2 - LIFESTYLE MODIFIABLE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_ls_modify
-  }
+filter: ICD_LS_MODIFY_G2 {
+  type: string
+  label: "G2 - LIFESTYLE MODIFIABLE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_ls_modify
+}
 
-  filter: ICD_ACUTE_G2 {
-    type: string
-    label: "G2 - ICD ACUTE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_acute
-  }
+filter: ICD_ACUTE_G2 {
+  type: string
+  label: "G2 - ICD ACUTE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_acute
+}
 
-  filter: ICD_PREVENTATIVE_G2 {
-    type: string
-    label: "G2 - PREVENTATIVE DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_preventative
-  }
+filter: ICD_PREVENTATIVE_G2 {
+  type: string
+  label: "G2 - PREVENTATIVE DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_preventative
+}
 
-  filter: CHRONICITY_IDENTIFIER_G2 {
-    type: string
-    label: "G2 - CHRONIC DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.2012_chronic
-  }
+filter: CHRONICITY_IDENTIFIER_G2 {
+  type: string
+  label: "G2 - CHRONIC DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.2012_chronic
+}
 
-  filter: ICD_AVOIDABLE_ER_G2 {
-    type: string
-    label: "G2 - AVOIDABLE ER DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_avoidable_er
-  }
+filter: ICD_AVOIDABLE_ER_G2 {
+  type: string
+  label: "G2 - AVOIDABLE ER DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_avoidable_er
+}
 
-  filter: ICD_DIGESTIVE_DISEASE_G2 {
-    type: string
-    label: "G2 - DIGESTIVE DISEASE"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.icd_digestive_disease
-  }
+filter: ICD_DIGESTIVE_DISEASE_G2 {
+  type: string
+  label: "G2 - DIGESTIVE DISEASE"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.icd_digestive_disease
+}
 
-  filter: RISK_GROUP_G2 {
-    type: string
-    label: "G2 - RISK GROUP"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.RISK_GROUP
-  }
+filter: RISK_GROUP_G2 {
+  type: string
+  label: "G2 - RISK GROUP"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.RISK_GROUP
+}
 
-  dimension: PATIENT_ID_G2 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}.Unique_Id_M_G2 ;;
-  }
+dimension: PATIENT_ID_G2 {
+  label: "MEMBER ID G2"
+  type: string
+  hidden: yes
+  sql: ${TABLE}.Unique_Id_M_G2 ;;
+}
 
-  dimension: DIAGNOSIS_DESCRIPTION_LIST_G2 {
-    type: string
-    hidden: yes
-    label: "G2 - Diagnosis Description"
-    sql: ${TABLE}.Diagnosis_Description_List_G2 ;;
-  }
+dimension: DIAGNOSIS_DESCRIPTION_LIST_G2 {
+  type: string
+  hidden: yes
+  label: "G2 - Diagnosis Description"
+  sql: ${TABLE}.Diagnosis_Description_List_G2 ;;
+}
 
-  dimension: DIAGNOSIS_CATEGORY_LIST_G2 {
-    type: string
-    hidden: yes
-    label: "G2 - Diagnostic Category"
-    sql: ${TABLE}.Diagnosis_Category_List_G2 ;;
-  }
+dimension: DIAGNOSIS_CATEGORY_LIST_G2 {
+  type: string
+  hidden: yes
+  label: "G2 - Diagnostic Category"
+  sql: ${TABLE}.Diagnosis_Category_List_G2 ;;
+}
 
-  measure: MED_Total_Billed_Amt_G2 {
-    type: sum
-    hidden: yes
-    sql: ${TABLE}.MED_Total_Billed_Amt_G2 ;;
-    value_format: "$#,##0"
-  }
+measure: MED_Total_Billed_Amt_G2 {
+  type: sum
+  hidden: yes
+  sql: ${TABLE}.MED_Total_Billed_Amt_G2 ;;
+  value_format: "$#,##0"
+}
 
-  measure: MED_Total_Paid_Amt_G2 {
-    type: sum
-    label: "G2 - Total Paid Amt_MEDICAL"
-    sql: ${TABLE}.MED_Total_Paid_Amt_G2 ;;
-    value_format: "$#,##0"
-  }
+measure: MED_Total_Paid_Amt_G2 {
+  type: sum
+  label: "G2 - Total Paid Amt_MEDICAL"
+  sql: ${TABLE}.MED_Total_Paid_Amt_G2 ;;
+  value_format: "$#,##0"
+}
 
-  measure: MED_AVERAGE_PAID_AMT_G2 {
-    type: number
-    label: "G2 - Mean Paid Amt_MEDICAL"
-    sql: CASE WHEN ${Total_Patient_G2} <> 0 THEN ${MED_Total_Paid_Amt_G2}/${Total_Patient_G2}
+measure: MED_AVERAGE_PAID_AMT_G2 {
+  type: number
+  label: "G2 - Mean Paid Amt MEDICAL"
+  sql: CASE WHEN ${Total_Patient_G2} <> 0 THEN ${MED_Total_Paid_Amt_G2}/${Total_Patient_G2}
           ELSE 0
           END ;;
-    value_format: "$#,##0"
-  }
+  value_format: "$#,##0"
+}
 
-  measure: Total_Patient_G2 {
-    type: count_distinct
-    label: "G2 - Total Patient"
-    sql: ${PATIENT_ID_G2} ;;
-  }
+measure: Total_Patient_G2 {
+  type: count_distinct
+  label: "G2 - Total Member"
+  sql: ${PATIENT_ID_G2} ;;
+}
 
-  dimension: PAID_YEAR_G2 {
-    type: string
-    label: "G2 - Year"
-    hidden: yes
-    sql: ${TABLE}.PAID_YEAR_G2 ;;
-  }
+dimension: PAID_YEAR_G2 {
+  type: string
+  label: "G2 - Year"
+  hidden: yes
+  sql: ${TABLE}.PAID_YEAR_G2 ;;
+}
 
-  filter: MSK_MRS_CODE_CLASSIFICATION_G1 {
-    type: string
-    label: "G1 - MSK MRS Codes Classification"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
-  }
+filter: MSK_MRS_CODE_CLASSIFICATION_G1 {
+  type: string
+  label: "G1 - MSK MRS Codes Classification"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
+}
 
-  filter: PARTICIPANT_FLAG_G1 {
-    type: string
-    hidden: yes
-    label: "G1 - PARTICIPANT Flag M"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
-  }
+filter: PARTICIPANT_FLAG_G1 {
+  type: string
+  hidden: yes
+  label: "G1 - PARTICIPANT Flag M"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
+}
 
-  filter: PARTICIPANT_YEAR_G1 {
-    type: string
-    label: "G1 - PARTICIPANT YEAR"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.participant_paid_year
-  }
-  filter: PARTICIPANT_Flag_G1 {
-    type: string
-    label: "G1 - PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
-  }
+filter: PARTICIPANT_YEAR_G1 {
+  type: string
+  label: "G1 - PARTICIPANT YEAR"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.participant_paid_year
+}
+filter: PARTICIPANT_Flag_G1 {
+  type: string
+  label: "G1 - PARTICIPANT Flag"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
+}
 
-  filter: PARTICIPANT_FLAG_G2 {
-    type: string
-    hidden: yes
-    label: "G2 - PARTICIPANT Flag M"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_Flag
-  }
-  filter: PARTICIPANT_YEAR_G2 {
-    type: string
-    label: "G2 - PARTICIPANT YEAR"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.participant_paid_year
-  }
+filter: PARTICIPANT_FLAG_G2 {
+  type: string
+  hidden: yes
+  label: "G2 - PARTICIPANT Flag M"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.PARTICIPANT_Flag
+}
+filter: PARTICIPANT_YEAR_G2 {
+  type: string
+  label: "G2 - PARTICIPANT YEAR"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.participant_paid_year
+}
 
-  filter: PARTICIPANT_Flag_G2 {
-    type: string
-    label: "G2 - PARTICIPANT Flag"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
-  }
+filter: PARTICIPANT_Flag_G2 {
+  type: string
+  label: "G2 - PARTICIPANT Flag"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
+}
 
-  filter: MSK_MRS_CODE_CLASSIFICATION_G2 {
-    type: string
-    label: "G2 - MSK MRS Codes Classification"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
-  }
+filter: MSK_MRS_CODE_CLASSIFICATION_G2 {
+  type: string
+  label: "G2 - MSK MRS Codes Classification"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.MSK_MRS_CODE_CLASSIFICATION
+}
 
 
 
-  filter:PARTICIPANT_PROGRAM_NAME_G1 {
-    type: string
-    label: "G1 - PARTICIPANT PROGRAM NAME M"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.Program_Name
-  }
+filter:PARTICIPANT_PROGRAM_NAME_G1 {
+  type: string
+  label: "G1 - PARTICIPANT PROGRAM NAME M"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.Program_Name
+}
 
-  filter:PARTICIPANT_PROGRAM_NAME_G2 {
-    type: string
-    label: "G2 - PARTICIPANT PROGRAM NAME M"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.Program_Name
-  }
+filter:PARTICIPANT_PROGRAM_NAME_G2 {
+  type: string
+  label: "G2 - PARTICIPANT PROGRAM NAME M"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.Program_Name
+}
 }

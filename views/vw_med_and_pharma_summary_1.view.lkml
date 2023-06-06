@@ -202,7 +202,7 @@ view: vw_med_and_pharma_summary_1 {
   dimension: PATIENT_ID {
     type: string
     primary_key: yes
-    label: "PATIENT ID"
+    label: "MEMBER ID"
     hidden: yes
     sql: ${TABLE}.PATIENT_ID_M ;;
   }
@@ -243,7 +243,7 @@ view: vw_med_and_pharma_summary_1 {
 
   dimension: PATIENT_GENDER {
     type: string
-    label: "PATIENT GENDER"
+    label: "MEMBER GENDER"
     drill_fields: [RELATIONSHIP_TO_EMPLOYEE, CHRONIC_CATEGORY, DISEASE_CATEGORY, DISEASE_SUB_CATEGORY, DISEASE_DESCRIPTION, RECONCILED_DIAGNOSIS_CODE_ICD10, PROCEDURE_CATEGORY, PROCEDURE_SUB_CATEGORY, PROCEDURE_DESCRIPTION, PRIMARY_PROCEDURE_CODE, PLACE_OF_SERVICE_DESCRIPTION]
     sql: ${TABLE}.PATIENT_GENDER ;;
   }
@@ -329,7 +329,7 @@ view: vw_med_and_pharma_summary_1 {
 
   dimension: PATIENT_AGE {
     type: string
-    label: "PATIENT AGE"
+    label: "MEMBER AGE"
     sql: ${TABLE}.PATIENT_AGE ;;
   }
 

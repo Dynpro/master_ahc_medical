@@ -29,6 +29,7 @@ view: vw_risk_group_migration {
 
   dimension: Unique_id {
     type: string
+    primary_key: yes
     sql: ${TABLE}."UNIQUE_ID" ;;
   }
 
@@ -61,6 +62,12 @@ view: vw_risk_group_migration {
   dimension: Risk_group {
     type: string
     sql: ${TABLE}."RISK_GROUP" ;;
+  }
+
+  measure: RISK_GROUP_list {
+    type: string
+    label: "RISK Group"
+    sql: LISTAGG(DISTINCT ${Risk_group}, ' || ') within group (order by ${Risk_group} ASC) ;;
   }
 
   measure: Total_paid_amt {
@@ -216,7 +223,7 @@ view: vw_risk_group_migration {
 
   dimension: patient_age {
     type: number
-    label: "PATIENT AGE"
+    label: "MEMBER AGE"
     sql: ${TABLE}."PATIENT_AGE" ;;
   }
   dimension: ageGroup {

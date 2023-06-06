@@ -72,10 +72,9 @@ view: patient_all_medical_pharmacy_summary {
   }
   dimension: PATIENT_ID {
     type: string
-    label: "Patient Id"
+    label: "Member Id"
     sql: ${TABLE}.UNIQUE_ID ;;
   }
-
 
 
 #Medical filters, dimension & measures:

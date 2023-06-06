@@ -189,6 +189,7 @@ view: vw_medication_possession_ratio {
   }
 
   measure: Total_Patients {
+    label: "Total Members"
     type: count_distinct
     sql: ${unique_id} ;;
   }

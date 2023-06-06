@@ -233,7 +233,7 @@ view: patient_diagnosis_summary {
 
   dimension: PATIENT_ID {
     type: string
-    label: "PATIENT ID"
+    label: "MEMBER ID"
     drill_fields: [vw_medical.icd_disease_category, vw_medical.icd_chronic_cat]
     sql: ${TABLE}.PATIENT_ID_M ;;
   }

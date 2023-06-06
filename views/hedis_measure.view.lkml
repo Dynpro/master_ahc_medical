@@ -370,7 +370,7 @@ view: hedis_measure {
 
   dimension: unique_id {
     type: string
-    label: "Patient ID"
+    label: "Member ID"
     sql: ${TABLE}."UNIQUE_ID" ;;
   }
 

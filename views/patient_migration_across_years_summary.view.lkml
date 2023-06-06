@@ -86,6 +86,7 @@ view: patient_migration_across_years_summary {
 
   measure: total_patients {
     type: count_distinct
+    label: "Total Members"
     sql: ${UNIQUE_ID} ;;
     drill_fields: [vw_patient_demographics.patient_name, vw_patient_demographics.patient_dob_date, vw_patient_demographics.patient_gender, vw_patient_demographics.patient_current_age,
       vw_patient_demographics.relationship_to_employee, vw_patient_demographics.PARTICIPANT_PROGRAM_NAME, vw_patient_demographics.member_id, vw_patient_demographics.PARTICIPANT_FLAG]

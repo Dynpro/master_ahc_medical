@@ -94,13 +94,13 @@ view: vw_preventive_screening {
 
   dimension: PATIENT_GENDER {
     type: string
-    label: "PATIENT GENDER"
+    label: "MEMBER GENDER"
     sql: ${TABLE}."PATIENT_GENDER" ;;
   }
 
   dimension: patient_age {
     type: number
-    label: "PATIENT AGE"
+    label: "MEMBER AGE"
     sql: ${TABLE}."PATIENT_AGE" ;;
   }
 

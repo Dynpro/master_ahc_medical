@@ -8,448 +8,454 @@ view: vw_medical {
       ;;
   }
 
-  dimension: 2012_chronic {
-    type: string
-    label: "CHRONIC ?"
-    sql: ${TABLE}."CHRONICITY_IDENTIFIER" ;;
-  }
+ dimension: 2012_chronic {
+  type: string
+  label: "CHRONIC ?"
+  sql: ${TABLE}."CHRONICITY_IDENTIFIER" ;;
+}
 
-  dimension: address_city {
-    type: string
-    label: "ADDRESS- CITY"
-    sql: ${TABLE}."ADDRESS_CITY" ;;
-  }
+dimension: address_city {
+  type: string
+  label: "ADDRESS- CITY"
+  sql: ${TABLE}."ADDRESS_CITY" ;;
+}
 
-  dimension: address_state {
-    type: string
-    label: "ADDRESS- STATE"
-    sql: ${TABLE}."ADDRESS_STATE" ;;
-  }
+dimension: address_state {
+  type: string
+  label: "ADDRESS- STATE"
+  sql: ${TABLE}."ADDRESS_STATE" ;;
+}
 
-  dimension: address_zip_code {
-    type: string
-    label: "ADDRESS- ZIP CODE"
-    sql: ${TABLE}."ADDRESS_ZIP_CODE" ;;
-  }
+dimension: address_zip_code {
+  type: string
+  label: "ADDRESS- ZIP CODE"
+  sql: ${TABLE}."ADDRESS_ZIP_CODE" ;;
+}
 
-  dimension: age_group_1 {
-    type: string
-    label: "AGE GROUP-1"
-    sql: ${TABLE}."AGE_GROUP_1" ;;
-  }
+dimension: age_group_1 {
+  type: string
+  label: "AGE GROUP-1"
+  sql: ${TABLE}."AGE_GROUP_1" ;;
+}
 
-  dimension: claim_number {
-    type: string
-    label: "CLAIM No"
-    hidden: yes
-    sql: ${TABLE}."CLAIM_NUMBER" ;;
-  }
+dimension: claim_number {
+  type: string
+  label: "CLAIM No"
+  hidden: yes
+  sql: ${TABLE}."CLAIM_NUMBER" ;;
+}
 
-  dimension: class_code {
-    type: string
-    label: "CLASS CODE"
-    hidden: yes
-    sql: ${TABLE}."CLASS_CODE" ;;
-  }
+dimension: class_code {
+  type: string
+  label: "CLASS CODE"
+  hidden: yes
+  sql: ${TABLE}."CLASS_CODE" ;;
+}
 
-  dimension: co_payment_amt {
-    type: number
-    hidden: yes
-    sql: ${TABLE}."CO_PAYMENT_AMT" ;;
-  }
+dimension: co_payment_amt {
+  type: number
+  hidden: yes
+  sql: ${TABLE}."CO_PAYMENT_AMT" ;;
+}
 
-  dimension: coverage_type {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."COVERAGE_TYPE" ;;
-  }
+dimension: coverage_type {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."COVERAGE_TYPE" ;;
+}
 
-  dimension_group: date_claim_received {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    hidden: yes
-    sql: ${TABLE}."DATE_CLAIM_RECEIVED" ;;
-  }
+dimension_group: date_claim_received {
+  type: time
+  timeframes: [
+    raw,
+    date,
+    week,
+    month,
+    quarter,
+    year
+  ]
+  convert_tz: no
+  datatype: date
+  hidden: yes
+  sql: ${TABLE}."DATE_CLAIM_RECEIVED" ;;
+}
 
-  dimension: dependent_relationship_code {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."DEPENDENT_RELATIONSHIP_CODE" ;;
-  }
+dimension: dependent_relationship_code {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."DEPENDENT_RELATIONSHIP_CODE" ;;
+}
 
-  dimension: diagnosis_code_2 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."DIAGNOSIS_CODE_2" ;;
-  }
+dimension: diagnosis_code_2 {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."DIAGNOSIS_CODE_2" ;;
+}
 
-  dimension: diagnosis_code_3 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."DIAGNOSIS_CODE_3" ;;
-  }
+dimension: diagnosis_code_3 {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."DIAGNOSIS_CODE_3" ;;
+}
 
-  dimension: diagnosis_code_4 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."DIAGNOSIS_CODE_4" ;;
-  }
+dimension: diagnosis_code_4 {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."DIAGNOSIS_CODE_4" ;;
+}
 
-  dimension_group: diagnosis {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    label: "SERVICE"
-    drill_fields: [diagnosis_year, diagnosis_quarter, diagnosis_month, diagnosis_raw]
-    sql: ${TABLE}."DIAGNOSIS_DATE" ;;
-  }
+dimension_group: diagnosis {
+  type: time
+  timeframes: [
+    raw,
+    date,
+    week,
+    month,
+    quarter,
+    year
+  ]
+  convert_tz: no
+  datatype: date
+  label: "SERVICE"
+  drill_fields: [diagnosis_year, diagnosis_quarter, diagnosis_month, diagnosis_raw]
+  sql: ${TABLE}."DIAGNOSIS_DATE" ;;
+}
 
-  dimension_group: Paid {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    label: "PAID"
-    drill_fields: [Paid_year, Paid_quarter, Paid_month, Paid_raw]
-    sql: ${TABLE}."PAID_DATE" ;;
-  }
+dimension: Year {
+  type: number
+  sql: ${diagnosis_year} ;;
+  value_format: "0"
+}
 
-  dimension: disease_group {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."DISEASE_GROUP" ;;
-  }
+dimension_group: Paid {
+  type: time
+  timeframes: [
+    raw,
+    date,
+    week,
+    month,
+    quarter,
+    year
+  ]
+  convert_tz: no
+  datatype: date
+  label: "PAID"
+  drill_fields: [Paid_year, Paid_quarter, Paid_month, Paid_raw]
+  sql: ${TABLE}."PAID_DATE" ;;
+}
 
-  dimension: employer_name {
-    type: string
-    sql: ${TABLE}."EMPLOYER_NAME" ;;
-  }
+dimension: disease_group {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."DISEASE_GROUP" ;;
+}
 
-  dimension: icd_acute {
-    type: string
-    label: "ACUTE ?"
-    sql: ${TABLE}."CHRONICITY_IDENTIFIER" ;;
-  }
+dimension: employer_name {
+  type: string
+  sql: ${TABLE}."EMPLOYER_NAME" ;;
+}
 
-  dimension: avoidable_er {
-    type: string
-    hidden: yes
-    label: "AVOIDABLE ER ?"
-    sql: ${TABLE}."ICD_AVOIDABLE_ER" ;;
-  }
+dimension: icd_acute {
+  type: string
+  label: "ACUTE ?"
+  sql: ${TABLE}."CHRONICITY_IDENTIFIER" ;;
+}
 
-  dimension: icd_avoidable_er {
-    type: string
-    label: "AVOIDABLE ER ?"
-    sql: CASE WHEN ${avoidable_er} = 'TRUE' AND (${place_of_service} = '23' OR ${primary_procedure_code} IN ('99281',
+dimension: avoidable_er {
+  type: string
+  hidden: yes
+  label: "AVOIDABLE ER ?"
+  sql: ${TABLE}."ICD_AVOIDABLE_ER" ;;
+}
+
+dimension: icd_avoidable_er {
+  type: string
+  label: "AVOIDABLE ER ?"
+  sql: CASE WHEN ${avoidable_er} = 'TRUE' AND (${place_of_service} = '23' OR ${primary_procedure_code} IN ('99281',
           '99282', '99283', '99284', '99285')) THEN 'TRUE'
           ELSE 'FALSE'
           END ;;
-  }
+}
 
-  dimension: icd_chronic_cat {
-    type: string
-    label: "CHRONIC CATEGORY"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
-    sql: ${TABLE}."CCW_CHRONIC_CAT" ;;
-  }
+dimension: icd_chronic_cat {
+  type: string
+  label: "CHRONIC CATEGORY"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
+  sql: ${TABLE}."CCW_CHRONIC_CAT" ;;
+}
 
-  dimension: icd_chronic_cat_new {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."ICD_CHRONIC_CAT_NEW" ;;
-  }
+dimension: icd_chronic_cat_new {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."ICD_CHRONIC_CAT_NEW" ;;
+}
 
-  dimension: icd_description {
-    type: string
-    label: "DIAGNOSIS DESCRIPTION"
-    sql: ${TABLE}."ICD_DESCRIPTION" ;;
-  }
+dimension: icd_description {
+  type: string
+  label: "DIAGNOSIS DESCRIPTION"
+  sql: ${TABLE}."ICD_DESCRIPTION" ;;
+}
 
-  dimension: icd_digestive_disease {
-    type: string
-    label: "DIGESTIVE DISEASE ?"
-    sql: ${TABLE}."ICD_DIGESTIVE_DISEASE" ;;
-  }
+dimension: icd_digestive_disease {
+  type: string
+  label: "DIGESTIVE DISEASE ?"
+  sql: ${TABLE}."ICD_DIGESTIVE_DISEASE" ;;
+}
 
-  dimension: icd_disease_category {
-    type: string
-    label: "DIAGNOSTIC CATEGORY"
-    drill_fields: [DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
-    sql: ${TABLE}."ICD_DISEASE_CATEGORY" ;;
-  }
+dimension: icd_disease_category {
+  type: string
+  label: "DIAGNOSTIC CATEGORY"
+  drill_fields: [DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  sql: ${TABLE}."ICD_DISEASE_CATEGORY" ;;
+}
 
-  dimension: icd_indicator {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."ICD_INDICATOR" ;;
-  }
+dimension: icd_indicator {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."ICD_INDICATOR" ;;
+}
 
-  dimension: icd_ls_modify {
-    type: string
-    label: "LIFESTYLE MODIFIABLE ?"
-    sql: ${TABLE}."ICD_LS_MODIFY" ;;
-  }
+dimension: icd_ls_modify {
+  type: string
+  label: "LIFESTYLE MODIFIABLE ?"
+  sql: ${TABLE}."ICD_LS_MODIFY" ;;
+}
 
-  dimension: icd_lt_all_absences_midrange {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."ICD_LT_ALL_ABSENCES_MIDRANGE" ;;
-  }
+dimension: icd_lt_all_absences_midrange {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."ICD_LT_ALL_ABSENCES_MIDRANGE" ;;
+}
 
-  dimension: icd_preventative {
-    type: string
-    label: "PREVENTIVE ?"
-    sql: ${TABLE}."ICD_PREVENTATIVE" ;;
-  }
+dimension: icd_preventative {
+  type: string
+  label: "PREVENTIVE ?"
+  sql: ${TABLE}."ICD_PREVENTATIVE" ;;
+}
 
-  dimension: icd_rh_chronic {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."ICD_RH_CHRONIC" ;;
-  }
+dimension: icd_rh_chronic {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."ICD_RH_CHRONIC" ;;
+}
 
-  dimension: ineligable_amt {
-    type: number
-    hidden: yes
-    sql: ${TABLE}."INELIGABLE_AMT" ;;
-  }
+dimension: ineligable_amt {
+  type: number
+  hidden: yes
+  sql: ${TABLE}."INELIGABLE_AMT" ;;
+}
 
-  dimension: insured_out_of_pocket_amt {
-    type: number
-    hidden: yes
-    sql: ${TABLE}."INSURED_OUT_OF_POCKET_AMT" ;;
-  }
+dimension: insured_out_of_pocket_amt {
+  type: number
+  hidden: yes
+  sql: ${TABLE}."INSURED_OUT_OF_POCKET_AMT" ;;
+}
 
-  dimension: job_designation {
-    type: string
-    label: "JOB DESIGNATION"
-    sql: ${TABLE}."JOB_DESIGNATION" ;;
-  }
+dimension: job_designation {
+  type: string
+  label: "JOB DESIGNATION"
+  sql: ${TABLE}."JOB_DESIGNATION" ;;
+}
 
-  dimension: job_type {
-    type: string
-    label: "JOB TYPE"
-    sql: ${TABLE}."JOB_TYPE" ;;
-  }
+dimension: job_type {
+  type: string
+  label: "JOB TYPE"
+  sql: ${TABLE}."JOB_TYPE" ;;
+}
 
-  dimension: patient_age {
-    type: number
-    label: "PATIENT AGE"
-    sql: ${TABLE}."PATIENT_AGE" ;;
-  }
+dimension: patient_age {
+  type: number
+  label: "MEMBER AGE"
+  sql: ${TABLE}."PATIENT_AGE" ;;
+}
 
-  dimension: patient_gender {
-    type: string
-    label: "PATIENT GENDER"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
-    sql: ${TABLE}."PATIENT_GENDER" ;;
-  }
+dimension: patient_gender {
+  type: string
+  label: "MEMBER GENDER"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  sql: ${TABLE}."PATIENT_GENDER" ;;
+}
 
-  dimension: payee_provider_id {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."PAYEE_PROVIDER_ID" ;;
-  }
+dimension: payee_provider_id {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."PAYEE_PROVIDER_ID" ;;
+}
 
-  dimension: place_of_service {
-    type: string
-    label: "PLACE OF SERVICE"
-    sql: ${TABLE}."PLACE_OF_SERVICE" ;;
-  }
+dimension: place_of_service {
+  type: string
+  label: "PLACE OF SERVICE"
+  sql: ${TABLE}."PLACE_OF_SERVICE" ;;
+}
 
-  dimension: place_of_service_description {
-    type: string
-    label: "PLACE OF SERVICE DESCRIPTION"
-    sql: ${TABLE}."PLACE_OF_SERVICE_DESCRIPTION" ;;
-  }
+dimension: place_of_service_description {
+  type: string
+  label: "PLACE OF SERVICE DESCRIPTION"
+  sql: ${TABLE}."PLACE_OF_SERVICE_DESCRIPTION" ;;
+}
 
-  dimension: primary_diagnosis_code {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."PRIMARY_DIAGNOSIS_CODE" ;;
-  }
+dimension: primary_diagnosis_code {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."PRIMARY_DIAGNOSIS_CODE" ;;
+}
 
-  dimension: primary_procedure_code {
-    type: string
-    label: "PROCEDURE CODE"
-    sql: ${TABLE}."PRIMARY_PROCEDURE_CODE" ;;
-  }
+dimension: primary_procedure_code {
+  type: string
+  label: "PROCEDURE CODE"
+  sql: ${TABLE}."PRIMARY_PROCEDURE_CODE" ;;
+}
 
-  dimension: procedure_code_2 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."PROCEDURE_CODE_2" ;;
-  }
+dimension: procedure_code_2 {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."PROCEDURE_CODE_2" ;;
+}
 
-  dimension: procedure_code_3 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."PROCEDURE_CODE_3" ;;
-  }
+dimension: procedure_code_3 {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."PROCEDURE_CODE_3" ;;
+}
 
-  dimension: procedure_code_4 {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."PROCEDURE_CODE_4" ;;
-  }
+dimension: procedure_code_4 {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."PROCEDURE_CODE_4" ;;
+}
 
-  dimension: procedure_code_type {
-    type: string
-    label: "PROCEDURE CODE TYPE"
-    sql: ${TABLE}."PROCEDURE_CODE_TYPE" ;;
-  }
+dimension: procedure_code_type {
+  type: string
+  label: "PROCEDURE CODE TYPE"
+  sql: ${TABLE}."PROCEDURE_CODE_TYPE" ;;
+}
 
-  dimension: procedure_consumer_description {
-    type: string
-    label: "PROCEDURE CONSUMER DESCRIPTION"
-    sql: ${TABLE}."PROCEDURE_CONSUMER_DESCRIPTION" ;;
-  }
+dimension: procedure_consumer_description {
+  type: string
+  label: "PROCEDURE CONSUMER DESCRIPTION"
+  sql: ${TABLE}."PROCEDURE_CONSUMER_DESCRIPTION" ;;
+}
 
-  dimension: procedure_description {
-    type: string
-    label: "PROCEDURE DESCRIPTION"
-    sql: ${TABLE}."PROCEDURE_DESCRIPTION" ;;
-  }
+dimension: procedure_description {
+  type: string
+  label: "PROCEDURE DESCRIPTION"
+  sql: ${TABLE}."PROCEDURE_DESCRIPTION" ;;
+}
 
-  dimension: reconciled_diagnosis_code_icd10 {
-    type: string
-    label: "DIAGNOSIS CODE"
-    sql: ${TABLE}."RECONCILED_DIAGNOSIS_CODE_ICD10" ;;
-  }
+dimension: reconciled_diagnosis_code_icd10 {
+  type: string
+  label: "DIAGNOSIS CODE"
+  sql: ${TABLE}."RECONCILED_DIAGNOSIS_CODE_ICD10" ;;
+}
 
-  dimension: relationship_to_employee {
-    type: string
-    label: "RELATIONSHIP TO EMPLOYEE"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
-    sql: ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" ;;
-  }
+dimension: relationship_to_employee {
+  type: string
+  label: "RELATIONSHIP TO EMPLOYEE"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  sql: ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" ;;
+}
 
-  dimension: service_code {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."SERVICE_CODE" ;;
-  }
+dimension: service_code {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."SERVICE_CODE" ;;
+}
 
-  dimension: service_provider_city {
-    type: string
-    label: "SERVICE PROVIDER CITY"
-    sql: ${TABLE}."SERVICE_PROVIDER_CITY" ;;
-  }
+dimension: service_provider_city {
+  type: string
+  label: "SERVICE PROVIDER CITY"
+  sql: ${TABLE}."SERVICE_PROVIDER_CITY" ;;
+}
 
-  dimension: service_provider_id {
-    type: string
-    hidden: yes
-    sql: ${TABLE}."SERVICE_PROVIDER_ID" ;;
-  }
+dimension: service_provider_id {
+  type: string
+  hidden: yes
+  sql: ${TABLE}."SERVICE_PROVIDER_ID" ;;
+}
 
-  dimension: service_provider_name {
-    type: string
-    label: "SERVICE PROVIDER NAME"
-    sql: ${TABLE}."SERVICE_PROVIDER_NAME" ;;
-  }
+dimension: service_provider_name {
+  type: string
+  label: "SERVICE PROVIDER NAME"
+  sql: ${TABLE}."SERVICE_PROVIDER_NAME" ;;
+}
 
-  dimension: service_provider_speciality_code {
-    type: string
-    label: "SERVICE PROVIDER SPECIALITY CODE"
-    sql: ${TABLE}."SERVICE_PROVIDER_SPECIALITY_CODE" ;;
-  }
+dimension: service_provider_speciality_code {
+  type: string
+  label: "SERVICE PROVIDER SPECIALITY CODE"
+  sql: ${TABLE}."SERVICE_PROVIDER_SPECIALITY_CODE" ;;
+}
 
-  dimension: service_provider_speciality_code_desc {
-    type: string
-    label: "SERVICE PROVIDER SPECIALITY CODE DESCRIPTION"
-    sql: ${TABLE}."SERVICE_PROVIDER_SPECIALITY_CODE_DESC" ;;
-  }
+dimension: service_provider_speciality_code_desc {
+  type: string
+  label: "SERVICE PROVIDER SPECIALITY CODE DESCRIPTION"
+  sql: ${TABLE}."SERVICE_PROVIDER_SPECIALITY_CODE_DESC" ;;
+}
 
-  dimension: service_provider_state {
-    type: string
-    label: "SERVICE PROVIDER STATE"
-    sql: ${TABLE}."SERVICE_PROVIDER_STATE" ;;
-  }
+dimension: service_provider_state {
+  type: string
+  label: "SERVICE PROVIDER STATE"
+  sql: ${TABLE}."SERVICE_PROVIDER_STATE" ;;
+}
 
-  dimension: tooth_number {
-    type: string
-    label: "TOOTH NUMBER"
-    sql: ${TABLE}."TOOTH_NUMBER" ;;
-  }
+dimension: tooth_number {
+  type: string
+  label: "TOOTH NUMBER"
+  sql: ${TABLE}."TOOTH_NUMBER" ;;
+}
 
-  dimension: total_billed_amt {
-    type: number
-    label: "TOTAL BILLED AMT"
-    hidden: yes
-    sql: ${TABLE}."TOTAL_BILLED_AMT" ;;
-  }
+dimension: total_billed_amt {
+  type: number
+  label: "TOTAL BILLED AMT"
+  hidden: yes
+  sql: ${TABLE}."TOTAL_BILLED_AMT" ;;
+}
 
-  dimension: total_employer_paid_amt {
-    type: number
-    label: "TOTAL PAID AMT"
-    hidden: yes
-    sql: ${TABLE}."TOTAL_EMPLOYER_PAID_AMT" ;;
-  }
+dimension: total_employer_paid_amt {
+  type: number
+  label: "TOTAL PAID AMT"
+  hidden: yes
+  sql: ${TABLE}."TOTAL_EMPLOYER_PAID_AMT" ;;
+}
 
-  dimension: total_patient_paid_amt {
-    type: number
-    hidden: yes
-    sql: ${TABLE}."TOTAL_PATIENT_PAID_AMT" ;;
-  }
+dimension: total_patient_paid_amt {
+  type: number
+  hidden: yes
+  sql: ${TABLE}."TOTAL_PATIENT_PAID_AMT" ;;
+}
 
-  dimension: type_of_service_code {
-    type: string
-    label: "TYPE OF SERVICE CODE"
-    sql: ${TABLE}."TYPE_OF_SERVICE_CODE" ;;
-  }
+dimension: type_of_service_code {
+  type: string
+  label: "TYPE OF SERVICE CODE"
+  sql: ${TABLE}."TYPE_OF_SERVICE_CODE" ;;
+}
 
-  dimension: type_of_service_description {
-    type: string
-    label: "TYPE OF SERVICE DESCRIPTION"
-    sql: ${TABLE}."TYPE_OF_SERVICE_DESCRIPTION" ;;
-  }
+dimension: type_of_service_description {
+  type: string
+  label: "TYPE OF SERVICE DESCRIPTION"
+  sql: ${TABLE}."TYPE_OF_SERVICE_DESCRIPTION" ;;
+}
 
-  dimension: unique_id {
-    type: string
-    primary_key: yes
-    hidden: no
-    sql: ${TABLE}."UNIQUE_ID" ;;
-  }
+dimension: unique_id {
+  type: string
+  primary_key: yes
+  hidden: no
+  sql: ${TABLE}."UNIQUE_ID" ;;
+}
 
-  dimension: Chroni_vs_NonChronic {
-    type: string
-    label: "CHRONIC/NON-CHRONIC"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
-    sql: CASE WHEN ${icd_chronic_cat} IS NULL THEN 'Non-Chronic'
+dimension: Chroni_vs_NonChronic {
+  type: string
+  label: "CHRONIC/NON-CHRONIC"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  sql: CASE WHEN ${icd_chronic_cat} IS NULL THEN 'Non-Chronic'
       ELSE 'Chronic'
       END ;;
-  }
+}
 
-  dimension: Work_related_MSK_Disease  {
-    type: string
-    label: "WORK RELATED MSK DIAGNOSIS"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
-    sql:  CASE WHEN ${primary_diagnosis_code} IN ('72210', '72273', '72400', '72420', '72430', '72450', '847', '8471', '8472',
+dimension: Work_related_MSK_Disease  {
+  type: string
+  label: "WORK RELATED MSK DIAGNOSIS"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  sql:  CASE WHEN ${primary_diagnosis_code} IN ('72210', '72273', '72400', '72420', '72430', '72450', '847', '8471', '8472',
         '8473', '8471', '8472', '8473', '8474', '8479', 'M4800', 'M5106', 'M5127', 'M5442', 'M549', 'S138XXA',  'S138XXD',
         'S138XXS',  'S139XXA',  'S139XXD', 'S139XXS',  'S233XXA',  'S233XXD',  'S233XXS',  'S335XXA',  'S335XXD',  'S335XXS',
         'S338XXA',  'S338XXD',  'S338XXS', 'S339XXA',  'S339XXD',  'S339XXS',  'S39012A',  'S39012D',  'S39012S')
@@ -468,144 +474,152 @@ view: vw_medical {
         THEN 'HAND & WRIST'
         ELSE 'OTHERS'
         END    ;;
-  }
+}
 
-  dimension: ageGroup {
-    type: tier
-    label: "AGE GROUP-2"
-    tiers: [20, 30, 40, 50, 60]
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
-    description: "AGE Group>> 0-19, 20-29, 30-39, 40-49, 50-59 & >=60 yrs"
-    style: integer
-    sql:  ${patient_age};;
-  }
+dimension: ageGroup {
+  type: tier
+  label: "AGE GROUP-2"
+  tiers: [20, 30, 40, 50, 60]
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  description: "AGE Group>> 0-19, 20-29, 30-39, 40-49, 50-59 & >=60 yrs"
+  style: integer
+  sql:  ${patient_age};;
+}
 
-  dimension: Total_Paid_Amount {
-    type: number
-    hidden: no
-    sql:  ${total_employer_paid_amt} ;;
-  }
+dimension: Total_Paid_Amount {
+  type: number
+  hidden: yes
+  sql:  ${total_employer_paid_amt} ;;
+}
 
 #Total Visits logic.
-  dimension: Total_Visit_Unique_Id {
-    type: string
-    hidden: yes
-    sql: concat(${unique_id}, ${reporting_year}, ${reporting_month}, ${claim_number}, ${reconciled_diagnosis_code_icd10}) ;;
-  }
+dimension: Total_Visit_Unique_Id {
+  type: string
+  hidden: yes
+  sql: concat(${unique_id}, ${reporting_year}, ${reporting_month}, ${claim_number}, ${reconciled_diagnosis_code_icd10}) ;;
+}
 
-  measure: Total_Visit {
-    type: count_distinct
-    label: "TOTAL VISITS"
-    sql: ${Total_Visit_Unique_Id} ;;
-  }
+measure: Total_Visit {
+  type: count_distinct
+  label: "TOTAL VISITS"
+  sql: ${Total_Visit_Unique_Id} ;;
+}
 
 #Total Lost Days & Spend logic.
-  dimension: Lost_Days_Unique_Id {
-    type: string
-    sql: concat(${unique_id}, ${reporting_year}, ${reconciled_diagnosis_code_icd10}) ;;
-  }
+dimension: Lost_Days_Unique_Id {
+  type: string
+  sql: concat(${unique_id}, ${reporting_year}, ${reconciled_diagnosis_code_icd10}) ;;
+}
 
-  measure: Total_Lost_Days {
-    type: sum_distinct
-    label: "TOTAL LOST DAYS"
-    sql_distinct_key: ${Lost_Days_Unique_Id} ;;
-    sql: ${icd_lt_all_absences_midrange} ;;
-  }
+measure: Total_Lost_Days {
+  type: sum_distinct
+  label: "TOTAL LOST DAYS"
+  sql_distinct_key: ${Lost_Days_Unique_Id} ;;
+  sql: ${icd_lt_all_absences_midrange} ;;
+}
 
-  measure: Total_Lost_Day_Expense {
-    type: sum_distinct
-    label: "TOTAL LOST DAYS SPEND"
-    sql_distinct_key: ${Lost_Days_Unique_Id} ;;
-    sql: ${icd_lt_all_absences_midrange}*8*19 ;;
-    #Lost days expense logic as per PHM report: Lost_Days*8*10 (hours - 8, Cost/perhour - $10)
-    value_format: "$#,##0"
-  }
+measure: Total_Lost_Day_Expense {
+  type: sum_distinct
+  label: "TOTAL LOST DAYS SPEND"
+  sql_distinct_key: ${Lost_Days_Unique_Id} ;;
+  sql: ${icd_lt_all_absences_midrange}*8*19 ;;
+  #Lost days expense logic as per PHM report: Lost_Days*8*19 (hours - 8, Cost/perhour - $19)
+  value_format: "$#,##0"
+}
 
-  # Catastrophic Claim flag (Paid Amt/Claim > $100,000)
-  dimension: CATASTROPHIC_FLAG {
-    type: string
-    label: "CATASTROPHIC/NON-CATASTROPHIC CLAIM"
-    sql: ${TABLE}."CATASTROPHIC_FLAG" ;;
-  }
+# Catastrophic Claim flag (Paid Amt/Claim > $100,000)
+dimension: CATASTROPHIC_FLAG {
+  type: string
+  label: "CATASTROPHIC/NON-CATASTROPHIC CLAIM"
+  sql: ${TABLE}."CATASTROPHIC_FLAG" ;;
+}
 
-  measure: Total_Patients {
-    type: count_distinct
-    label: "N"
-    sql:  ${unique_id} ;;
-  }
+measure: Total_Patients {
+  type: count_distinct
+  label: "N"
+  sql:  ${unique_id} ;;
+}
 
-  measure: Patient_percentage {
-    type: percent_of_total
-    label: "% of TOTAL N"
-    value_format: "0.0\%"
-    sql: ${Total_Patients} ;;
-  }
+measure: Patient_percentage {
+  type: percent_of_total
+  label: "% of TOTAL N"
+  value_format: "0.0\%"
+  sql: ${Total_Patients} ;;
+}
 
-  measure: Total_Paid_Amt {
-    type: sum
-    label: "TOTAL $"
-    sql:  ${Total_Paid_Amount} ;;
-    value_format: "$#,##0"
-  }
+measure: Total_Paid_Amt {
+  type: sum
+  label: "TOTAL $"
+  sql:  ${Total_Paid_Amount} ;;
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description, icd_chronic_cat]
+  value_format: "$#,##0"
+}
 
-  measure: Total_Paid_Amt_percentage {
-    type: percent_of_total
-    label: "% of TOTAL $"
-    value_format: "0.0\%"
-    sql: ${Total_Paid_Amt} ;;
-  }
+measure: Total_Paid_Amt_percentage {
+  type: percent_of_total
+  label: "% of TOTAL $"
+  value_format: "0.0\%"
+  sql: ${Total_Paid_Amt} ;;
+}
 
-  measure: Avg_Total_Paid_amount {
-    type: number
-    label: "MEAN $"
-    sql: CASE WHEN ${Total_Patients} <> 0 THEN ${Total_Paid_Amt}/${Total_Patients}
+measure: Avg_Total_Paid_amount {
+  type: number
+  label: "MEAN $"
+  sql: CASE WHEN ${Total_Patients} <> 0 THEN ${Total_Paid_Amt}/${Total_Patients}
         ELSE 0
         END;;
-    value_format: "$#,##0"
-  }
+  value_format: "$#,##0"
+}
 
-  measure: count {
-    type: count
-    label: "TOTAL RECORDS"
-  }
+measure: count {
+  type: count
+  label: "TOTAL RECORDS"
+}
 
-  dimension: ICD_MAJOR_DISEASE {
-    type: string
-    label: "DIABETES ?"
-    sql: ${TABLE}."ICD_MAJOR_DISEASE" ;;
-  }
+dimension: ICD_MAJOR_DISEASE {
+  type: string
+  label: "DIABETES ?"
+  sql: ${TABLE}."CCW_CHRONIC_CAT" ;;
+}
 
-  dimension: Chronic_vs_Acute {
-    type: string
-    label: "CHRONIC vs ACUTE"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
-    sql: CASE WHEN ${2012_chronic} = 'B' THEN 'CHRONIC'
+dimension: Chronic_vs_Acute {
+  type: string
+  label: "CHRONIC vs ACUTE"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
+  sql: CASE WHEN ${2012_chronic} = 'B' THEN 'CHRONIC'
               WHEN ${2012_chronic} = 'C' THEN 'CHRONIC'
               WHEN ${icd_acute} = 'A' THEN 'ACUTE'
         ELSE 'NON-CHRONIC_&_NON-Acute'
         END;;
-  }
+}
 
-  dimension: LSModify_or_Preventive_disease {
-    type: string
-    label: "LIFESTYLE MODIFIABLE OR PREVENTIVE DISEASE"
-    sql: CASE WHEN ${icd_ls_modify} = 'TRUE' THEN 'LIFESTYLE MODIFIABLE DISEASE'
+dimension: CHRONIC_CAT_TYPE {
+  type: string
+  label: "CHRONIC_CAT_TYPE"
+  sql: ${TABLE}."CHRONIC_CAT_TYPE" ;;
+}
+
+
+dimension: LSModify_or_Preventive_disease {
+  type: string
+  label: "LIFESTYLE MODIFIABLE OR PREVENTIVE DISEASE"
+  sql: CASE WHEN ${icd_ls_modify} = 'TRUE' THEN 'LIFESTYLE MODIFIABLE DISEASE'
         WHEN ${icd_preventative} = 'TRUE' THEN 'PREVENTIVE DISEASE'
         ELSE 'NON_LIFESTYLE MODIFIABLE DISEASE & NON-PREVENTIVE DISEASE'
         END;;
-  }
+}
 
-  measure: PATIENT_AVERAGE_AGE {
-    type: average
-    label: "PATIENT AVERAGE AGE"
-    value_format: "#,##0.0"
-    sql: ${patient_age} ;;
-  }
+measure: PATIENT_AVERAGE_AGE {
+  type: average
+  label: "MEMBER AVERAGE AGE"
+  value_format: "#,##0.0"
+  sql: ${patient_age} ;;
+}
 
-  dimension: Diabetes_specific_Complications {
-    type: string
-    label: "DIABETES SPECIFIC COMPLICATIONS"
-    sql: CASE WHEN LEFT(${reconciled_diagnosis_code_icd10},4) = '2505' OR
+dimension: Diabetes_specific_Complications {
+  type: string
+  label: "DIABETES SPECIFIC COMPLICATIONS"
+  sql: CASE WHEN LEFT(${reconciled_diagnosis_code_icd10},4) = '2505' OR
                         ${reconciled_diagnosis_code_icd10} IN ('36201', '3621', '36283', '36253', '36281', '36282', '36202', '37923','E08319', 'H3581','H35353', 'H3560', 'H3589', 'E08359', 'H4313') OR
                    LEFT(${reconciled_diagnosis_code_icd10},3) = '361' OR
                    LEFT(${reconciled_diagnosis_code_icd10},3) = '369' THEN 'Retinopathy'
@@ -628,14 +642,13 @@ view: vw_medical {
                    THEN 'Peripheral Vascular'
           ELSE 'Other Non-Diabetic Complications'
           END ;;
-  }
+}
 
-  dimension: Primarycare_Physician_and_Speciality {
-
-    type: string
-    label: "PCP & SPECIALTY SERVICES"
-    description: "Primary care physician & Specialty services"
-    sql: CASE WHEN ${reconciled_diagnosis_code_icd10} IN ('Z0000', 'Z0001') OR
+dimension: Primarycare_Physician_and_Speciality {
+  type: string
+  label: "PCP & SPECIALTY SERVICES"
+  description: "Primary care physician & Specialty services"
+  sql: CASE WHEN ${reconciled_diagnosis_code_icd10} IN ('Z0000', 'Z0001') OR
             ${primary_procedure_code} IN ('99214', '99381', '99382', '99383', '99384', '99385', '99386', '99387', '99391', '99392',
               '99393', '99394', '99395', '99396', '99397', '99401', '99402', '99403', '99404', '99411', '99412', '99461', '99497',
               'G0296', 'G0402', 'G0438', 'G0439', 'G0445', 'G0468', 'S0610', 'S0612', 'S0613') OR
@@ -647,13 +660,12 @@ view: vw_medical {
            THEN 'SPECIALTY SERVICES'
           ELSE 'OTHER SERVICES'
           END  ;;
-  }
-
+}
 # Cancer Screening Eligible Population (Breast, Colon & Cervical Cancer)
-  dimension: Cancer_Screening_Eligible_Population {
-    type: string
-    description: "Total population eligible for Breast, Cervical & Colon cancer screening."
-    sql: CASE WHEN ${patient_gender} = 'F' AND (${patient_age} >= 50 AND ${patient_age} <= 74) AND
+dimension: Cancer_Screening_Eligible_Population {
+  type: string
+  description: "Total population eligible for Breast, Cervical & Colon cancer screening."
+  sql: CASE WHEN ${patient_gender} = 'F' AND (${patient_age} >= 50 AND ${patient_age} <= 74) AND
           (${reconciled_diagnosis_code_icd10} NOT IN ('Z9011', 'Z9012', 'Z9013', '8542', '8544', '8546', '8548') OR
           ${primary_procedure_code} NOT IN ('0HTU0ZZ', '0HTV0ZZ', '0HTT0ZZ', '19303', '19304', '19305', '19306', '19307', '19200', '19220', '19180', '19240'))
           THEN 'ELIGIBLE - BREAST CANCER SCREENING'
@@ -672,34 +684,34 @@ view: vw_medical {
           THEN 'ELIGIBLE - COLON CANCER SCREENING'
         ELSE 'ELIGIBLE - Other Screenings'
         END ;;
-  }
+}
 
-  measure: Eligible_Breast_Cancer_Screening {
-    type: count_distinct
-    label: "Eligible: Breast Cancer Screening - N"
-    filters: [Cancer_Screening_Eligible_Population: "ELIGIBLE - BREAST CANCER SCREENING"]
-    sql: ${unique_id} ;;
-  }
+measure: Eligible_Breast_Cancer_Screening {
+  type: count_distinct
+  label: "Eligible: Breast Cancer Screening - N"
+  filters: [Cancer_Screening_Eligible_Population: "ELIGIBLE - BREAST CANCER SCREENING"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Eligible_Cervical_Cancer_Screening {
-    type: count_distinct
-    label: "Eligible: Cervical Cancer Screening - N"
-    filters: [Cancer_Screening_Eligible_Population: "ELIGIBLE - CERVICAL CANCER SCREENING"]
-    sql: ${unique_id} ;;
-  }
+measure: Eligible_Cervical_Cancer_Screening {
+  type: count_distinct
+  label: "Eligible: Cervical Cancer Screening - N"
+  filters: [Cancer_Screening_Eligible_Population: "ELIGIBLE - CERVICAL CANCER SCREENING"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Eligible_Colon_Cancer_Screening {
-    type: count_distinct
-    label: "Eligible: Colon Cancer Screening - N"
-    filters: [Cancer_Screening_Eligible_Population: "ELIGIBLE - COLON CANCER SCREENING"]
-    sql: ${unique_id} ;;
-  }
+measure: Eligible_Colon_Cancer_Screening {
+  type: count_distinct
+  label: "Eligible: Colon Cancer Screening - N"
+  filters: [Cancer_Screening_Eligible_Population: "ELIGIBLE - COLON CANCER SCREENING"]
+  sql: ${unique_id} ;;
+}
 
 # Cancer Screening: Revenue Code-0401, 0403, 0923 & loinc_code-10524-7, 10525, 10526, 10527, 18500-9, 18501, 19762-4, 19764-0, 19765-7, 19766-5, 19774-9, 33717-0, 47527-7, 47528-5,  is missing from logic/condition.
-  dimension: Cancer_Screening {
-    type: string
-    description: "Cancer Screening to identfy Patients who had screening for Breast/Cervical/Colon Cancer."
-    sql: CASE WHEN ${patient_gender} = 'F' AND (${patient_age} >= 50 AND ${patient_age} <= 74) AND
+dimension: Cancer_Screening {
+  type: string
+  description: "Cancer Screening to identfy Patients who had screening for Breast/Cervical/Colon Cancer."
+  sql: CASE WHEN ${patient_gender} = 'F' AND (${patient_age} >= 50 AND ${patient_age} <= 74) AND
           (${reconciled_diagnosis_code_icd10} IN ('V7611', 'V7612', 'Z1231', 'V7611', 'V7612', 'Z1231') OR
           ${primary_procedure_code} IN ('77055', '77056', '77057', '77061', '77062', '77063', '77065', '77066', '77067', 'G0202', 'G0204', 'G0206'))
           THEN 'BREAST CANCER SCREENING'
@@ -716,58 +728,58 @@ view: vw_medical {
           THEN 'COLON CANCER SCREENING'
         ELSE 'Other Screenings'
         END ;;
-  }
+}
 
-  measure: Breast_Cancer_Screening {
-    type: count_distinct
-    label: "Breast Cancer Screening - N"
-    filters: [Cancer_Screening: "BREAST CANCER SCREENING"]
-    sql: ${unique_id} ;;
-  }
+measure: Breast_Cancer_Screening {
+  type: count_distinct
+  label: "Breast Cancer Screening - N"
+  filters: [Cancer_Screening: "BREAST CANCER SCREENING"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Breast_Cancer_Screening_Rate {
-    type: number
-    value_format: "0.0\%"
-    sql: CASE WHEN ${Eligible_Breast_Cancer_Screening} = 0 THEN 0
+measure: Breast_Cancer_Screening_Rate {
+  type: number
+  value_format: "0.0\%"
+  sql: CASE WHEN ${Eligible_Breast_Cancer_Screening} = 0 THEN 0
         ELSE ${Breast_Cancer_Screening}*100/${Eligible_Breast_Cancer_Screening}
         END ;;
-  }
+}
 
-  measure: Cervical_Cancer_Screening {
-    type: count_distinct
-    label: "Cervical Cancer Screening - N"
-    filters: [Cancer_Screening: "CERVICAL CANCER SCREENING"]
-    sql: ${unique_id} ;;
-  }
+measure: Cervical_Cancer_Screening {
+  type: count_distinct
+  label: "Cervical Cancer Screening - N"
+  filters: [Cancer_Screening: "CERVICAL CANCER SCREENING"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Cervical_Cancer_Screening_Rate {
-    type: number
-    value_format: "0.0\%"
-    sql: CASE WHEN ${Eligible_Cervical_Cancer_Screening} = 0 THEN 0
+measure: Cervical_Cancer_Screening_Rate {
+  type: number
+  value_format: "0.0\%"
+  sql: CASE WHEN ${Eligible_Cervical_Cancer_Screening} = 0 THEN 0
         ELSE ${Cervical_Cancer_Screening}*100/${Eligible_Cervical_Cancer_Screening}
         END ;;
-  }
+}
 
-  measure: Colon_Cancer_Screening {
-    type: count_distinct
-    label: "Colon Cancer Screening - N"
-    filters: [Cancer_Screening: "COLON CANCER SCREENING"]
-    sql: ${unique_id} ;;
-  }
+measure: Colon_Cancer_Screening {
+  type: count_distinct
+  label: "Colon Cancer Screening - N"
+  filters: [Cancer_Screening: "COLON CANCER SCREENING"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Colon_Cancer_Screening_Rate {
-    type: number
-    value_format: "0.0\%"
-    sql: CASE WHEN ${Eligible_Colon_Cancer_Screening} = 0 THEN 0
+measure: Colon_Cancer_Screening_Rate {
+  type: number
+  value_format: "0.0\%"
+  sql: CASE WHEN ${Eligible_Colon_Cancer_Screening} = 0 THEN 0
         ELSE ${Colon_Cancer_Screening}*100/${Eligible_Colon_Cancer_Screening}
         END ;;
-  }
+}
 
-  #Value of Preventive Screenings.
-  dimension: Cancer_Diagnosis_and_Biopsy {
-    type: string
-    description: "Cancer Diagnosis (Breast/Cervical/Colon) & Biopsy or removal of suspicious polyps or tumors"
-    sql: CASE WHEN ${primary_procedure_code} IN ('10021', '10022', '19100', '19101', '19102', '19120', '19125', '19291', '19295', 'G8875')
+#Value of Preventive Screenings.
+dimension: Cancer_Diagnosis_and_Biopsy {
+  type: string
+  description: "Cancer Diagnosis (Breast/Cervical/Colon) & Biopsy or removal of suspicious polyps or tumors"
+  sql: CASE WHEN ${primary_procedure_code} IN ('10021', '10022', '19100', '19101', '19102', '19120', '19125', '19291', '19295', 'G8875')
             THEN 'Breast Cancer & Biopsy/Removal of Tumors'
           WHEN ${primary_procedure_code} IN ('56820', '56821', '57420', '57421', '57452', '57454', '57455', '57456', '57460', '57461')
             THEN 'Cervical Cancer & Biopsy/Removal of Tumors'
@@ -776,359 +788,349 @@ view: vw_medical {
           ELSE 'Other Cancer  Diagnosis'
           END
           ;;
-  }
+}
 
-  measure: Breast_Cancer_Diagnosis_with_Biopsy {
-    type: count_distinct
-    label: "Breast Cancer Biopsy - N"
-    filters: [Cancer_Diagnosis_and_Biopsy: "Breast Cancer & Biopsy/Removal of Tumors"]
-    sql: ${unique_id} ;;
-  }
+measure: Breast_Cancer_Diagnosis_with_Biopsy {
+  type: count_distinct
+  label: "Breast Cancer Biopsy - N"
+  filters: [Cancer_Diagnosis_and_Biopsy: "Breast Cancer & Biopsy/Removal of Tumors"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Cervical_Cancer_Diagnosis_with_Biopsy {
-    type: count_distinct
-    label: "Cervical Cancer Biopsy - N"
-    filters: [Cancer_Diagnosis_and_Biopsy: "Cervical Cancer & Biopsy/Removal of Tumors"]
-    sql: ${unique_id} ;;
-  }
+measure: Cervical_Cancer_Diagnosis_with_Biopsy {
+  type: count_distinct
+  label: "Cervical Cancer Biopsy - N"
+  filters: [Cancer_Diagnosis_and_Biopsy: "Cervical Cancer & Biopsy/Removal of Tumors"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Colon_Cancer_Diagnosis_with_Biopsy {
-    type: count_distinct
-    label: "Colon Cancer Biopsy - N"
-    filters: [Cancer_Diagnosis_and_Biopsy: "Colon Cancer & Biopsy/Removal of Tumors"]
-    sql: ${unique_id} ;;
-  }
+measure: Colon_Cancer_Diagnosis_with_Biopsy {
+  type: count_distinct
+  label: "Colon Cancer Biopsy - N"
+  filters: [Cancer_Diagnosis_and_Biopsy: "Colon Cancer & Biopsy/Removal of Tumors"]
+  sql: ${unique_id} ;;
+}
 
-  dimension: Admit_Date {
-    type: string
-    sql: ${TABLE}."ADMIT_DATE" ;;
-  }
+dimension: Admit_Date {
+  type: string
+  sql: ${TABLE}."ADMIT_DATE" ;;
+}
 
-  dimension: Discharge_Date {
-    type: string
-    sql: ${TABLE}."DISCHARGE_DATE" ;;
-  }
+dimension: Discharge_Date {
+  type: string
+  sql: ${TABLE}."DISCHARGE_DATE" ;;
+}
 
-  dimension: Inpatient_Outpatient_ER_Visits {
-    type: string
-    label: "InPatient/ OutPatient/ ER_Visits"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
-    sql: CASE WHEN ${place_of_service} = '21' AND ${Admit_Date} IS NOT NULL THEN 'InPatient'
+dimension: Inpatient_Outpatient_ER_Visits {
+  type: string
+  label: "InPatient/ OutPatient/ ER_Visits"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
+  sql: CASE WHEN ${place_of_service} = '21' AND ${Admit_Date} IS NOT NULL THEN 'InPatient'
         WHEN ${place_of_service} IN ('19', '22', '49', '71', '72') THEN 'OutPatient'
         WHEN ${place_of_service} = '23' OR ${primary_procedure_code} IN ('99281', '99282', '99283', '99284', '99285') THEN 'ER Visits'
         ELSE 'Other Visits'
         END ;;
-  }
+}
 
-  dimension: DIAGNOSIS_SUB_CATEGORY {
-    type: string
-    label: "DIAGNOSTIC SUBCATEGORY"
-    drill_fields: [icd_description]
-    sql: ${TABLE}."DISEASE_SUB_CATEGORY" ;;
-  }
+dimension: DIAGNOSIS_SUB_CATEGORY {
+  type: string
+  label: "DIAGNOSTIC SUBCATEGORY"
+  drill_fields: [icd_description]
+  sql: ${TABLE}."DISEASE_SUB_CATEGORY" ;;
+}
 
-  dimension: MSK_BODY_PARTS {
-    type: string
-    label: "MSK-BODY PARTS"
-    drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
-    sql: ${TABLE}."MSK_BODY_PARTS" ;;
-  }
+dimension: MSK_BODY_PARTS {
+  type: string
+  label: "MSK-BODY PARTS"
+  drill_fields: [icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description, PROCEDURE_CATEGORY, PROCEDURE_SUBCATEGORY, procedure_description]
+  sql: ${TABLE}."MSK_BODY_PARTS" ;;
+}
 
-  dimension: MSK_MRS_CODE_CLASSIFICATION {
-    type: string
-    label: "MSK-MRS Code Classification"
-    sql: ${TABLE}."MSK_MRS_CODE_CLASSIFICATION" ;;
-  }
+dimension: MSK_MRS_CODE_CLASSIFICATION {
+  type: string
+  label: "MSK-MRS Code Classification"
+  sql: ${TABLE}."MSK_MRS_CODE_CLASSIFICATION" ;;
+}
 
-  dimension: PROCEDURE_SUBCATEGORY {
-    type: string
-    label: "PROCEDURE SUBCATEGORY"
-    drill_fields: [procedure_description]
-    sql: ${TABLE}."PROCEDURE_SUBCATEGORY" ;;
-  }
+dimension: PROCEDURE_SUBCATEGORY {
+  type: string
+  label: "PROCEDURE SUBCATEGORY"
+  drill_fields: [procedure_description]
+  sql: ${TABLE}."PROCEDURE_SUBCATEGORY" ;;
+}
 
-  dimension: PROCEDURE_CATEGORY {
-    type: string
-    label: "PROCEDURE CATEGORY"
-    drill_fields: [PROCEDURE_SUBCATEGORY, procedure_description, icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description]
-    sql: ${TABLE}."PROCEDURE_CATEGORY" ;;
-  }
+dimension: PROCEDURE_CATEGORY {
+  type: string
+  label: "PROCEDURE CATEGORY"
+  drill_fields: [PROCEDURE_SUBCATEGORY, procedure_description, icd_disease_category, DIAGNOSIS_SUB_CATEGORY, icd_description]
+  sql: ${TABLE}."PROCEDURE_CATEGORY" ;;
+}
 
-  dimension: RISK_GROUP {
-    type: string
-    label: "RISK GROUPS"
-    sql: ${TABLE}."RISK_GROUP" ;;
-  }
+dimension: RISK_GROUP {
+  type: string
+  label: "RISK GROUPS"
+  sql: ${TABLE}."RISK_GROUP" ;;
+}
 
-  dimension: TRUE_MSK_FLAG {
-    type: string
-    label: "TRUE MSK FLAG"
-    sql: ${TABLE}."TRUE_MSK_FLAG" ;;
-  }
+dimension: TRUE_MSK_FLAG {
+  type: string
+  label: "TRUE MSK FLAG"
+  sql: ${TABLE}."TRUE_MSK_FLAG" ;;
+}
 
-  dimension: TRUE_MSK_PROCEDURE_HEADER {
-    type: string
-    label: "TRUE MSK PROCEDURE"
-    sql: ${TABLE}."TRUE_MSK_PROCEDURE_HEADER" ;;
-  }
+dimension: TRUE_MSK_PROCEDURE_HEADER {
+  type: string
+  label: "TRUE MSK PROCEDURE"
+  sql: ${TABLE}."TRUE_MSK_PROCEDURE_HEADER" ;;
+}
 
-  dimension: Foot_Exam_Flag {
-    type: string
-    hidden: yes
-    sql: CASE WHEN ${primary_procedure_code} IN ('2028F', 'G0247', '2028F') THEN 'TRUE'
+dimension: Foot_Exam_Flag {
+  type: string
+  hidden: yes
+  sql: CASE WHEN ${primary_procedure_code} IN ('2028F', 'G0247', '2028F') THEN 'TRUE'
       ELSE 'FALSE'
       END ;;
-  }
+}
 
-  dimension: Eye_Exam_Flag {
-    type: string
-    hidden: yes
-    sql: CASE WHEN ${primary_procedure_code} IN ('67028', '67030', '67031', '67036', '67039',
+dimension: Eye_Exam_Flag {
+  type: string
+  hidden: no
+  sql: CASE WHEN ${primary_procedure_code} IN ('67028', '67030', '67031', '67036', '67039',
         '67040', '67041', '67042', '67043', '67101', '67105', '67107', '67108', '67110', '67112', '67113', '67121', '67141', '67145', '67208', '67210', '67218', '67220', '67221', '67227', '67228', '92002', '92004', '92012', '92014', '92018', '92019', '92225', '92226', '92230', '92235', '92240', '92250', '92260', '92203', '99204', '99205', '99213', '99214', '99215', '2022F', '2024F', '2026F', '3072F', 'S0620', 'S0621', 'S3000') THEN 'TRUE'
       ELSE 'FALSE'
       END ;;
-  }
+}
 
-  dimension: HbA1c_Flag {
-    type: string
-    hidden: yes
-    sql: CASE WHEN ${primary_procedure_code} IN ('83036', '83037') THEN 'TRUE'
+dimension: HbA1c_Flag {
+  type: string
+  hidden: yes
+  sql: CASE WHEN ${primary_procedure_code} IN ('83036', '83037') THEN 'TRUE'
       ELSE 'FALSE'
       END ;;
-  }
+}
 
-  dimension: CHRONIC_CAT_TYPE {
-    type: string
-    label: "CHRONIC_CAT_TYPE"
-    sql: ${TABLE}."CHRONIC_CAT_TYPE" ;;
-  }
+measure: Diabetes_and_No_Foot_exam {
+  type: count_distinct
+  label: "Diabetes, No Foot Exam"
+  filters: [icd_chronic_cat: "DIABETES", Foot_Exam_Flag: "FALSE"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Diabetes_and_No_Foot_exam {
-    type: count_distinct
-    label: "Diabetes, No Foot Exam"
-    filters: [icd_chronic_cat: "DIABETES", Foot_Exam_Flag: "FALSE"]
-    sql: ${unique_id} ;;
-  }
+measure: Diabetes_and_No_Eye_exam {
+  type: count_distinct
+  label: "Diabetes, No Eye Exam"
+  filters: [icd_chronic_cat: "DIABETES", Eye_Exam_Flag: "FALSE"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Diabetes_and_No_Eye_exam {
-    type: count_distinct
-    label: "Diabetes, No Eye Exam"
-    filters: [icd_chronic_cat: "DIABETES", Eye_Exam_Flag: "FALSE"]
-    sql: ${unique_id} ;;
-  }
+measure: Diabetes_and_No_HbA1c_exam {
+  type: count_distinct
+  label: "Diabetes, No HbA1c"
+  filters: [icd_chronic_cat: "DIABETES", HbA1c_Flag: "FALSE"]
+  sql: ${unique_id} ;;
+}
 
-  measure: Diabetes_and_No_HbA1c_exam {
-    type: count_distinct
-    label: "Diabetes, No HbA1c"
-    filters: [icd_chronic_cat: "DIABETES", HbA1c_Flag: "FALSE"]
-    sql: ${unique_id} ;;
-  }
+measure: Paid_date_Min {
+  type: date
+  label: "MEDICAL Claim - START"
+  sql: MIN(${reporting_raw}) ;;
+  html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
+}
 
-  measure: Paid_date_Min {
-    type: date
-    label: "MEDICAL Claim - START"
-    sql: MIN(${reporting_raw}) ;;
-    html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
-  }
+measure: Paid_date_Max {
+  type: date
+  label: "MEDICAL Claim - END"
+  sql: MAX(${reporting_raw}) ;;
+  html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
+}
 
-  measure: Paid_date_Max {
-    type: date
-    label: "MEDICAL Claim - END"
-    sql: MAX(${reporting_raw}) ;;
-    html: {{ rendered_value | date: "%m / %d / %Y" }} ;;
-  }
+dimension: year_and_patient_id {
+  type: string
+  hidden: yes
+  sql: CONCAT(${Paid_year}, ${unique_id}) ;;
+}
 
+measure: total_yearwise_patient_spend {
+  type: sum
+  label: "Total Yearwise Member Spend"
+  sql_distinct_key: ${year_and_patient_id} ;;
+  sql: ${total_employer_paid_amt}  ;;
+}
 
-  dimension: year_and_patient_id {
-    type: string
-    hidden: yes
-    sql: CONCAT(${Paid_year}, ${unique_id}) ;;
-  }
-
-  measure: total_yearwise_patient_spend {
-    type: sum
-    sql_distinct_key: ${year_and_patient_id} ;;
-    sql: ${total_employer_paid_amt}  ;;
-  }
-  dimension: Patient_DOB{
-    type: string
-    label: "Patient DOB"
-    sql: ${TABLE}."PATIENT_DOB";;
-  }
-
-  dimension: patient_gender1 {
-    type: string
-    hidden: yes
-    sql: case when ${TABLE}."PATIENT_GENDER"= 'M' then 'Male'
+dimension: patient_gender1 {
+  type: string
+  label: "MEMBER GENDER1"
+  sql: case when ${TABLE}."PATIENT_GENDER"= 'M' then 'Male'
               when ${TABLE}."PATIENT_GENDER"= 'F' then 'Female'
               else '0'
           end;;
-  }
+}
 
-  dimension: relationship_to_employee1 {
-    type: string
-    hidden: yes
-    label: "Relationship To Employee"
-    sql: case when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'EMPLOYEE' then 'Employee'
+dimension: relationship_to_employee1 {
+  type: string
+  label: "Relationship To Employee"
+  sql: case when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'EMPLOYEE' then 'Employee'
               when ${TABLE}."RELATIONSHIP_TO_EMPLOYEE" = 'SPOUSE' then 'Spouse'
               else 'Dependent'
         end;;
-  }
+}
 
-  dimension: Program_Name{
-    type: string
-    label: "PARTICIPANT PROGRAM NAME"
-    sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
-  }
+dimension: PARTICIPANT_NONPARTICIPANT_Flag {
+  type: string
+  hidden:  yes
+  sql: ${TABLE}."PARTICIPANT_FLAG" ;;
+}
 
-  dimension: PARTICIPANT_NONPARTICIPANT_Flag {
-    type: string
-    hidden:  yes
-    sql: ${TABLE}."PARTICIPANT_FLAG" ;;
-  }
+dimension: participant_paid_year {
+  type: string
+  hidden: no
+  sql: ${ON_BOARD_DATE_year} ;;
+}
 
-  dimension: participant_paid_year {
-    type: string
-    hidden: no
-    sql: ${ON_BOARD_DATE_year} ;;
-  }
+filter: PARTICIPANT_YEAR {
+  type: string
+  group_label: "PARTICIPANT FILTER"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.participant_paid_year
+}
 
-  filter: PARTICIPANT_YEAR {
-    type: string
-    group_label: "PARTICIPANT FILTER"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.participant_paid_year
-  }
+filter: PARTICIPANT_Flag {
+  type: string
+  group_label: "PARTICIPANT FILTER"
+  suggest_explore: vw_medical
+  suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
+}
 
-  filter: PARTICIPANT_Flag {
-    type: string
-    group_label: "PARTICIPANT FILTER"
-    suggest_explore: vw_medical
-    suggest_dimension: vw_medical.PARTICIPANT_NONPARTICIPANT_Flag
-  }
 
-  parameter: reporting_date_filter {
-    type: string
-    label: "Reporting date"
-    allowed_value: {
-      value: "Service"
-      label: "Service date"}
-    allowed_value: {
-      value: "Paid"
-      label: "Paid date"}
-  }
+dimension: PARTICIPANT_PROGRAM_NAME{
+  type: string
+  label: "PARTICIPANT PROGRAM NAME"
+  sql: ${TABLE}."PARTICIPANT_PROGRAM_NAME";;
+}
 
-  dimension_group: reporting {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    label: "Reporting"
-    drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
-    sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
+parameter: reporting_date_filter {
+  type: string
+  label: "Reporting date"
+  allowed_value: {
+    value: "Service"
+    label: "Service date"}
+  allowed_value: {
+    value: "Paid"
+    label: "Paid date"}
+}
+
+dimension_group: reporting {
+  type: time
+  timeframes: [
+    raw,
+    date,
+    week,
+    month,
+    quarter,
+    year
+  ]
+  convert_tz: no
+  datatype: date
+  label: "Reporting"
+  drill_fields: [reporting_year, reporting_quarter, reporting_month, reporting_raw]
+  sql: CASE WHEN {% parameter reporting_date_filter %} = 'Paid' THEN ${TABLE}."PAID_DATE"
       WHEN {% parameter reporting_date_filter %} = 'Service' THEN ${TABLE}."DIAGNOSIS_DATE"
       ELSE ${TABLE}."DIAGNOSIS_DATE"
       END ;;
-  }
+}
 
-  dimension_group: ON_BOARD_DATE {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    label: "ON BOARD DATE"
-    drill_fields: [ON_BOARD_DATE_year, ON_BOARD_DATE_quarter, ON_BOARD_DATE_month, ON_BOARD_DATE_raw]
-    sql: ${TABLE}."ON_BOARD_DATE" ;;
-  }
+dimension_group: ON_BOARD_DATE {
+  type: time
+  timeframes: [
+    raw,
+    date,
+    week,
+    month,
+    quarter,
+    year
+  ]
+  convert_tz: no
+  datatype: date
+  label: "ON BOARD DATE"
+  drill_fields: [ON_BOARD_DATE_year, ON_BOARD_DATE_quarter, ON_BOARD_DATE_month, ON_BOARD_DATE_raw]
+  sql: ${TABLE}."ON_BOARD_DATE" ;;
+}
 
 #Benchmark labelling, HEDIS list of defined measures, Rendering & $ based on previous months
-  dimension: benchmark_year_filter_suggestion {
-    type: string
-    hidden: yes
-    sql: ${reporting_year} - 1 ;;
-  }
+dimension: benchmark_year_filter_suggestion {
+  type: string
+  hidden: yes
+  sql: ${reporting_year} - 1 ;;
+}
 
-  parameter: benchmark_year_filter {
-    type: string
-    suggest_dimension: vw_medical.benchmark_year_filter_suggestion
-  }
+parameter: benchmark_year_filter {
+  type: string
+  suggest_dimension: vw_medical.benchmark_year_filter_suggestion
+}
 
-  dimension: reporting_benchmark_year {
-    type: string
-    label: "SERVICE Year"
-    sql: CASE WHEN ${diagnosis_year} = CAST({% parameter benchmark_year_filter %} as int) THEN CAST(concat(${diagnosis_year}, ' ', '(Benchmark)') as string)
+dimension: reporting_benchmark_year {
+  type: string
+  label: "SERVICE Year"
+  drill_fields: [diagnosis_year, diagnosis_quarter, diagnosis_month, diagnosis_raw]
+  sql: CASE WHEN ${diagnosis_year} = CAST({% parameter benchmark_year_filter %} as int) THEN CAST(concat(${diagnosis_year}, ' ', '(Benchmark)') as string)
       ELSE CAST(${diagnosis_year} as string)
       END;;
-  }
+}
 
 
-  measure: diagnosis_category_list_1 {
-    sql: LISTAGG(DISTINCT ${icd_disease_category}, ' || ') within group (order by ${icd_disease_category} ASC) ;;
-  }
+measure: diagnosis_category_list_1 {
+  sql: LISTAGG(DISTINCT ${icd_disease_category}, ' || ') within group (order by ${icd_disease_category} ASC) ;;
+}
 
-  measure: diagnosis_category_list {
-    sql: ${diagnosis_category_list_1} ;;
-    html: {% assign words = value | split: ' || ' %}
+measure: diagnosis_category_list {
+  sql: ${diagnosis_category_list_1} ;;
+  html: {% assign words = value | split: ' || ' %}
       <ul>
       {% for word in words %}
       <li>{{ word }}</li>
       {% endfor %} ;;
-  }
+}
 
-  measure: diagnosis_description_list {
-    sql: LISTAGG(DISTINCT ${icd_description}, ' || ') within group (order by ${icd_description} ASC) ;;
-    html: {% assign words = value | split: ' || ' %}
+measure: diagnosis_description_list {
+  sql: LISTAGG(DISTINCT ${icd_description}, ' || ') within group (order by ${icd_description} ASC) ;;
+  html: {% assign words = value | split: ' || ' %}
       <ul>
       {% for word in words %}
       <li>{{ word }}</li>
       {% endfor %}
       ;;
-  }
+}
 
-  measure: procedure_category_list {
-    sql: LISTAGG(DISTINCT ${PROCEDURE_CATEGORY}, ' || ') within group (order by ${PROCEDURE_CATEGORY} ASC) ;;
-    html: {% assign words = value | split: ' || ' %}
+measure: procedure_category_list {
+  sql: LISTAGG(DISTINCT ${PROCEDURE_CATEGORY}, ' || ') within group (order by ${PROCEDURE_CATEGORY} ASC) ;;
+  html: {% assign words = value | split: ' || ' %}
       <ul>
       {% for word in words %}
       <li>{{ word }}</li>
       {% endfor %} ;;
-  }
+}
 
-  measure: procedure_description_list {
-    sql: LISTAGG(DISTINCT ${procedure_description}, ' || ') within group (order by ${procedure_description} ASC) ;;
-    html: {% assign words = value | split: ' || ' %}
+measure: procedure_description_list {
+  sql: LISTAGG(DISTINCT ${procedure_description}, ' || ') within group (order by ${procedure_description} ASC) ;;
+  html: {% assign words = value | split: ' || ' %}
       <ul>
       {% for word in words %}
       <li>{{ word }}</li>
       {% endfor %} ;;
-  }
+}
 
-  measure: chronic_category_list {
-    sql: LISTAGG(DISTINCT ${icd_chronic_cat}, ' || ') within group (order by ${icd_chronic_cat} ASC) ;;
-    html: {% assign words = value | split: ' || ' %}
+measure: chronic_category_list {
+  sql: LISTAGG(DISTINCT ${icd_chronic_cat}, ' || ') within group (order by ${icd_chronic_cat} ASC) ;;
+  html: {% assign words = value | split: ' || ' %}
       <ul>
       {% for word in words %}
       <li>{{ word }}</li>
       {% endfor %} ;;
-  }
+}
 
-  dimension: risk_group_definition {
-    type:  string
-    sql: CASE WHEN ${RISK_GROUP} = 'GROUP-1' THEN CONCAT(${RISK_GROUP}, ' (No Chronic Disease and less than $1500 medical expenditures per 12 months)')
+dimension: risk_group_definition {
+  type:  string
+  sql: CASE WHEN ${RISK_GROUP} = 'GROUP-1' THEN CONCAT(${RISK_GROUP}, ' (No Chronic Disease and less than $1500 medical expenditures per 12 months)')
       WHEN ${RISK_GROUP} = 'GROUP-2' THEN CONCAT(${RISK_GROUP}, ' (No Chronic Disease and $1500 or more medical expenditures per 12 months)')
       WHEN ${RISK_GROUP} = 'GROUP-3' THEN CONCAT(${RISK_GROUP}, ' (One Chronic Disease)')
       WHEN ${RISK_GROUP} = 'GROUP-4' THEN CONCAT(${RISK_GROUP}, ' (Two Chronic Disease)')
@@ -1137,71 +1139,78 @@ view: vw_medical {
       WHEN ${RISK_GROUP} = 'GROUP-7' THEN CONCAT(${RISK_GROUP}, ' (Five or More Chronic Disease)')
       ELSE 'Others'
       END ;;
-  }
+}
 
-  measure: risk_group_list {
-    label: "Risk Group"
-    sql: LISTAGG(DISTINCT ${risk_group_definition}, ' || ') within group (order by ${risk_group_definition} ASC) ;;
-    html: {% assign words = value | split: ' || ' %}
+measure: risk_group_list {
+  label: "Risk Group"
+  sql: LISTAGG(DISTINCT ${risk_group_definition}, ' || ') within group (order by ${risk_group_definition} ASC) ;;
+  html: {% assign words = value | split: ' || ' %}
       <ul>
       {% for word in words %}
       <li>{{ word }}</li>
       {% endfor %} ;;
-  }
+}
 
-  dimension: EMPLOYER_NAME {
-    type: string
-    label: "Affiliation"
-    sql: ${TABLE}."EMPLOYER_NAME" ;;
-  }
+dimension: common_chronic_category_for_predictive{
+  label: "Chronic Category Predictive"
+  type: string
+  sql: case when ${CHRONIC_CAT_TYPE}='COMMON CHRONIC CONDITIONS' and ${diagnosis_year} <= 2021 then ${TABLE}."CCW_CHRONIC_CAT"
+          else 'NO'
+          end;;
+}
+
+dimension: EMPLOYER_NAME {
+  type: string
+  label: "Affiliation"
+  sql: ${TABLE}."EMPLOYER_NAME" ;;
+}
 
 #Date Range for Executive summery
 
-  filter: date_range_filter_1 {
-    type: date
-    datatype: date
-  }
+filter: date_range_filter_1 {
+  type: date
+  datatype: date
+}
 
-  filter: date_range_filter_2 {
-    type: date
-    datatype: date
-  }
+filter: date_range_filter_2 {
+  type: date
+  datatype: date
+}
 
-  filter: date_range_filter_3 {
-    type: date
-    datatype: date
-  }
+filter: date_range_filter_3 {
+  type: date
+  datatype: date
+}
 
-  dimension: date_range_filter_dimension_1 {
-    type: string
-    sql: CONCAT({% date_start date_range_filter_1 %}, ' - ', IFNULL({% date_end date_range_filter_1 %}, '')) ;;
-  }
+dimension: date_range_filter_dimension_1 {
+  type: string
+  sql: CONCAT({% date_start date_range_filter_1 %}, ' - ', IFNULL({% date_end date_range_filter_1 %}, '')) ;;
+}
 
-  dimension: date_range_filter_dimension_2 {
-    type: string
-    sql: CONCAT({% date_start date_range_filter_2 %}, ' - ', IFNULL({% date_end date_range_filter_2 %}, '')) ;;
-  }
+dimension: date_range_filter_dimension_2 {
+  type: string
+  sql: CONCAT({% date_start date_range_filter_2 %}, ' - ', IFNULL({% date_end date_range_filter_2 %}, '')) ;;
+}
 
-  dimension: date_range_filter_dimension_3 {
-    type: string
-    sql: CONCAT({% date_start date_range_filter_3 %}, ' - ', IFNULL({% date_end date_range_filter_3 %}, '')) ;;
-  }
+dimension: date_range_filter_dimension_3 {
+  type: string
+  sql: CONCAT({% date_start date_range_filter_3 %}, ' - ', IFNULL({% date_end date_range_filter_3 %}, '')) ;;
+}
 
-  dimension: date_range {
-    type: string
-    sql: CASE WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_1 %} AND {% date_end date_range_filter_1 %} THEN ${date_range_filter_dimension_1}
+dimension: date_range {
+  type: string
+  sql: CASE WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_1 %} AND {% date_end date_range_filter_1 %} THEN ${date_range_filter_dimension_1}
         WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_2 %} AND {% date_end date_range_filter_2 %} THEN ${date_range_filter_dimension_2}
         WHEN ${reporting_date} BETWEEN {% date_start date_range_filter_3 %} AND {% date_end date_range_filter_3 %} THEN ${date_range_filter_dimension_3}
         ELSE NULL
         /*CONCAT('before  ', {% date_end date_range_filter_1 %}) */
         END ;;
-  }
+}
 
-  measure: total_patients_risk_group_wise {
-    type: count_distinct
-    label: "Total Patients (N)"
-    sql:  ${unique_id} ;;
-    drill_fields: [vw_patient_demographics.patient_name, RISK_GROUP, patient_gender, vw_patient_demographics.patient_current_age, Total_Visit, Total_Paid_Amt]
-  }
-
+measure: total_patients_risk_group_wise {
+  type: count_distinct
+  label: "Total Members (N)"
+  sql:  ${unique_id} ;;
+  drill_fields: [vw_patient_demographics.patient_name, RISK_GROUP, patient_gender, vw_patient_demographics.patient_current_age, Total_Visit, Total_Paid_Amt]
+}
 }
